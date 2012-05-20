@@ -1,0 +1,67 @@
+h2. What is Spring Security OAuth client ?
+
+If you use Spring Security and want to do OAuth, you can use :
+- the Spring Security OAuth library, it's a generic and powerful library to add OAuth client and server support
+- one of the Spring Social libraries to interact strongly with an OAuth provider.
+
+But, as powerful and efficient as these libraries are, I think that generally, people JUST want to authenticate at the OAuth provider and retrieve their profile before accessing their web application.
+
+**This Spring Security OAuth client library does that and nothing else. It's certainly less powerful but it's really EASY!**
+
+**This library is based on the "ScribeUP library":https://github.com/leleuj/scribe-up, which deals with OAuth communication and user profile retrieval.**
+
+h2. OAuth providers supported
+
+| Facebook | Github | Google | LinkedIn | Twitter | Windows Live | WordPress | Yahoo |
+
+Look at the "description of the providers and profiles in ScribeUP library":https://github.com/leleuj/scribe-up/wiki/Description-of-providers-and-profiles.
+
+h2. Technical description
+
+The library has only **4 classes** :
+- the **OAuthAuthenticationEntryPoint** class redirects the user to the OAuth provider
+- the **OAuthAuthenticationFilter** class is called after OAuth authentication (on the /j_spring_oauth_security_check url) : it creates the OAuthAuthenticationToken token and calls the authentication manager to do the authentication
+- the **OAuthAuthenticationToken** class is the token for an OAuth authentication (= OAuth credentials + the user profile)
+- the **OAuthAuthenticationProvider** class is the provider responsible for authenticating OAuthAuthenticationToken tokens : it calls the OAuth provider to get the access token and the user profile and computes the authorities.
+
+h2. The sample (for Facebook)
+
+<pre><code>
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider ref="oauthAuthenticationProvider" />
+    </security:authentication-manager>
+
+    <security:http entry-point-ref="oauthEntryPoint">
+        <security:custom-filter before="CAS_FILTER" ref="oauthFilter" />
+        <security:intercept-url pattern="/protected/*" access="IS_AUTHENTICATED_FULLY" />
+        <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:logout />
+    </security:http>
+
+    <bean id="oauthProvider" class="org.scribe.up.provider.impl.FacebookProvider">
+        <property name="key" value="xxxx" />
+        <property name="secret" value="yyyy" />
+        <property name="callbackUrl" value="http://localhost:8080/demo/j_spring_oauth_security_check" />
+    </bean>
+
+    <bean id="oauthEntryPoint" class="org.leleuj.ss.oauth.client.web.OAuthAuthenticationEntryPoint">
+        <property name="provider" ref="oauthProvider" />
+    </bean>
+
+    <bean id="oauthFilter" class="org.leleuj.ss.oauth.client.web.OAuthAuthenticationFilter">
+        <property name="provider" ref="oauthProvider" />
+        <property name="authenticationManager" ref="authenticationManager" />
+    </bean>
+
+    <bean id="oauthAuthenticationProvider" class="org.leleuj.ss.oauth.client.authentication.OAuthAuthenticationProvider">
+        <property name="provider" ref="oauthProvider" />
+    </bean>
+</code></pre>
+
+h2. Versions
+
+The version 1.0.0-SNAPSHOT is under development. It will be available on "Sonatype snapshots repository":https://oss.sonatype.org/content/repositories/snapshots/.
+
+h2. Contact
+
+Find me on "LinkedIn":http://www.linkedin.com/in/jleleu or by email : leleuj@gmail.com
