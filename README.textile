@@ -8,7 +8,7 @@ But I think that in the vast majority of the use cases, you JUST want to :
 
 **That's exactly what this Spring Security OAuth client library does. It may be less powerful but it's really efficient and EASY!**
 
-**This library is based on the "ScribeUP library":https://github.com/leleuj/scribe-up, which deals with OAuth authentication and user profile retrieval.**
+**This library is based on Spring Security and my "ScribeUP library":https://github.com/leleuj/scribe-up, which deals with OAuth authentication and user profile retrieval.**
 
 h2. OAuth providers supported
 
@@ -18,7 +18,7 @@ Look at the "description of the providers and profiles in ScribeUP library":http
 
 h2. Technical description
 
-The library has **ONLY 4 classes** :
+This library has **ONLY 4 classes** :
 # the **OAuthAuthenticationEntryPoint** class redirects the user to the OAuth provider
 # the **OAuthAuthenticationFilter** class is called after OAuth authentication (on the /j_spring_oauth_security_check url) : it creates the OAuthAuthenticationToken token and calls the authentication manager to do the authentication
 # the **OAuthAuthenticationToken** class is the token for an OAuth authentication (= OAuth credentials + the user profile)
