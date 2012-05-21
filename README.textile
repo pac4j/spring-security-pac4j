@@ -1,14 +1,14 @@
 h2. What is Spring Security OAuth client ?
 
-If you use Spring Security and want to do OAuth, you can use :
-- the Spring Security OAuth library, it's a generic and powerful library to add OAuth client and server support
-- one of the Spring Social libraries to interact strongly with an OAuth provider.
+If you want to "do" Spring, Security and OAuth, you could use the Spring Security OAuth library or one of the Spring Social libraries.
 
-But, as powerful and efficient as these libraries are, I think that generally, people JUST want to authenticate at the OAuth provider and retrieve their profile before accessing their web application.
+But I think that in the vast majority of the use cases, you JUST want to :
+- protect your application by authenticating at the OAuth provider (like Facebook for example)
+- get your OAuth profile (first name, last name, birthdate...)  after being authenticated.
 
-**This Spring Security OAuth client library does that and nothing else. It's certainly less powerful but it's really EASY!**
+**That's exactly what this Spring Security OAuth client library does. It may be less powerful but it's really efficient and EASY!**
 
-**This library is based on the "ScribeUP library":https://github.com/leleuj/scribe-up, which deals with OAuth communication and user profile retrieval.**
+**This library is based on the "ScribeUP library":https://github.com/leleuj/scribe-up, which deals with OAuth authentication and user profile retrieval.**
 
 h2. OAuth providers supported
 
@@ -18,17 +18,38 @@ Look at the "description of the providers and profiles in ScribeUP library":http
 
 h2. Technical description
 
-The library has only **4 classes** :
-- the **OAuthAuthenticationEntryPoint** class redirects the user to the OAuth provider
-- the **OAuthAuthenticationFilter** class is called after OAuth authentication (on the /j_spring_oauth_security_check url) : it creates the OAuthAuthenticationToken token and calls the authentication manager to do the authentication
-- the **OAuthAuthenticationToken** class is the token for an OAuth authentication (= OAuth credentials + the user profile)
-- the **OAuthAuthenticationProvider** class is the provider responsible for authenticating OAuthAuthenticationToken tokens : it calls the OAuth provider to get the access token and the user profile and computes the authorities.
+The library has **ONLY 4 classes** :
+# the **OAuthAuthenticationEntryPoint** class redirects the user to the OAuth provider
+# the **OAuthAuthenticationFilter** class is called after OAuth authentication (on the /j_spring_oauth_security_check url) : it creates the OAuthAuthenticationToken token and calls the authentication manager to do the authentication
+# the **OAuthAuthenticationToken** class is the token for an OAuth authentication (= OAuth credentials + the user profile)
+# the **OAuthAuthenticationProvider** class is the provider responsible for authenticating OAuthAuthenticationToken tokens : it calls the OAuth provider to get the access token and the user profile and computes the authorities.
 
-h2. The sample (for Facebook)
+h2. The sample (a web app on localhost:8080/demo working with Facebook)
 
 <pre><code>
+	<!-- from ScribeUP -->
+    <bean id="facebookProvider" class="org.scribe.up.provider.impl.FacebookProvider">
+        <property name="key" value="xxxx" />
+        <property name="secret" value="yyyy" />
+        <property name="callbackUrl" value="http://localhost:8080/demo/j_spring_oauth_security_check" />
+    </bean>
+	<!-- from ScribeUP -->
+
+    <bean id="oauthEntryPoint" class="org.leleuj.ss.oauth.client.web.OAuthAuthenticationEntryPoint">
+        <property name="provider" ref="facebookProvider" />
+    </bean>
+
+    <bean id="oauthFilter" class="org.leleuj.ss.oauth.client.web.OAuthAuthenticationFilter">
+        <property name="provider" ref="facebookProvider" />
+        <property name="authenticationManager" ref="authenticationManager" />
+    </bean>
+
+    <bean id="oauthProvider" class="org.leleuj.ss.oauth.client.authentication.OAuthAuthenticationProvider">
+        <property name="provider" ref="facebookProvider" />
+    </bean>
+
     <security:authentication-manager alias="authenticationManager">
-        <security:authentication-provider ref="oauthAuthenticationProvider" />
+        <security:authentication-provider ref="oauthProvider" />
     </security:authentication-manager>
 
     <security:http entry-point-ref="oauthEntryPoint">
@@ -37,25 +58,6 @@ h2. The sample (for Facebook)
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:logout />
     </security:http>
-
-    <bean id="oauthProvider" class="org.scribe.up.provider.impl.FacebookProvider">
-        <property name="key" value="xxxx" />
-        <property name="secret" value="yyyy" />
-        <property name="callbackUrl" value="http://localhost:8080/demo/j_spring_oauth_security_check" />
-    </bean>
-
-    <bean id="oauthEntryPoint" class="org.leleuj.ss.oauth.client.web.OAuthAuthenticationEntryPoint">
-        <property name="provider" ref="oauthProvider" />
-    </bean>
-
-    <bean id="oauthFilter" class="org.leleuj.ss.oauth.client.web.OAuthAuthenticationFilter">
-        <property name="provider" ref="oauthProvider" />
-        <property name="authenticationManager" ref="authenticationManager" />
-    </bean>
-
-    <bean id="oauthAuthenticationProvider" class="org.leleuj.ss.oauth.client.authentication.OAuthAuthenticationProvider">
-        <property name="provider" ref="oauthProvider" />
-    </bean>
 </code></pre>
 
 h2. Versions
