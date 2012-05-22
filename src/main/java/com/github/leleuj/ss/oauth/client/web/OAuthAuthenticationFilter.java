@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- package org.leleuj.ss.oauth.client.web;
+ package com.github.leleuj.ss.oauth.client.web;
 
 import java.io.IOException;
 
@@ -21,7 +21,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken;
 import org.scribe.up.credential.OAuthCredential;
 import org.scribe.up.provider.OAuthProvider;
 import org.scribe.up.session.HttpUserSession;
@@ -32,9 +31,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.util.Assert;
 
+import com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken;
+
 /**
  * This filter handles OAuth calls after authentication at the OAuth provider. It listens HTTP requests on /j_spring_oauth_security_check by
- * default. An {@link org.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken} is created to finish the OAuth
+ * default. An {@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken} is created to finish the OAuth
  * authentication process.
  * 
  * @author Jerome Leleu

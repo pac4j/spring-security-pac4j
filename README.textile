@@ -35,16 +35,16 @@ h2. The sample (a web app on localhost:8080/demo working with Facebook)
     </bean>
     <!-- from ScribeUP -->
 
-    <bean id="oauthEntryPoint" class="org.leleuj.ss.oauth.client.web.OAuthAuthenticationEntryPoint">
+    <bean id="oauthEntryPoint" class="com.github.leleuj.ss.oauth.client.web.OAuthAuthenticationEntryPoint">
         <property name="provider" ref="facebookProvider" />
     </bean>
 
-    <bean id="oauthFilter" class="org.leleuj.ss.oauth.client.web.OAuthAuthenticationFilter">
+    <bean id="oauthFilter" class="com.github.leleuj.ss.oauth.client.web.OAuthAuthenticationFilter">
         <property name="provider" ref="facebookProvider" />
         <property name="authenticationManager" ref="authenticationManager" />
     </bean>
 
-    <bean id="oauthProvider" class="org.leleuj.ss.oauth.client.authentication.OAuthAuthenticationProvider">
+    <bean id="oauthProvider" class="com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationProvider">
         <property name="provider" ref="facebookProvider" />
     </bean>
 

@@ -23,7 +23,7 @@
         <version>7</version>
     </parent>
 
-    <groupId>org.leleuj.springframework.security</groupId>
+    <groupId>com.github.leleuj.springframework.security</groupId>
     <artifactId>spring-security-oauth-client</artifactId>
     <packaging>jar</packaging>
     <name>Spring Security OAuth Client</name>

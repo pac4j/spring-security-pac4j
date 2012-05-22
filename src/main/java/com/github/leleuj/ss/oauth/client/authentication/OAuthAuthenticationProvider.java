@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-package org.leleuj.ss.oauth.client.authentication;
+package com.github.leleuj.ss.oauth.client.authentication;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +36,7 @@ import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.util.Assert;
 
 /**
- * This provider authenticates OAuth credentials stored in ( {@link org.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken}) to
+ * This provider authenticates OAuth credentials stored in ( {@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken}) to
  * get an access token, then a user profile and finally the user details (and authorities).
  * 
  * @author Jerome Leleu
