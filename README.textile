@@ -62,7 +62,13 @@ h2. The sample (a web app on localhost:8080/demo working with Facebook)
 
 h2. Versions
 
-The version 1.0.0-SNAPSHOT is under development. It will be available on "Sonatype snapshots repository":https://oss.sonatype.org/content/repositories/snapshots/.
+<pre><code><dependency>
+   <groupId>com.github.leleuj.springframework.security</groupId>
+   <artifactId>spring-security-oauth-client</artifactId>
+   <version>1.0.0-SNAPSHOT</version>
+</dependency>
+</code></pre>
+The version 1.0.0-SNAPSHOT is under development. It's available on "Sonatype snapshots repository":https://oss.sonatype.org/content/repositories/snapshots/.
 
 h2. Contact
 
