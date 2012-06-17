@@ -18,7 +18,6 @@ package com.github.leleuj.ss.oauth.client.authentication;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.scribe.model.Token;
 import org.scribe.up.credential.OAuthCredential;
 import org.scribe.up.profile.UserProfile;
 import org.scribe.up.provider.OAuthProvider;
@@ -36,8 +35,9 @@ import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.util.Assert;
 
 /**
- * This provider authenticates OAuth credentials stored in ( {@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken}) to
- * get an access token, then a user profile and finally the user details (and authorities).
+ * This provider authenticates OAuth credentials stored in (
+ * {@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken}) to get the user profile and finally the user details
+ * (and authorities).
  * 
  * @author Jerome Leleu
  * @since 1.0.0
@@ -70,12 +70,8 @@ public final class OAuthAuthenticationProvider implements AuthenticationProvider
             return null;
         }
         
-        // get the access token
-        Token accessToken = provider.getAccessToken(credential);
-        logger.debug("accessToken : {}", accessToken);
-        
         // get the user profile
-        UserProfile userProfile = provider.getUserProfile(accessToken);
+        UserProfile userProfile = provider.getUserProfile(credential);
         logger.debug("userProfile : {}", userProfile);
         
         // by default, no authorities

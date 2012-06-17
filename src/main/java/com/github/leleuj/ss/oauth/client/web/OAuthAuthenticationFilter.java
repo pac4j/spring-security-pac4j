@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
- package com.github.leleuj.ss.oauth.client.web;
+package com.github.leleuj.ss.oauth.client.web;
 
 import java.io.IOException;
 
@@ -55,7 +55,6 @@ public final class OAuthAuthenticationFilter extends AbstractAuthenticationProce
     public void afterPropertiesSet() {
         super.afterPropertiesSet();
         Assert.notNull(provider, "provider cannot be null");
-        provider.init();
     }
     
     @SuppressWarnings("unchecked")
