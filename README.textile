@@ -26,6 +26,7 @@ This library has **ONLY 4 classes** :
 
 h2. The sample (a web app on localhost:8080/demo working with Facebook)
 
+A demo is available at : "https://github.com/leleuj/spring-security-oauth-client-demo":https://github.com/leleuj/spring-security-oauth-client-demo.
 <pre><code>
     <!-- from ScribeUP -->
     <bean id="facebookProvider" class="org.scribe.up.provider.impl.FacebookProvider">
