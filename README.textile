@@ -26,8 +26,9 @@ This library has **ONLY 4 classes** :
 
 h2. The sample (a web app on localhost:8080/demo working with Facebook)
 
-A demo is available at : "https://github.com/leleuj/spring-security-oauth-client-demo":https://github.com/leleuj/spring-security-oauth-client-demo.
 <pre><code><bean id="facebookProvider" class="org.scribe.up.provider.impl.FacebookProvider">
+  <property name="key" value="xxxx" />
+  <property name="secret" value="yyyy" />
   <property name="callbackUrl" value="http://localhost:8080/demo/j_spring_oauth_security_check" />
 </bean>
 
@@ -54,6 +55,8 @@ A demo is available at : "https://github.com/leleuj/spring-security-oauth-client
   <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
   <security:logout />
 </security:http></code></pre>
+
+A demo is available at : "https://github.com/leleuj/spring-security-oauth-client-demo":https://github.com/leleuj/spring-security-oauth-client-demo.
 
 h2. Versions
 
