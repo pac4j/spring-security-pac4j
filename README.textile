@@ -28,26 +28,26 @@ h2. The sample (a web app on localhost:8080/demo working with Facebook)
 
 A demo is available at : "https://github.com/leleuj/spring-security-oauth-client-demo":https://github.com/leleuj/spring-security-oauth-client-demo.
 <pre><code><bean id="facebookProvider" class="org.scribe.up.provider.impl.FacebookProvider">
-  <property name="key" value="xxxx" />
-  <property name="secret" value="yyyy" />
-  <property name="callbackUrl" value="http://localhost:8080/demo/j_spring_oauth_security_check" />
+  <property name="key" value="xxxx"></property>
+  <property name="secret" value="yyyy"></property>
+  <property name="callbackUrl" value="http://localhost:8080/demo/j_spring_oauth_security_check"></property>
 </bean>
 
 <bean id="oauthEntryPoint" class="com.github.leleuj.ss.oauth.client.web.OAuthAuthenticationEntryPoint">
-  <property name="provider" ref="facebookProvider" />
+  <property name="provider" ref="facebookProvider"></property>
 </bean>
 
 <bean id="oauthFilter" class="com.github.leleuj.ss.oauth.client.web.OAuthAuthenticationFilter">
-  <property name="provider" ref="facebookProvider" />
-  <property name="authenticationManager" ref="authenticationManager" />
+  <property name="provider" ref="facebookProvider"></property>
+  <property name="authenticationManager" ref="authenticationManager"></property>
 </bean>
 
 <bean id="oauthProvider" class="com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationProvider">
-  <property name="provider" ref="facebookProvider" />
+  <property name="provider" ref="facebookProvider"></property>
 </bean>
 
 <security:authentication-manager alias="authenticationManager">
-  <security:authentication-provider ref="oauthProvider" />
+  <security:authentication-provider ref="oauthProvider"></property>
 </security:authentication-manager>
 
 <security:http entry-point-ref="oauthEntryPoint">
