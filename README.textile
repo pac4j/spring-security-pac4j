@@ -12,7 +12,7 @@ But I think that in the vast majority of the use cases, you JUST want to :
 
 h2. OAuth providers supported
 
-| Facebook | Github | Google | LinkedIn | Twitter | Windows Live | WordPress | Yahoo |
+| DropBox | Facebook | Github | Google | LinkedIn | Twitter | Windows Live | WordPress | Yahoo |
 
 Look at the "description of the providers and profiles in ScribeUP library":https://github.com/leleuj/scribe-up/wiki/Description-of-providers-and-profiles.
 
@@ -28,13 +28,11 @@ h2. The sample (a web app on localhost:8080/demo working with Facebook)
 
 A demo is available at : "https://github.com/leleuj/spring-security-oauth-client-demo":https://github.com/leleuj/spring-security-oauth-client-demo.
 <pre><code>
-    <!-- from ScribeUP -->
     <bean id="facebookProvider" class="org.scribe.up.provider.impl.FacebookProvider">
         <property name="key" value="xxxx" />
         <property name="secret" value="yyyy" />
         <property name="callbackUrl" value="http://localhost:8080/demo/j_spring_oauth_security_check" />
     </bean>
-    <!-- from ScribeUP -->
 
     <bean id="oauthEntryPoint" class="com.github.leleuj.ss.oauth.client.web.OAuthAuthenticationEntryPoint">
         <property name="provider" ref="facebookProvider" />
