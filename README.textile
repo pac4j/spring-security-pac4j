@@ -56,7 +56,7 @@ h2. The sample (a web app on localhost:8080/demo working with Facebook)
   <security:logout />
 </security:http></code></pre>
 
-A demo is available at : "https://github.com/leleuj/spring-security-oauth-client-demo":https://github.com/leleuj/spring-security-oauth-client-demo.
+A demo with Facebook and Twitter is available at : "https://github.com/leleuj/spring-security-oauth-client-demo":https://github.com/leleuj/spring-security-oauth-client-demo.
 
 h2. Versions
 

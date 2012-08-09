@@ -35,8 +35,8 @@ import com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken
 
 /**
  * This filter handles OAuth calls after authentication at the OAuth provider. It listens HTTP requests on /j_spring_oauth_security_check by
- * default. An {@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken} is created to finish the OAuth
- * authentication process.
+ * default or whatever suffix url you can define by constructor. An
+ * {@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken} is created to finish the OAuth authentication process.
  * 
  * @author Jerome Leleu
  * @since 1.0.0
@@ -46,6 +46,16 @@ public final class OAuthAuthenticationFilter extends AbstractAuthenticationProce
     private static final Logger logger = LoggerFactory.getLogger(OAuthAuthenticationFilter.class);
     
     private OAuthProvider provider = null;
+    
+    /**
+     * Define the suffix url on which the filter will listen for HTTP requests. It can be used for multiple providers configuration :
+     * /j_spring_facebook_security_check, /j_spring_twitter_security_check...
+     * 
+     * @param suffixUrl
+     */
+    public OAuthAuthenticationFilter(String suffixUrl) {
+        super(suffixUrl);
+    }
     
     protected OAuthAuthenticationFilter() {
         super("/j_spring_oauth_security_check");
