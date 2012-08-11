@@ -35,16 +35,17 @@ import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.util.Assert;
 
 /**
- * This provider authenticates OAuth credentials stored in (
- * {@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken}) to get the user profile and finally the user details
- * (and authorities).
+ * This provider authenticates OAuth credentials stored in ({@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken})
+ * to get the user profile and finally the user details (and authorities).
  * 
  * @author Jerome Leleu
  * @since 1.0.0
  */
-public final class OAuthAuthenticationProvider implements AuthenticationProvider, InitializingBean {
+public final class OAuthAuthenticationProvider implements AuthenticationProvider,
+    InitializingBean {
     
-    private static final Logger logger = LoggerFactory.getLogger(OAuthAuthenticationProvider.class);
+    private static final Logger logger = LoggerFactory
+        .getLogger(OAuthAuthenticationProvider.class);
     
     private OAuthProvider provider = null;
     
@@ -52,7 +53,8 @@ public final class OAuthAuthenticationProvider implements AuthenticationProvider
     
     private UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
     
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication)
+        throws AuthenticationException {
         logger.debug("authentication : {}", authentication);
         if (!supports(authentication.getClass())) {
             logger.debug("unsupported authentication class : {}", authentication.getClass());
@@ -65,8 +67,7 @@ public final class OAuthAuthenticationProvider implements AuthenticationProvider
         
         // check it is the right provider for the right credential
         if (!provider.getType().equals(credential.getProviderType())) {
-            logger.debug("unsupported provider type, expected : {} / returned : {}", provider.getType(),
-                         credential.getProviderType());
+            logger.debug("unsupported provider type, expected : {} / returned : {}", provider.getType(), credential.getProviderType());
             return null;
         }
         
@@ -78,8 +79,8 @@ public final class OAuthAuthenticationProvider implements AuthenticationProvider
         Collection<? extends GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         // get user details and check them
         if (oauthUserDetailsService != null) {
-            UserDetails userDetails = oauthUserDetailsService
-                .loadUserDetails((OAuthAuthenticationToken) authentication);
+            OAuthAuthenticationToken tmpToken = new OAuthAuthenticationToken(credential, userProfile, null);
+            UserDetails userDetails = oauthUserDetailsService.loadUserDetails(tmpToken);
             logger.debug("userDetails : {}", userDetails);
             userDetailsChecker.check(userDetails);
             authorities = userDetails.getAuthorities();
