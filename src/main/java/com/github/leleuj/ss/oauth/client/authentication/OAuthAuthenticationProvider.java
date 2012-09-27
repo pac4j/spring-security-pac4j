@@ -61,6 +61,11 @@ public final class OAuthAuthenticationProvider implements AuthenticationProvider
             return null;
         }
         
+		if (authentication.getCredentials() == null) {
+			logger.debug("authentication failed");
+			return null;
+		}
+        
         // get the OAuth credentials
         OAuthCredential credential = (OAuthCredential) authentication.getCredentials();
         logger.debug("credential : {}", credential);
