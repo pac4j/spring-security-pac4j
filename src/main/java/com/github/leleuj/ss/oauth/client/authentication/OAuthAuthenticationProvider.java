@@ -35,17 +35,16 @@ import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.util.Assert;
 
 /**
- * This provider authenticates OAuth credentials stored in ({@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken})
- * to get the user profile and finally the user details (and authorities).
+ * This provider authenticates OAuth credentials stored in (
+ * {@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken}) to get the user profile and finally the user details
+ * (and authorities).
  * 
  * @author Jerome Leleu
  * @since 1.0.0
  */
-public final class OAuthAuthenticationProvider implements AuthenticationProvider,
-    InitializingBean {
+public final class OAuthAuthenticationProvider implements AuthenticationProvider, InitializingBean {
     
-    private static final Logger logger = LoggerFactory
-        .getLogger(OAuthAuthenticationProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(OAuthAuthenticationProvider.class);
     
     private OAuthProvider provider = null;
     
@@ -53,69 +52,68 @@ public final class OAuthAuthenticationProvider implements AuthenticationProvider
     
     private UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
     
-    public Authentication authenticate(Authentication authentication)
-        throws AuthenticationException {
+    public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
         logger.debug("authentication : {}", authentication);
         if (!supports(authentication.getClass())) {
             logger.debug("unsupported authentication class : {}", authentication.getClass());
             return null;
         }
         
-		if (authentication.getCredentials() == null) {
-			logger.debug("authentication failed");
-			return null;
-		}
-        
         // get the OAuth credentials
-        OAuthCredential credential = (OAuthCredential) authentication.getCredentials();
+        final OAuthCredential credential = (OAuthCredential) authentication.getCredentials();
         logger.debug("credential : {}", credential);
+        if (credential == null) {
+            logger.debug("authentication failed");
+            return null;
+        }
         
         // check it is the right provider for the right credential
-        if (!provider.getType().equals(credential.getProviderType())) {
-            logger.debug("unsupported provider type, expected : {} / returned : {}", provider.getType(), credential.getProviderType());
+        if (!this.provider.getType().equals(credential.getProviderType())) {
+            logger.debug("unsupported provider type, expected : {} / returned : {}", this.provider.getType(),
+                         credential.getProviderType());
             return null;
         }
         
         // get the user profile
-        UserProfile userProfile = provider.getUserProfile(credential);
+        final UserProfile userProfile = this.provider.getUserProfile(credential);
         logger.debug("userProfile : {}", userProfile);
         
         // by default, no authorities
         Collection<? extends GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         // get user details and check them
-        if (oauthUserDetailsService != null) {
-            OAuthAuthenticationToken tmpToken = new OAuthAuthenticationToken(credential, userProfile, null);
-            UserDetails userDetails = oauthUserDetailsService.loadUserDetails(tmpToken);
+        if (this.oauthUserDetailsService != null) {
+            final OAuthAuthenticationToken tmpToken = new OAuthAuthenticationToken(credential, userProfile, null);
+            final UserDetails userDetails = this.oauthUserDetailsService.loadUserDetails(tmpToken);
             logger.debug("userDetails : {}", userDetails);
-            userDetailsChecker.check(userDetails);
+            this.userDetailsChecker.check(userDetails);
             authorities = userDetails.getAuthorities();
             logger.debug("authorities : {}", authorities);
         }
         
         // new token with credential (like previously) and user profile and authorities
-        OAuthAuthenticationToken result = new OAuthAuthenticationToken(credential, userProfile, authorities);
+        final OAuthAuthenticationToken result = new OAuthAuthenticationToken(credential, userProfile, authorities);
         result.setDetails(authentication.getDetails());
         logger.debug("result : {}", result);
         return result;
     }
     
-    public boolean supports(Class<?> authentication) {
+    public boolean supports(final Class<?> authentication) {
         return (OAuthAuthenticationToken.class.isAssignableFrom(authentication));
     }
     
     public void afterPropertiesSet() {
-        Assert.notNull(provider, "provider cannot be null");
+        Assert.notNull(this.provider, "provider cannot be null");
     }
     
-    public void setProvider(OAuthProvider provider) {
+    public void setProvider(final OAuthProvider provider) {
         this.provider = provider;
     }
     
-    public void setOauthUserDetailsService(AuthenticationUserDetailsService<OAuthAuthenticationToken> oauthUserDetailsService) {
+    public void setOauthUserDetailsService(final AuthenticationUserDetailsService<OAuthAuthenticationToken> oauthUserDetailsService) {
         this.oauthUserDetailsService = oauthUserDetailsService;
     }
     
-    public void setUserDetailsChecker(UserDetailsChecker userDetailsChecker) {
+    public void setUserDetailsChecker(final UserDetailsChecker userDetailsChecker) {
         this.userDetailsChecker = userDetailsChecker;
     }
 }
