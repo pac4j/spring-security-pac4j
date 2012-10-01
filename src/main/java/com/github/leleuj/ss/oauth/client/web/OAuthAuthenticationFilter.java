@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.scribe.up.credential.OAuthCredential;
+import org.scribe.up.profile.ProfileHelper;
 import org.scribe.up.provider.OAuthProvider;
 import org.scribe.up.session.HttpUserSession;
 import org.slf4j.Logger;
@@ -53,7 +54,7 @@ public final class OAuthAuthenticationFilter extends AbstractAuthenticationProce
      * 
      * @param suffixUrl
      */
-    public OAuthAuthenticationFilter(String suffixUrl) {
+    public OAuthAuthenticationFilter(final String suffixUrl) {
         super(suffixUrl);
     }
     
@@ -64,31 +65,33 @@ public final class OAuthAuthenticationFilter extends AbstractAuthenticationProce
     @Override
     public void afterPropertiesSet() {
         super.afterPropertiesSet();
-        Assert.notNull(provider, "provider cannot be null");
+        Assert.notNull(this.provider, "provider cannot be null");
+        ProfileHelper.setKeepRawData(false);
     }
     
     @SuppressWarnings("unchecked")
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+    public Authentication attemptAuthentication(final HttpServletRequest request, final HttpServletResponse response)
         throws AuthenticationException, IOException, ServletException {
         
         // create OAuth credentials from request
-        OAuthCredential credential = provider.getCredential(new HttpUserSession(request), request.getParameterMap());
+        final OAuthCredential credential = this.provider.getCredential(new HttpUserSession(request),
+                                                                       request.getParameterMap());
         logger.debug("credential : {}", credential);
         
         // and token from credential
-        OAuthAuthenticationToken token = new OAuthAuthenticationToken(credential);
+        final OAuthAuthenticationToken token = new OAuthAuthenticationToken(credential);
         // set details
-        token.setDetails(authenticationDetailsSource.buildDetails(request));
+        token.setDetails(this.authenticationDetailsSource.buildDetails(request));
         logger.debug("token : {}", token);
         
         // authenticate
-        Authentication authentication = this.getAuthenticationManager().authenticate(token);
+        final Authentication authentication = getAuthenticationManager().authenticate(token);
         logger.debug("authentication : {}", authentication);
         return authentication;
     }
     
-    public void setProvider(OAuthProvider provider) {
+    public void setProvider(final OAuthProvider provider) {
         this.provider = provider;
     }
 }
