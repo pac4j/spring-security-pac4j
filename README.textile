@@ -6,15 +6,13 @@ But I think that in the vast majority of the use cases, you JUST want to :
 - protect your application by authenticating at the OAuth provider (like Facebook for example)
 - get your OAuth profile (first name, last name, birthdate...)  after being authenticated.
 
-**That's exactly what this Spring Security OAuth client library does. It may be less powerful but it's really efficient and EASY!**
-
-**This library is based on Spring Security and my "ScribeUP library":https://github.com/leleuj/scribe-up, which deals with OAuth authentication and user profile retrieval.**
+*That's exactly what this Spring Security OAuth client library does.* It's based on my "scribe-up library":https://github.com/leleuj/scribe-up (which deals with OAuth authentication and user profile retrieval).
 
 h2. OAuth providers supported
 
-| DropBox | Facebook | Github | Google | LinkedIn | Twitter | Windows Live | WordPress | Yahoo |
+| DropBox (OAuth 1.0) | Facebook (OAuth 2.0) | Github (OAuth 2.0) | Google (OAuth 1.0 & 2.0) | LinkedIn (OAuth 1.0) | Twitter (OAuth 1.0) | Windows Live (OAuth 2.0) | WordPress (OAuth 2.0) | Yahoo (OAuth 1.0) |
 
-Look at the "description of the providers and profiles in ScribeUP library":https://github.com/leleuj/scribe-up/wiki/Description-of-providers-and-profiles.
+Look at the "description of the providers and profiles":https://github.com/leleuj/scribe-up/wiki/Description-of-providers-and-profiles or follow the guide to "extend or add a new provider":https://github.com/leleuj/scribe-up/wiki/Extend-or-add-a-new-provider.
 
 h2. Technical description
 
@@ -66,7 +64,7 @@ h2. Versions
    <version>1.0.0-SNAPSHOT</version>
 </dependency>
 </code></pre>
-The version 1.0.0-SNAPSHOT is under development. It's available on "Sonatype snapshots repository":https://oss.sonatype.org/content/repositories/snapshots/.
+The version 1.0.0-SNAPSHOT is under development. It's available on "Sonatype snapshots repository":https://oss.sonatype.org/content/repositories/snapshots/ as Maven dependency.
 
 h2. Contact
 
