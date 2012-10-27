@@ -27,7 +27,7 @@
     <artifactId>spring-security-oauth-client</artifactId>
     <packaging>jar</packaging>
     <name>Spring Security OAuth Client</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <description>Add OAuth client support to Spring Security using ScribeUP library</description>
     <url>https://github.com/leleuj/spring-security-oauth-client</url>
 
