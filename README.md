@@ -99,6 +99,9 @@ FacebookProfile facebookProfile = (FacebookProfile) token.getUserProfile();
 // common profile to all providers
 CommonProfile commonProfile = (CommonProfile) token.getUserProfile();</code></pre>
 
+A demo with Facebook and Twitter providers is available with <a href="https://github.com/leleuj/spring-security-oauth-client-demo">spring-security-oauth-client-demo</a>.
+The old demo working only with spring-security-oauth-client version 1.0.0 is available with <a href="https://github.com/leleuj/spring-security-oauth-client-demo-1.0.0">spring-security-oauth-client-demo-1.0.0</a>.
+
 <h2>Versions</h2>
 
 The last released version is the <b>1.0.0</b>.
