@@ -16,6 +16,7 @@
 package com.github.leleuj.ss.oauth.client.web;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.scribe.up.credential.OAuthCredential;
 import org.scribe.up.profile.ProfileHelper;
 import org.scribe.up.provider.OAuthProvider;
+import org.scribe.up.provider.ProvidersDefinition;
 import org.scribe.up.session.HttpUserSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,11 +48,10 @@ public final class OAuthAuthenticationFilter extends AbstractAuthenticationProce
     
     private static final Logger logger = LoggerFactory.getLogger(OAuthAuthenticationFilter.class);
     
-    private OAuthProvider provider = null;
+    private ProvidersDefinition providersDefinition = null;
     
     /**
-     * Define the suffix url on which the filter will listen for HTTP requests. It can be used for multiple providers configuration :
-     * /j_spring_facebook_security_check, /j_spring_twitter_security_check...
+     * Define the suffix url on which the filter will listen for HTTP requests.
      * 
      * @param suffixUrl
      */
@@ -65,7 +66,8 @@ public final class OAuthAuthenticationFilter extends AbstractAuthenticationProce
     @Override
     public void afterPropertiesSet() {
         super.afterPropertiesSet();
-        Assert.notNull(this.provider, "provider cannot be null");
+        Assert.notNull(this.providersDefinition, "providersDefinition cannot be null");
+        providersDefinition.init();
         ProfileHelper.setKeepRawData(false);
     }
     
@@ -74,10 +76,18 @@ public final class OAuthAuthenticationFilter extends AbstractAuthenticationProce
     public Authentication attemptAuthentication(final HttpServletRequest request, final HttpServletResponse response)
         throws AuthenticationException, IOException, ServletException {
         
+        // request parameters
+        final Map<String, String[]> parameters = request.getParameterMap();
+        
+        // get the right provider
+        final OAuthProvider provider = providersDefinition.findProvider(parameters);
+        if (provider == null) {
+            logger.debug("no provider found for request url : {}", request.getRequestURL().toString());
+            return null;
+        }
+        
         // create OAuth credentials from request
-        final OAuthCredential credential = this.provider.getCredential(new HttpUserSession(request),
-                                                                       request.getParameterMap());
-        logger.debug("credential : {}", credential);
+        final OAuthCredential credential = provider.getCredential(new HttpUserSession(request), parameters);
         
         // and token from credential
         final OAuthAuthenticationToken token = new OAuthAuthenticationToken(credential);
@@ -92,6 +102,10 @@ public final class OAuthAuthenticationFilter extends AbstractAuthenticationProce
     }
     
     public void setProvider(final OAuthProvider provider) {
-        this.provider = provider;
+        this.providersDefinition = new ProvidersDefinition(provider);
+    }
+    
+    public void setProvidersDefinition(final ProvidersDefinition providersDefinition) {
+        this.providersDefinition = providersDefinition;
     }
 }

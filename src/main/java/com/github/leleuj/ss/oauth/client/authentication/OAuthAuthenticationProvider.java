@@ -21,6 +21,7 @@ import java.util.Collection;
 import org.scribe.up.credential.OAuthCredential;
 import org.scribe.up.profile.UserProfile;
 import org.scribe.up.provider.OAuthProvider;
+import org.scribe.up.provider.ProvidersDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -36,7 +37,7 @@ import org.springframework.util.Assert;
 
 /**
  * This provider authenticates OAuth credentials stored in (
- * {@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken}) to get the user profile and finally the user details
+ * {@link com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationToken} ) to get the user profile and finally the user details
  * (and authorities).
  * 
  * @author Jerome Leleu
@@ -46,7 +47,7 @@ public final class OAuthAuthenticationProvider implements AuthenticationProvider
     
     private static final Logger logger = LoggerFactory.getLogger(OAuthAuthenticationProvider.class);
     
-    private OAuthProvider provider = null;
+    private ProvidersDefinition providersDefinition = null;
     
     private AuthenticationUserDetailsService<OAuthAuthenticationToken> oauthUserDetailsService = null;
     
@@ -67,15 +68,17 @@ public final class OAuthAuthenticationProvider implements AuthenticationProvider
             return null;
         }
         
-        // check it is the right provider for the right credential
-        if (!this.provider.getType().equals(credential.getProviderType())) {
-            logger.debug("unsupported provider type, expected : {} / returned : {}", this.provider.getType(),
-                         credential.getProviderType());
+        // get the right provider
+        final String providerType = credential.getProviderType();
+        final OAuthProvider provider = providersDefinition.findProvider(providerType);
+        if (provider == null) {
+            logger.debug("cannot find the right provider for authentication / required provider type : {}",
+                         providerType);
             return null;
         }
         
         // get the user profile
-        final UserProfile userProfile = this.provider.getUserProfile(credential);
+        final UserProfile userProfile = provider.getUserProfile(credential);
         logger.debug("userProfile : {}", userProfile);
         
         // by default, no authorities
@@ -90,7 +93,8 @@ public final class OAuthAuthenticationProvider implements AuthenticationProvider
             logger.debug("authorities : {}", authorities);
         }
         
-        // new token with credential (like previously) and user profile and authorities
+        // new token with credential (like previously) and user profile and
+        // authorities
         final OAuthAuthenticationToken result = new OAuthAuthenticationToken(credential, userProfile, authorities);
         result.setDetails(authentication.getDetails());
         logger.debug("result : {}", result);
@@ -102,11 +106,15 @@ public final class OAuthAuthenticationProvider implements AuthenticationProvider
     }
     
     public void afterPropertiesSet() {
-        Assert.notNull(this.provider, "provider cannot be null");
+        Assert.notNull(this.providersDefinition, "provider cannot be null");
     }
     
     public void setProvider(final OAuthProvider provider) {
-        this.provider = provider;
+        this.providersDefinition = new ProvidersDefinition(provider);
+    }
+    
+    public void setProvidersDefinition(final ProvidersDefinition providersDefinition) {
+        this.providersDefinition = providersDefinition;
     }
     
     public void setOauthUserDetailsService(final AuthenticationUserDetailsService<OAuthAuthenticationToken> oauthUserDetailsService) {
