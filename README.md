@@ -6,7 +6,7 @@ But I think that in the vast majority of the use cases, you JUST want to :
 - protect your application by authenticating at the OAuth provider (like Facebook for example)
 - get your OAuth profile (first name, last name, birthdate...) after being authenticated.
 
-<b>That's exactly what this Spring Security OAuth client library does.</b> It's based on my <a href="https://github.com/leleuj/scribe-up">scribe-up</a> library (which deals with OAuth authentication and user profile retrieval). For a better understanding of <b>scribe-up</b>, take a look at the <a href="https://github.com/leleuj/scribe-up/wiki/Technical-description">technical description of the project</a> or browse the <a href="http://javadoc.leleuj.cloudbees.net/">Javadoc</a>.
+<b>That's exactly what this Spring Security OAuth client library does.</b> It's based on my <a href="https://github.com/leleuj/scribe-up">scribe-up</a> library (which deals with OAuth authentication and user profile retrieval).
 
 <h2>OAuth providers supported</h2>
 
