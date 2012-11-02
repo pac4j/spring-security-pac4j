@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.scribe.up.credential.OAuthCredential;
+import org.scribe.up.profile.ProfileHelper;
 import org.scribe.up.profile.UserProfile;
 import org.scribe.up.provider.OAuthProvider;
 import org.scribe.up.provider.ProvidersDefinition;
@@ -107,6 +108,8 @@ public final class OAuthAuthenticationProvider implements AuthenticationProvider
     
     public void afterPropertiesSet() {
         Assert.notNull(this.providersDefinition, "provider cannot be null");
+        providersDefinition.init();
+        ProfileHelper.setKeepRawData(false);
     }
     
     public void setProvider(final OAuthProvider provider) {
