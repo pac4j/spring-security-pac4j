@@ -128,6 +128,8 @@ The current version : <i>1.1.0-SNAPSHOT</i> is under development, it's available
     &lt;version&gt;1.1.0-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 
+See the <a href="https://github.com/leleuj/spring-security-oauth-client/wiki/Release-Notes">release notes</a>.
+
 <h2>Contact</h2>
 
 Find me on <a href="http://www.linkedin.com/in/jleleu">LinkedIn</a> or by email : leleuj@gmail.com
