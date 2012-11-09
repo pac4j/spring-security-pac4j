@@ -1,12 +1,12 @@
 <h2>What is Spring Security OAuth client ?</h2>
 
-If you want to "do" Spring, Security and OAuth, you could use the Spring Security OAuth library or one of the Spring Social libraries.
+<b>spring-security-oauth-client</b> is an OAuth client for Spring Security to :
+<ol>
+<li>delegate authentication and permissions to an OAuth provider (i.e. the user is redirected to the OAuth provider to log in)</li>
+<li>(in the application) retrieve the profile of the authorized user after successfull authentication and permissions acceptation (at the OAuth provider).</li>
+</ol>
 
-But I think that in the vast majority of the use cases, you JUST want to :
-- protect your application by authenticating at the OAuth provider (like Facebook for example)
-- get your OAuth profile (first name, last name, birthdate...) after being authenticated.
-
-<b>That's exactly what this Spring Security OAuth client library does.</b> It's based on my <a href="https://github.com/leleuj/scribe-up">scribe-up</a> library (which deals with OAuth authentication and user profile retrieval).
+It's available under the Apache 2 license and based on my <a href="https://github.com/leleuj/scribe-up">scribe-up</a> library (which deals with OAuth authentication and user profile retrieval).
 
 <h2>OAuth providers supported</h2>
 
@@ -27,7 +27,7 @@ Follow the guide to <a href="https://github.com/leleuj/scribe-up/wiki/Extend-or-
 
 <h2>Technical description</h2>
 
-This library has <b>ONLY 4 classes</b> :
+This library has <b>only 4 classes</b> :
 <ol>
 <li>the <b>OAuthAuthenticationFilter</b> class is called after OAuth authentication (on the /j_spring_oauth_security_check url) : it creates the OAuthAuthenticationToken token and calls the authentication manager to do the authentication</li>
 <li>the <b>OAuthAuthenticationToken</b> class is the token for an OAuth authentication (= OAuth credentials + the user profile)</li>
@@ -104,12 +104,14 @@ And use this providers definition in filter and provider :
 
 After successfull authentication, the user profile can be retrieved from the current OAuth token in security context :
 <pre><code>OAuthAuthenticationToken token = (OAuthAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-// dedicated profile
-FacebookProfile facebookProfile = (FacebookProfile) token.getUserProfile();
+// user profile
+UserProfile userProfile = token.getUserProfile();
+// facebook profile
+FacebookProfile facebookProfile = (FacebookProfile) userProfile;
 // common profile to all providers
-CommonProfile commonProfile = (CommonProfile) token.getUserProfile();</code></pre>
+CommonProfile commonProfile = (CommonProfile) userProfile;</code></pre>
 If you want to interact more with the OAuth provider, you can retrieve the access token from the (OAuth) profile :
-<pre><code>OAuthProfile oauthProfile = (OAuthProfile) token.getUserProfile();
+<pre><code>OAuthProfile oauthProfile = (OAuthProfile) userProfile;
 String accessToken = oauthProfile.getAccessToken();
 // or
 String accesstoken = facebookProfile.getAccessToken();</code></pre>
