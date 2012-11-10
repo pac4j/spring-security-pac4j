@@ -117,7 +117,7 @@ String accessToken = oauthProfile.getAccessToken();
 String accesstoken = facebookProfile.getAccessToken();</code></pre>
 
 A demo with Facebook and Twitter providers is available with <a href="https://github.com/leleuj/spring-security-oauth-client-demo">spring-security-oauth-client-demo</a>.
-The old demo working only with spring-security-oauth-client version 1.0.0 is available with <a href="https://github.com/leleuj/spring-security-oauth-client-demo-1.0.0">spring-security-oauth-client-demo-1.0.0</a>.
+The old demo for spring-security-oauth-client version 1.0.0 is available with <a href="https://github.com/leleuj/spring-security-oauth-client-demo-1.0.0">spring-security-oauth-client-demo-1.0.0</a>.
 
 <h2>Versions</h2>
 
