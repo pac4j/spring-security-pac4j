@@ -123,7 +123,7 @@ The old demo working only with spring-security-oauth-client version 1.0.0 is ava
 
 The last released version is the <b>1.0.0</b>.
 
-The current version : <i>1.1.0-SNAPSHOT</i> is under development, it's available on <a href="https://oss.sonatype.org/content/repositories/snapshots/org/scribe/scribe-up/">Sonatype snapshots repository</a> as Maven dependency :
+The current version : <i>1.1.0-SNAPSHOT</i> is under development, it's available on <a href="https://oss.sonatype.org/content/repositories/snapshots/">Sonatype snapshots repository</a> as Maven dependency :
 <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;com.github.leleuj.springframework.security&lt;/groupId&gt;
     &lt;artifactId&gt;spring-security-oauth-client&lt;/artifactId&gt;
