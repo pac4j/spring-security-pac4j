@@ -75,7 +75,7 @@ If you have multiple providers, you can multiply filters and providers by settin
   &lt;property name="provider" ref="facebookProvider" /&gt;
   &lt;property name="authenticationManager" ref="authenticationManager" /&gt;
 &lt;/bean&gt;</code></pre>
-But a better solution (<b>new feature of version 1.1.0</b>) is to define a providers definition to group providers :
+But a better solution is to define a providers definition to group providers :
 <pre><code>&lt;bean id="facebookProvider" class="org.scribe.up.provider.impl.FacebookProvider"&gt;
   &lt;property name="key" value="xxxx" /&gt;
   &lt;property name="secret" value="yyyy" /&gt;
@@ -121,13 +121,13 @@ The old demo for spring-security-oauth-client version 1.0.0 is available with <a
 
 <h2>Versions</h2>
 
-The last released version is the <b>1.0.0</b>.
+The last released version is the <b>1.1.0</b>.
 
-The current version : <i>1.1.0-SNAPSHOT</i> is under development, it's available on <a href="https://oss.sonatype.org/content/repositories/snapshots/">Sonatype snapshots repository</a> as Maven dependency :
+The current version : <i>1.1.1-SNAPSHOT</i> is under development, it's available on <a href="https://oss.sonatype.org/content/repositories/snapshots/">Sonatype snapshots repository</a> as Maven dependency :
 <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;com.github.leleuj.springframework.security&lt;/groupId&gt;
     &lt;artifactId&gt;spring-security-oauth-client&lt;/artifactId&gt;
-    &lt;version&gt;1.1.0-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;1.1.1-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 
 See the <a href="https://github.com/leleuj/spring-security-oauth-client/wiki/Release-Notes">release notes</a>.
