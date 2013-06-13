@@ -39,7 +39,7 @@ This library has **only 4 classes** :
 1. the **ClientAuthenticationFilter** class is called after authentication at the provider (on the /j_spring_pac4j_security_check url by default) : it creates the ClientAuthenticationToken token and calls the authentication manager to finish the authentication
 2. the **ClientAuthenticationToken** class is the token for an authentication (= provider's credentials + the user profile)
 3. the **ClientAuthenticationProvider** class is the provider responsible for authenticating ClientAuthenticationToken tokens : it calls the provider to get the access token and the user profile and computes the authorities
-4. the ***ClientAuthenticationEntryPoint** class redirects the user to the provider for authentication.
+4. the **ClientAuthenticationEntryPoint** class redirects the user to the provider for authentication.
 
 and is based on the <i>pac4j-*</i> libraries.
 
