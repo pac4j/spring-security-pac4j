@@ -1,137 +1,219 @@
-<h2>What is Spring Security OAuth client ?</h2>
+## What is the spring-security-pac4j library ?
 
-<b>spring-security-oauth-client</b> is an OAuth client for Spring Security to :
-<ol>
-<li>delegate authentication and permissions to an OAuth provider (i.e. the user is redirected to the OAuth provider to log in)</li>
-<li>(in the application) retrieve the profile of the authorized user after successfull authentication and permissions acceptation (at the OAuth provider).</li>
-</ol>
+The **spring-security-pac4j** library is a web multi-protocols client for [Spring Security](http://static.springsource.org/spring-security/site/index.html).
 
-It's available under the Apache 2 license and based on my <a href="https://github.com/leleuj/scribe-up">scribe-up</a> library (which deals with OAuth authentication and user profile retrieval).
+It supports these 4 protocols on client side : 
 
-<h2>OAuth providers supported</h2>
+1. OAuth (1.0 & 2.0)
+2. CAS (1.0, 2.0, SAML, logout & proxy)
+3. HTTP (form & basic auth authentications)
+4. OpenID.
+
+It's available under the Apache 2 license and based on my [pac4j](https://github.com/leleuj/pac4j) library.
+
+
+## Providers supported
 
 <table>
-<tr><td>Web site</td><td>Protocol</td><td>Provider</td><td>Profile</td></tr>
-<tr><td>DropBox</td><td>OAuth 1.0</td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/provider/impl/DropBoxProvider.html">DropBoxProvider</a></td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/profile/dropbox/DropBoxProfile.html">DropBoxProfile</a></td></tr>
-<tr><td>Facebook</td><td>OAuth 2.0</td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/provider/impl/FacebookProvider.html">FacebookProvider</a></td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/profile/facebook/FacebookProfile.html">FacebookProfile</a></td></tr>
-<tr><td>Github</td><td>OAuth 2.0</td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/provider/impl/GitHubProvider.html">GitHubProvider</a></td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/profile/github/GitHubProfile.html">GitHubProfile</a></td></tr>
-<tr><td>Google</td><td>OAuth 1.0 & 2.0</td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/provider/impl/GoogleProvider.html">GoogleProvider</a> & <a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/provider/impl/Google2Provider.html">Google2Provider</a></td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/profile/google/GoogleProfile.html">GoogleProfile</a> & <a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/profile/google2/Google2Profile.html">Google2Profile</a></td></tr>
-<tr><td>LinkedIn</td><td>OAuth 1.0</td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/provider/impl/LinkedInProvider.html">LinkedInProvider</a></td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/profile/linkedin/LinkedInProfile.html">LinkedInProfile</a></td></tr>
-<tr><td>Twitter</td><td>OAuth 1.0</td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/provider/impl/TwitterProvider.html">TwitterProvider</a></td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/profile/twitter/TwitterProfile.html">TwitterProfile</a></td></tr>
-<tr><td>Windows Live</td><td>OAuth 2.0</td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/provider/impl/WindowsLiveProvider.html">WindowsLiveProvider</a></td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/profile/windowslive/WindowsLiveProfile.html">WindowsLiveProfile</a></td></tr>
-<tr><td>WordPress</td><td>OAuth 2.0</td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/provider/impl/WordPressProvider.html">WordPressProvider</a></td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/profile/wordpress/WordPressProfile.html">WordPressProfile</a></td></tr>
-<tr><td>Yahoo</td><td>OAuth 1.0</td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/provider/impl/YahooProvider.html">YahooProvider</a></td><td><a href="http://javadoc.leleuj.cloudbees.net/scribe-up/1.3.0-SNAPSHOT/org/scribe/up/profile/yahoo/YahooProfile.html">YahooProfile</a></td></tr>
+<tr><th>Provider</th><th>Protocol</th><th>Maven dependency</th><th>Client class</th><th>Profile class</th></tr>
+<tr><td>CAS server</td><td>CAS</td><td>pac4j-cas</td><td>CasClient & CasProxyReceptor</td><td>CasProfile</td></tr>
+<tr><td>CAS server using OAuth Wrapper</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>CasOAuthWrapperClient</td><td>CasOAuthWrapperProfile</td></tr>
+<tr><td>DropBox</td><td>OAuth 1.0</td><td>pac4j-oauth</td><td>DropBoxClient</td><td>DropBoxProfile</td></tr>
+<tr><td>Facebook</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>FacebookClient</td><td>FacebookProfile</td></tr>
+<tr><td>GitHub</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>GitHubClient</td><td>GitHubProfile</td></tr>
+<tr><td>Google</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>Google2Client</td><td>Google2Profile</td></tr>
+<tr><td>LinkedIn</td><td>OAuth 1.0</td><td>pac4j-oauth</td><td>LinkedInClient</td><td>LinkedInProfile</td></tr>
+<tr><td>Twitter</td><td>OAuth 1.0</td><td>pac4j-oauth</td><td>TwitterClient</td><td>TwitterProfile</td></tr>
+<tr><td>Windows Live</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>WindowsLiveClient</td><td>WindowsLiveProfile</td></tr>
+<tr><td>WordPress</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>WordPressClient</td><td>WordPressProfile</td></tr>
+<tr><td>Yahoo</td><td>OAuth 1.0</td><td>pac4j-oauth</td><td>YahooClient</td><td>YahooProfile</td></tr>
+<tr><td>Web sites with basic auth authentication</td><td>HTTP</td><td>pac4j-http</td><td>BasicAuthClient</td><td>HttpProfile</td></tr>
+<tr><td>Web sites with form authentication</td><td>HTTP</td><td>pac4j-http</td><td>FormClient</td><td>HttpProfile</td></tr>
+<tr><td>MyOpenId</td><td>OpenID</td><td>pac4j-openid</td><td>MyOpenIdClient</td><td>MyOpenIdProfile</td></tr>
 </table>
 
-Follow the guide to <a href="https://github.com/leleuj/scribe-up/wiki/Extend-or-add-a-new-provider">extend or add a new provider</a>.
+## Technical description
 
-<h2>Technical description</h2>
+This library has **only 4 classes** :
 
-This library has <b>only 4 classes</b> :
-<ol>
-<li>the <b>OAuthAuthenticationFilter</b> class is called after OAuth authentication (on the /j_spring_oauth_security_check url) : it creates the OAuthAuthenticationToken token and calls the authentication manager to do the authentication</li>
-<li>the <b>OAuthAuthenticationToken</b> class is the token for an OAuth authentication (= OAuth credentials + the user profile)</li>
-<li>the <b>OAuthAuthenticationProvider</b> class is the provider responsible for authenticating OAuthAuthenticationToken tokens : it calls the OAuth provider to get the access token and the user profile and computes the authorities.</li>
-<li>the <b>OAuthAuthenticationEntryPoint</b> class redirects the user to the OAuth provider if needed</li>
-</ol>
+1. the **ClientAuthenticationFilter** class is called after authentication at the provider (on the /j_spring_pac4j_security_check url by default) : it creates the ClientAuthenticationToken token and calls the authentication manager to finish the authentication
+2. the **ClientAuthenticationToken** class is the token for an authentication (= provider's credentials + the user profile)
+3. the **ClientAuthenticationProvider** class is the provider responsible for authenticating ClientAuthenticationToken tokens : it calls the provider to get the access token and the user profile and computes the authorities
+4. the ***ClientAuthenticationEntryPoint** class redirects the user to the provider for authentication.
 
-and the <a href="https://github.com/leleuj/scribe-up">scribe-up</a> library.
+and is based on the <i>pac4j-*</i> libraries.
 
-<h2>Code sample</h2>
+Learn more by browsing the [spring-security-pac4j Javadoc](http://www.pac4j.org/apidocs/spring-security-pac4j/index.html) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/index.html).
 
-If you want to authenticate at Facebook, you have to define the Facebook provider :
-<pre><code>&lt;bean id="facebookProvider" class="org.scribe.up.provider.impl.FacebookProvider"&gt;
-  &lt;property name="key" value="xxxx" /&gt;
-  &lt;property name="secret" value="yyyy" /&gt;
-  &lt;property name="callbackUrl" value="http://localhost:8080/demo/j_spring_oauth_security_check" /&gt;
-&lt;/bean&gt;</code></pre>
-You first have to define a filter to handle callback from Facebook :
-<pre><code>&lt;bean id="oauthFilter" class="com.github.leleuj.ss.oauth.client.web.OAuthAuthenticationFilter">
-  &lt;property name="provider" ref="facebookProvider" />
-  &lt;property name="authenticationManager" ref="authenticationManager" />
-&lt;/bean&gt;</code></pre>
-Then the dedicated Facebook provider for authentication and user profile retrieval :
-<pre><code>&lt;bean id="oauthProvider" class="com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationProvider"&gt;
-  &lt;property name="provider" ref="facebookProvider" /&gt;
-&lt;/bean&gt;</code></pre>
-Finally, only if needed, you may want to define an entry point to trigger redirection to Facebook when the user tries to access a protected area of the application :
-<pre><code>&lt;bean id="oauthEntryPoint" class="com.github.leleuj.ss.oauth.client.web.OAuthAuthenticationEntryPoint"&gt;
-  &lt;property name="provider" ref="facebookProvider" /&gt;
-&lt;/bean&gt;</code></pre>
-With the following "security configuration" :
-<pre><code>&lt;security:authentication-manager alias="authenticationManager"&gt;
-  &lt;security:authentication-provider ref="oauthProvider" /&gt;
-&lt;/security:authentication-manager&gt;
-&lt;security:http entry-point-ref="facebookEntryPoint"&gt;
-  &lt;security:custom-filter before="CAS_FILTER" ref="oauthFilter" /&gt;
-  &lt;security:intercept-url pattern="/protected/*" access="IS_AUTHENTICATED_FULLY" /&gt;
-  &lt;security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" /&gt;
-  &lt;security:logout /&gt;
-&lt;/security:http&gt;</code></pre>
 
-If you have multiple providers, you can multiply filters and providers by setting specific endpoint url :
-<pre><code>&lt;bean id="facebookFilter" class="com.github.leleuj.ss.oauth.client.web.OAuthAuthenticationFilter"&gt;
-  &lt;constructor-arg index="0" value="/j_spring_facebook_security_check" /&gt;
-  &lt;property name="provider" ref="facebookProvider" /&gt;
-  &lt;property name="authenticationManager" ref="authenticationManager" /&gt;
-&lt;/bean&gt;</code></pre>
-But a better solution is to define a providers definition to group providers :
-<pre><code>&lt;bean id="facebookProvider" class="org.scribe.up.provider.impl.FacebookProvider"&gt;
-  &lt;property name="key" value="xxxx" /&gt;
-  &lt;property name="secret" value="yyyy" /&gt;
-&lt;/bean&gt;
-&lt;bean id="twitterProvider" class="org.scribe.up.provider.impl.TwitterProvider"&gt;
-  &lt;property name="key" value="xxxx" /&gt;
-  &lt;property name="secret" value="yyyy" /&gt;
-&lt;/bean&gt;
-&lt;bean id="providersDefinition" class="org.scribe.up.provider.ProvidersDefinition"&gt;
-  &lt;property name="baseUrl" value="http://localhost:8080/j_spring_oauth_security_check" /&gt;
-  &lt;property name="providers"&gt;
-    &lt;list&gt;
-      &lt;ref bean="facebookProvider" /&gt;
-      &lt;ref bean="twitterProvider" /&gt;
-    &lt;/list&gt;
-  &lt;/property&gt;
-&lt;/bean&gt;</code></pre>
-And use this providers definition in filter and provider :
-<pre><code>&lt;bean id="oauthFilter" class="com.github.leleuj.ss.oauth.client.web.OAuthAuthenticationFilter">
-  &lt;property name="providersDefinition" ref="providersDefinition" />
-  &lt;property name="authenticationManager" ref="authenticationManager" />
-&lt;/bean&gt;
-&lt;bean id="oauthProvider" class="com.github.leleuj.ss.oauth.client.authentication.OAuthAuthenticationProvider"&gt;
-  &lt;property name="providersDefinition" ref="providersDefinition" />
-&lt;/bean&gt;</code></pre>
+## How to use it ?
 
-After successfull authentication, the user profile can be retrieved from the current OAuth token in security context :
-<pre><code>OAuthAuthenticationToken token = (OAuthAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-// user profile
-UserProfile userProfile = token.getUserProfile();
-// facebook profile
-FacebookProfile facebookProfile = (FacebookProfile) userProfile;
-// common profile to all providers
-CommonProfile commonProfile = (CommonProfile) userProfile;</code></pre>
-If you want to interact more with the OAuth provider, you can retrieve the access token from the (OAuth) profile :
-<pre><code>OAuthProfile oauthProfile = (OAuthProfile) userProfile;
-String accessToken = oauthProfile.getAccessToken();
-// or
-String accesstoken = facebookProfile.getAccessToken();</code></pre>
+### Add the required dependencies
 
-A demo with Facebook and Twitter providers is available with <a href="https://github.com/leleuj/spring-security-oauth-client-demo">spring-security-oauth-client-demo</a>.
-The old demo for spring-security-oauth-client version 1.0.0 is available with <a href="https://github.com/leleuj/spring-security-oauth-client-demo-1.0.0">spring-security-oauth-client-demo-1.0.0</a>.
+If you want to use a specific client support, you need to add the appropriate Maven dependency in the *pom.xml* file :
 
-<h2>Versions</h2>
+* for OAuth support, the *pac4j-oauth* dependency is required
+* for CAS support, the *pac4j-cas* dependency is required
+* for HTTP support, the *pac4j-http* dependency is required
+* for OpenID support, the *pac4j-openid* dependency is required.
 
-The last released version is the <b>1.1.0</b>.
+For example, to add OAuth support, add the following XML snippet :
 
-The current version : <i>1.1.1-SNAPSHOT</i> is under development, it's available on <a href="https://oss.sonatype.org/content/repositories/snapshots/">Sonatype snapshots repository</a> as Maven dependency :
-<pre><code>&lt;dependency&gt;
-    &lt;groupId&gt;com.github.leleuj.springframework.security&lt;/groupId&gt;
-    &lt;artifactId&gt;spring-security-oauth-client&lt;/artifactId&gt;
-    &lt;version&gt;1.1.1-SNAPSHOT&lt;/version&gt;
-&lt;/dependency&gt;</code></pre>
+    <dependency>
+      <groupId>org.pac4j</groupId>
+      <artifactId>pac4j-oauth</artifactId>
+      <version>1.4.1-SNAPSHOT</version>
+    </dependency>
 
-See the <a href="https://github.com/leleuj/spring-security-oauth-client/wiki/Release-Notes">release notes</a>.
+As these snapshot dependencies are only available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j/), the appropriate repository must be added in the *pom.xml* file also :
 
-<h2>Contact</h2>
+    <repositories>
+      <repository>
+        <id>sonatype-nexus-snapshots</id>
+        <name>Sonatype Nexus Snapshots</name>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        <releases>
+          <enabled>false</enabled>
+        </releases>
+        <snapshots>
+          <enabled>true</enabled>
+        </snapshots>
+      </repository>
+    </repositories>
 
-Find me on <a href="http://www.linkedin.com/in/jleleu">LinkedIn</a> or by email : leleuj@gmail.com
+### Define the clients
+
+All the clients used to communicate with various providers (Facebook, Twitter, a CAS server...) must be defined in your Spring security context file. For example :
+
+    <bean id="facebookClient" class="org.pac4j.oauth.client.FacebookClient">
+        <property name="key" value="fbkey" />
+        <property name="secret" value="fbsecret" />
+    </bean>
+    <bean id="twitterClient" class="org.pac4j.oauth.client.TwitterClient">
+        <property name="key" value="twkey" />
+        <property name="secret" value="twsecret" />
+    </bean>
+	<bean id="usernamePasswordAuthenticator" class="org.pac4j.http.credentials.SimpleTestUsernamePasswordAuthenticator" />
+    <bean id="formClient" class="org.pac4j.http.client.FormClient">
+        <property name="loginUrl" value="http://localhost:8080/theForm.jsp" />
+        <property name="usernamePasswordAuthenticator" ref="usernamePasswordAuthenticator" />
+    </bean>
+    <bean id="basicAuthClient" class="org.pac4j.http.client.BasicAuthClient">
+        <property name="usernamePasswordAuthenticator" ref="usernamePasswordAuthenticator" />
+    </bean>
+    <bean id="casClient" class="org.pac4j.cas.client.CasClient">
+        <property name="casLoginUrl" value="http://localhost:8888/cas/login" />
+    </bean>
+    <bean id="myOpenIdClient" class="org.pac4j.openid.client.MyOpenIdClient" />
+    <bean id="clients" class="org.pac4j.core.client.Clients">
+        <property name="callbackUrl" value="http://localhost:8080/callback" />
+        <property name="clients">
+        	<list>
+        		<ref bean="facebookClient" />
+        		<ref bean="twitterClient" />
+        		<ref bean="formClient" />
+        		<ref bean="basicAuthClient" />
+        		<ref bean="casClient" />
+        		<ref bean="myOpenIdClient" />
+        	</list>
+        </property>
+    </bean>
+
+### Define the appropriate filter and provider
+
+To authenticate/get the profile of the users in your application after they have been successfully authenticated at the providers, you need to define a filter to receive callbacks (with credentials from the providers) and a provider to finish the authentication process :
+
+    <bean id="clientFilter" class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
+    	<constructor-arg value="/callback"/>
+        <property name="clients" ref="clients" />
+        <property name="authenticationManager" ref="authenticationManager" />
+    </bean>
+    <bean id="clientProvider" class="org.pac4j.springframework.security.authentication.ClientAuthenticationProvider">
+        <property name="clients" ref="clients" />
+    </bean>
+
+### Protect the urls
+
+You can protect your urls and force the user to be authenticated by a client by using the defining the appropriate security configuration with entry points. For example :
+
+    <security:http pattern="/facebook/**" entry-point-ref="facebookEntryPoint">
+        <security:custom-filter after="CAS_FILTER" ref="clientFilter" />
+        <security:intercept-url pattern="/facebook/**" access="IS_AUTHENTICATED_FULLY" />
+    </security:http>
+    <security:http pattern="/twitter/**" entry-point-ref="twitterEntryPoint">
+        <security:custom-filter after="CAS_FILTER" ref="clientFilter" />
+        <security:intercept-url pattern="/twitter/**" access="IS_AUTHENTICATED_FULLY" />
+    </security:http>
+    ...
+    <security:http pattern="/**" entry-point-ref="myOpenIdEntryPoint">
+        <security:custom-filter after="CAS_FILTER" ref="clientFilter" />
+        <security:intercept-url pattern="/myopenid/**" access="IS_AUTHENTICATED_FULLY" />
+        <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <security:logout />
+    </security:http>
+	<bean id="facebookEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="client" ref="facebookClient" />
+    </bean>
+    <bean id="twitterEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="client" ref="twitterClient" />
+    </bean>
+    ...
+    <bean id="myOpenIdEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="client" ref="myOpenIdClient" />
+    </bean>
+
+### Get redirection urls
+
+You can also explicitely compute a redirection url to a provider for authentication by using the *getRedirectionUrl* method of the client. For example with Facebook :  
+
+    <%
+    	WebContext context = new J2EContext(request, response); 
+	    FacebookClient fbClient = (FacebookClient) application.getAttribute("FacebookClient");
+	    String redirectionUrl = fbClient.getRedirectionUrl(context);
+	%>
+
+### Get the user profile
+
+After successful authentication, you can get the authentication of the user using the well-known *SecurityContextHolder* class :
+
+    ClientAuthenticationToken token = (ClientAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+    // user profile
+    UserProfile userProfile = token.getUserProfile();
+    CommonProfile commonProfile = (CommonProfile) userProfile;
+    
+The profile returned is a *CommonProfile*, from which you can retrieve the most common properties that all profiles share. 
+But you can also cast the user profile to the appropriate profile according to the provider used for authentication.
+For example, after a Facebook authentication :
+ 
+    // facebook profile
+    FacebookProfile facebookProfile = (FacebookProfile) commonProfile;
+
+Or for all the OAuth 1.0/2.0 profiles, to get the access token :
+    
+    OAuth10Profile oauthProfile = (OAuth10Profile) commonProfile
+    String accessToken = oauthProfile.getAccessToken();
+    // or
+    String accessToken = facebookProfile.getAccessToken();
+
+### Demo
+
+A demo with Facebook, Twitter, CAS, form authentication, basic auth authentication and myopenid.com providers is available at [spring-security-pac4j-demo](https://github.com/leleuj/spring-security-pac4j-demo).
+
+
+## Versions
+
+The current version **1.0.0-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/) as a Maven dependency :
+
+The last released version is the **spring-security-oauth-client** 1.1.0 library (which only supports OAuth) :
+
+    <dependency>
+        <groupId>com.github.leleuj.springframework.security</groupId>
+        <artifactId>spring-security-oauth-client</artifactId>
+        <version>1.1.0</version>
+    </dependency>
+
+See the [release notes](https://github.com/leleuj/spring-security-pac4j-client/wiki/Release-Notes).
+
+## Contact
+
+Find me on [LinkedIn](http://www.linkedin.com/in/jleleu) or by email : leleuj@gmail.com

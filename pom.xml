@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright 2012 Jerome Leleu
+   Copyright 2012 - 2013 Jerome Leleu
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -23,13 +23,13 @@
         <version>7</version>
     </parent>
 
-    <groupId>com.github.leleuj.springframework.security</groupId>
-    <artifactId>spring-security-oauth-client</artifactId>
+    <groupId>org.pac4j</groupId>
+    <artifactId>spring-security-pac4j</artifactId>
     <packaging>jar</packaging>
-    <name>Spring Security OAuth Client</name>
-    <version>1.1.1-SNAPSHOT</version>
-    <description>Add OAuth client support to Spring Security using ScribeUP library</description>
-    <url>https://github.com/leleuj/spring-security-oauth-client</url>
+    <name>Spring Security pac4j</name>
+    <version>1.2.0-SNAPSHOT</version>
+    <description>Java multi protocols (CAS, OAuth, OpenID, HTTP...) client for Spring Security</description>
+    <url>https://github.com/leleuj/spring-security-pac4j</url>
 
     <licenses>
         <license>
@@ -40,9 +40,9 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/leleuj/spring-security-oauth-client.git</url>
-        <connection>scm:git:git@github.com:leleuj/spring-security-oauth-client.git</connection>
-        <developerConnection>scm:git:git@github.com:leleuj/spring-security-oauth-client.git</developerConnection>
+        <url>https://github.com/leleuj/spring-security-pac4j.git</url>
+        <connection>scm:git:git@github.com:leleuj/spring-security-pac4j.git</connection>
+        <developerConnection>scm:git:git@github.com:leleuj/spring-security-pac4j.git</developerConnection>
     </scm>
 
     <developers>
@@ -59,16 +59,21 @@
             <artifactId>spring-security-web</artifactId>
             <version>3.1.0.RELEASE</version>
         </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>3.1.0.RELEASE</version>
+		</dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
-			<scope>provided</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.scribe</groupId>
-            <artifactId>scribe-up</artifactId>
-            <version>1.3.1</version>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-core</artifactId>
+            <version>1.4.0</version>
         </dependency>
     </dependencies>
 
