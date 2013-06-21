@@ -202,17 +202,17 @@ A demo with Facebook, Twitter, CAS, form authentication, basic auth authenticati
 
 ## Versions
 
-The current version **1.0.0-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/) as a Maven dependency :
+The current version **1.0.1-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j) as a Maven dependency :
 
-The last released version is the **spring-security-oauth-client** 1.1.0 library (which only supports OAuth) :
+The last released version is the **1.0.0** :
 
     <dependency>
-        <groupId>com.github.leleuj.springframework.security</groupId>
-        <artifactId>spring-security-oauth-client</artifactId>
-        <version>1.1.0</version>
+        <groupId>org.pac4j</groupId>
+        <artifactId>spring-security-pac4j</artifactId>
+        <version>1.0.0</version>
     </dependency>
 
-See the [release notes](https://github.com/leleuj/spring-security-pac4j-client/wiki/Release-Notes).
+See the [release notes](https://github.com/leleuj/spring-security-pac4j/wiki/Release-Notes).
 
 ## Contact
 
