@@ -202,14 +202,14 @@ A demo with Facebook, Twitter, CAS, form authentication, basic auth authenticati
 
 ## Versions
 
-The current version **1.0.1-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j) as a Maven dependency :
+The current version **1.2.1-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j) as a Maven dependency :
 
-The last released version is the **1.0.0** :
+The last released version is the **1.2.0** :
 
     <dependency>
         <groupId>org.pac4j</groupId>
         <artifactId>spring-security-pac4j</artifactId>
-        <version>1.0.0</version>
+        <version>1.2.0</version>
     </dependency>
 
 See the [release notes](https://github.com/leleuj/spring-security-pac4j/wiki/Release-Notes).
