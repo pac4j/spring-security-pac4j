@@ -1,3 +1,7 @@
+---
+published: false
+---
+
 ## What is the spring-security-pac4j library ?
 
 The **spring-security-pac4j** library is a web multi-protocols client for [Spring Security](http://static.springsource.org/spring-security/site/index.html).
@@ -30,6 +34,7 @@ It's available under the Apache 2 license and based on my [pac4j](https://github
 <tr><td>Web sites with basic auth authentication</td><td>HTTP</td><td>pac4j-http</td><td>BasicAuthClient</td><td>HttpProfile</td></tr>
 <tr><td>Web sites with form authentication</td><td>HTTP</td><td>pac4j-http</td><td>FormClient</td><td>HttpProfile</td></tr>
 <tr><td>MyOpenId</td><td>OpenID</td><td>pac4j-openid</td><td>MyOpenIdClient</td><td>MyOpenIdProfile</td></tr>
+<tr><td>Google</td><td>OpenID</td><td>pac4j-openid</td><td>GoogleOpenIdClient</td><td>GoogleOpenIdProfile</td></tr>
 </table>
 
 ## Technical description
@@ -62,7 +67,7 @@ For example, to add OAuth support, add the following XML snippet :
     <dependency>
       <groupId>org.pac4j</groupId>
       <artifactId>pac4j-oauth</artifactId>
-      <version>1.4.1-SNAPSHOT</version>
+      <version>1.4.2-SNAPSHOT</version>
     </dependency>
 
 As these snapshot dependencies are only available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j/), the appropriate repository must be added in the *pom.xml* file also :
