@@ -215,6 +215,10 @@ The last released version is the **1.2.1** :
 
 See the [release notes](https://github.com/leleuj/spring-security-pac4j/wiki/Release-Notes).
 
+
 ## Contact
 
-Find me on [LinkedIn](http://www.linkedin.com/in/jleleu) or by email : leleuj@gmail.com
+If you have any question, please use the following mailing lists :
+- [pac4j users](https://groups.google.com/forum/?hl=en#!forum/pac4j-users)
+- [pac4j developers](https://groups.google.com/forum/?hl=en#!forum/pac4j-dev)
+
