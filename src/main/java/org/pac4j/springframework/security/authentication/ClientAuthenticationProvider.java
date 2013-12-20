@@ -71,7 +71,7 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
         final String clientName = token.getClientName();
         final Client client = this.clients.findClient(clientName);
         // get the user profile
-        final UserProfile userProfile = client.getUserProfile(credentials);
+        final UserProfile userProfile = client.getUserProfile(credentials, null);
         logger.debug("userProfile : {}", userProfile);
         
         // by default, no authorities
