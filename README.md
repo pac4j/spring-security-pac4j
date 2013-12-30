@@ -171,7 +171,7 @@ You can also explicitely compute a redirection url to a provider for authenticat
     <%
     	WebContext context = new J2EContext(request, response); 
 	    FacebookClient fbClient = (FacebookClient) application.getAttribute("FacebookClient");
-	    String redirectionUrl = fbClient.getRedirectionUrl(context);
+	    String redirectionUrl = fbClient.getRedirectionUrl(context, false, false);
 	%>
 
 ### Get the user profile

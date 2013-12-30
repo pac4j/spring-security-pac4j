@@ -20,13 +20,12 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.pac4j.core.client.BaseClient;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
+import org.pac4j.core.exception.RequiresHttpAction;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.util.CommonHelper;
 import org.slf4j.Logger;
@@ -47,27 +46,16 @@ public final class ClientAuthenticationEntryPoint implements AuthenticationEntry
     
     private Client<Credentials, UserProfile> client;
     
-    @SuppressWarnings("rawtypes")
     public void commence(final HttpServletRequest request, final HttpServletResponse response,
                          final AuthenticationException authException) throws IOException, ServletException {
-        final HttpSession session = request.getSession(true);
-        
         logger.debug("client : {}", this.client);
-        
-        // no profile -> has this authentication already be attempted ?
-        final String triedAuth = (String) session
-            .getAttribute(this.client.getName() + ClientAuthenticationFilter.ATTEMPTED_AUTHENTICATION_SUFFIX);
-        logger.debug("triedAuth : {}", triedAuth);
-        if (CommonHelper.isNotBlank(triedAuth)) {
-            session.setAttribute(this.client.getName() + ClientAuthenticationFilter.ATTEMPTED_AUTHENTICATION_SUFFIX,
-                                 null);
-            response.sendError(403);
-        } else {
-            final WebContext context = new J2EContext(request, response);
-            final BaseClient baseClient = (BaseClient) this.client;
-            final String redirectionUrl = baseClient.getRedirectionUrl(context, true);
+        final WebContext context = new J2EContext(request, response);
+        try {
+            final String redirectionUrl = client.getRedirectionUrl(context, true, false);
             logger.debug("redirectionUrl : {}", redirectionUrl);
             response.sendRedirect(redirectionUrl);
+        } catch (final RequiresHttpAction e) {
+            logger.debug("extra HTTP action required : {}", e.getCode());
         }
     }
     

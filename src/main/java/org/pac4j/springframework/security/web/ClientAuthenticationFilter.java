@@ -45,8 +45,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
  */
 public final class ClientAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     
-    public static final String ATTEMPTED_AUTHENTICATION_SUFFIX = "attemptedAuthenticationSuffix";
-    
     private static final Logger logger = LoggerFactory.getLogger(ClientAuthenticationFilter.class);
     
     private Clients clients;
@@ -91,9 +89,8 @@ public final class ClientAuthenticationFilter extends AbstractAuthenticationProc
             return null;
         }
         logger.debug("credentials : {}", credentials);
-        // if credentials/profile is null, return to the saved request url (after saving that the authentication has been already tried)
+        // if credentials/profile is null, return to the saved request url
         if (credentials == null) {
-            request.getSession(true).setAttribute(client.getName() + ATTEMPTED_AUTHENTICATION_SUFFIX, "true");
             getSuccessHandler().onAuthenticationSuccess(request, response, null);
             return null;
         }
