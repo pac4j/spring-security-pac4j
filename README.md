@@ -1,4 +1,4 @@
-## What is the spring-security-pac4j library ?
+## What is the spring-security-pac4j library ? [![Build Status](https://travis-ci.org/leleuj/spring-security-pac4j.png?branch=master)](https://travis-ci.org/leleuj/spring-security-pac4j)
 
 The **spring-security-pac4j** library is a web multi-protocols client for [Spring Security](http://static.springsource.org/spring-security/site/index.html).
 
