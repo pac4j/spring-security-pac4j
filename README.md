@@ -30,7 +30,6 @@ It's available under the Apache 2 license and based on my [pac4j](https://github
 <tr><td>PayPal</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>PayPalClient</td><td>PayPalProfile</td></tr>
 <tr><td>Web sites with basic auth authentication</td><td>HTTP</td><td>pac4j-http</td><td>BasicAuthClient</td><td>HttpProfile</td></tr>
 <tr><td>Web sites with form authentication</td><td>HTTP</td><td>pac4j-http</td><td>FormClient</td><td>HttpProfile</td></tr>
-<tr><td>MyOpenId</td><td>OpenID</td><td>pac4j-openid</td><td>MyOpenIdClient</td><td>MyOpenIdProfile</td></tr>
 <tr><td>Google</td><td>OpenID</td><td>pac4j-openid</td><td>GoogleOpenIdClient</td><td>GoogleOpenIdProfile</td></tr>
 </table>
 
@@ -106,7 +105,6 @@ All the clients used to communicate with various providers (Facebook, Twitter, a
     <bean id="casClient" class="org.pac4j.cas.client.CasClient">
         <property name="casLoginUrl" value="http://localhost:8888/cas/login" />
     </bean>
-    <bean id="myOpenIdClient" class="org.pac4j.openid.client.MyOpenIdClient" />
     <bean id="clients" class="org.pac4j.core.client.Clients">
         <property name="callbackUrl" value="http://localhost:8080/callback" />
         <property name="clients">
@@ -116,7 +114,6 @@ All the clients used to communicate with various providers (Facebook, Twitter, a
         		<ref bean="formClient" />
         		<ref bean="basicAuthClient" />
         		<ref bean="casClient" />
-        		<ref bean="myOpenIdClient" />
         	</list>
         </property>
     </bean>
@@ -147,9 +144,9 @@ You can protect your urls and force the user to be authenticated by a client by 
         <security:intercept-url pattern="/twitter/**" access="IS_AUTHENTICATED_FULLY" />
     </security:http>
     ...
-    <security:http pattern="/**" entry-point-ref="myOpenIdEntryPoint">
+    <security:http pattern="/**" entry-point-ref="casEntryPoint">
         <security:custom-filter after="CAS_FILTER" ref="clientFilter" />
-        <security:intercept-url pattern="/myopenid/**" access="IS_AUTHENTICATED_FULLY" />
+        <security:intercept-url pattern="/cas/**" access="IS_AUTHENTICATED_FULLY" />
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:logout />
     </security:http>
@@ -160,8 +157,8 @@ You can protect your urls and force the user to be authenticated by a client by 
         <property name="client" ref="twitterClient" />
     </bean>
     ...
-    <bean id="myOpenIdEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
-        <property name="client" ref="myOpenIdClient" />
+    <bean id="casEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="client" ref="casClient" />
     </bean>
 
 ### Get redirection urls
@@ -199,7 +196,7 @@ Or for all the OAuth 1.0/2.0 profiles, to get the access token :
 
 ### Demo
 
-A demo with Facebook, Twitter, CAS, form authentication, basic auth authentication and myopenid.com providers is available at [spring-security-pac4j-demo](https://github.com/leleuj/spring-security-pac4j-demo).
+A demo with Facebook, Twitter, CAS, form authentication and basic auth authentication providers is available at [spring-security-pac4j-demo](https://github.com/leleuj/spring-security-pac4j-demo).
 
 
 ## Versions
