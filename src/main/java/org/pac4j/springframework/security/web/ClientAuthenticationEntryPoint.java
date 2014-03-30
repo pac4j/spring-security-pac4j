@@ -41,32 +41,30 @@ import org.springframework.security.web.AuthenticationEntryPoint;
  * @since 1.0.0
  */
 public final class ClientAuthenticationEntryPoint implements AuthenticationEntryPoint, InitializingBean {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(ClientAuthenticationEntryPoint.class);
-    
+
     private Client<Credentials, UserProfile> client;
-    
+
     public void commence(final HttpServletRequest request, final HttpServletResponse response,
-                         final AuthenticationException authException) throws IOException, ServletException {
+            final AuthenticationException authException) throws IOException, ServletException {
         logger.debug("client : {}", this.client);
         final WebContext context = new J2EContext(request, response);
         try {
-            final String redirectionUrl = client.getRedirectionUrl(context, true, false);
-            logger.debug("redirectionUrl : {}", redirectionUrl);
-            response.sendRedirect(redirectionUrl);
+            this.client.redirect(context, true, false);
         } catch (final RequiresHttpAction e) {
             logger.debug("extra HTTP action required : {}", e.getCode());
         }
     }
-    
+
     public void afterPropertiesSet() throws Exception {
         CommonHelper.assertNotNull("client", this.client);
     }
-    
+
     public Client<Credentials, UserProfile> getClient() {
         return this.client;
     }
-    
+
     public void setClient(final Client<Credentials, UserProfile> client) {
         this.client = client;
     }
