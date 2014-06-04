@@ -61,14 +61,15 @@ If you want to use a specific client support, you need to add the appropriate Ma
 * for OAuth support, the *pac4j-oauth* dependency is required
 * for CAS support, the *pac4j-cas* dependency is required
 * for HTTP support, the *pac4j-http* dependency is required
-* for OpenID support, the *pac4j-openid* dependency is required.
+* for OpenID support, the *pac4j-openid* dependency is required
+* for SAML support, the *pac4j-saml* dependency is required.
 
 For example, to add OAuth support, add the following XML snippet :
 
     <dependency>
       <groupId>org.pac4j</groupId>
       <artifactId>pac4j-oauth</artifactId>
-      <version>1.5.0</version>
+      <version>1.5.1</version>
     </dependency>
 
 As these snapshot dependencies are only available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j/), the appropriate repository must be added in the *pom.xml* file also :
@@ -206,14 +207,14 @@ A demo with Facebook, Twitter, CAS, form authentication and basic auth authentic
 
 ## Versions
 
-The current version **1.2.3-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j) as a Maven dependency :
+The current version **1.2.4-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j) as a Maven dependency :
 
-The last released version is the **1.2.2** :
+The last released version is the **1.2.3** :
 
     <dependency>
         <groupId>org.pac4j</groupId>
         <artifactId>spring-security-pac4j</artifactId>
-        <version>1.2.2</version>
+        <version>1.2.3</version>
     </dependency>
 
 See the [release notes](https://github.com/leleuj/spring-security-pac4j/wiki/Release-Notes).
