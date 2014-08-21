@@ -23,7 +23,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,18 +30,21 @@ import java.util.List;
  * userProfile.
  *
  * @author Karel Vervaeke
- * @since 1.6.0
+ * @since 1.2.4
  */
 public class CopyRolesUserDetailsService implements AuthenticationUserDetailsService<ClientAuthenticationToken> {
 
 
     public UserDetails loadUserDetails(final ClientAuthenticationToken token) throws UsernameNotFoundException {
-        final List<GrantedAuthority> authorities = new ArrayList();
+        final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         for (String role: token.getUserProfile().getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role));
         }
 
         return new UserDetails() {
+
+            private static final long serialVersionUID = 6523314653561682296L;
+
             public Collection<? extends GrantedAuthority> getAuthorities() {
                 return authorities;
             }
