@@ -48,7 +48,8 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
     
     private Clients clients;
     
-    private AuthenticationUserDetailsService<ClientAuthenticationToken> userDetailsService = null;
+    private AuthenticationUserDetailsService<ClientAuthenticationToken> userDetailsService =
+            new CopyRolesUserDetailsService();
     
     private UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
     
