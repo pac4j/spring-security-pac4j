@@ -33,7 +33,7 @@ import java.util.List;
  * @author Karel Vervaeke
  * @since 1.6.0
  */
-public final class CopyRolesUserDetailsService implements AuthenticationUserDetailsService<ClientAuthenticationToken> {
+public class CopyRolesUserDetailsService implements AuthenticationUserDetailsService<ClientAuthenticationToken> {
 
 
     public UserDetails loadUserDetails(final ClientAuthenticationToken token) throws UsernameNotFoundException {
