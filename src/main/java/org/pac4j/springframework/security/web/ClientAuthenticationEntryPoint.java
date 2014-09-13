@@ -24,9 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.exception.RequiresHttpAction;
-import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.util.CommonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,11 +38,12 @@ import org.springframework.security.web.AuthenticationEntryPoint;
  * @author Jerome Leleu
  * @since 1.0.0
  */
+@SuppressWarnings("rawtypes")
 public final class ClientAuthenticationEntryPoint implements AuthenticationEntryPoint, InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientAuthenticationEntryPoint.class);
 
-    private Client<Credentials, UserProfile> client;
+    private Client client;
 
     public void commence(final HttpServletRequest request, final HttpServletResponse response,
             final AuthenticationException authException) throws IOException, ServletException {
@@ -61,11 +60,11 @@ public final class ClientAuthenticationEntryPoint implements AuthenticationEntry
         CommonHelper.assertNotNull("client", this.client);
     }
 
-    public Client<Credentials, UserProfile> getClient() {
+    public Client getClient() {
         return this.client;
     }
 
-    public void setClient(final Client<Credentials, UserProfile> client) {
+    public void setClient(final Client client) {
         this.client = client;
     }
 }
