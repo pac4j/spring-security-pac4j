@@ -2,13 +2,14 @@
 
 The **spring-security-pac4j** library is a web multi-protocols client for [Spring Security](http://static.springsource.org/spring-security/site/index.html).
 
-It supports these 5 protocols on client side : 
+It supports these 6 authentication mechanisms on client side : 
 
 1. OAuth (1.0 & 2.0)
 2. CAS (1.0, 2.0, SAML, logout & proxy)
 3. HTTP (form & basic auth authentications)
 4. OpenID
-5. SAML (2.0) (*still experimental*).
+5. SAML (2.0) (*still experimental*)
+6. GAE UserService.
 
 It's available under the Apache 2 license and based on my [pac4j](https://github.com/leleuj/pac4j) library.
 
@@ -66,14 +67,15 @@ If you want to use a specific client support, you need to add the appropriate Ma
 * for CAS support, the *pac4j-cas* dependency is required
 * for HTTP support, the *pac4j-http* dependency is required
 * for OpenID support, the *pac4j-openid* dependency is required
-* for SAML support, the *pac4j-saml* dependency is required.
+* for SAML support, the *pac4j-saml* dependency is required
+* for Google App Engine, the *pac4j-gae* dependency is required.
 
 For example, to add OAuth support, add the following XML snippet :
 
     <dependency>
       <groupId>org.pac4j</groupId>
       <artifactId>pac4j-oauth</artifactId>
-      <version>1.5.1</version>
+      <version>1.6.0</version>
     </dependency>
 
 As these snapshot dependencies are only available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j/), the appropriate repository must be added in the *pom.xml* file also :
@@ -211,14 +213,14 @@ A demo with Facebook, Twitter, CAS, form authentication and basic auth authentic
 
 ## Versions
 
-The current version **1.2.4-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j) as a Maven dependency :
+The current version **1.2.5-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j) as a Maven dependency :
 
-The last released version is the **1.2.3** :
+The last released version is the **1.2.4** :
 
     <dependency>
         <groupId>org.pac4j</groupId>
         <artifactId>spring-security-pac4j</artifactId>
-        <version>1.2.3</version>
+        <version>1.2.4</version>
     </dependency>
 
 See the [release notes](https://github.com/leleuj/spring-security-pac4j/wiki/Release-Notes).
