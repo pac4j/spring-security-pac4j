@@ -8,8 +8,8 @@ It supports these 6 authentication mechanisms on client side :
 2. CAS (1.0, 2.0, SAML, logout & proxy)
 3. HTTP (form & basic auth authentications)
 4. OpenID
-5. SAML (2.0) (*still experimental*)
-6. GAE UserService.
+5. SAML (2.0)
+6. Google App Engine UserService.
 
 It's available under the Apache 2 license and based on my [pac4j](https://github.com/leleuj/pac4j) library.
 
