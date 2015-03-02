@@ -40,9 +40,9 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/leleuj/spring-security-pac4j.git</url>
-        <connection>scm:git:git@github.com:leleuj/spring-security-pac4j.git</connection>
-        <developerConnection>scm:git:git@github.com:leleuj/spring-security-pac4j.git</developerConnection>
+        <url>https://github.com/pac4j/spring-security-pac4j.git</url>
+        <connection>scm:git:git@github.com:pac4j/spring-security-pac4j.git</connection>
+        <developerConnection>scm:git:git@github.com:pac4j/spring-security-pac4j.git</developerConnection>
     </scm>
 
     <developers>
