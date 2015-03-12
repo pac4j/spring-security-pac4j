@@ -248,7 +248,7 @@ Or for all the OAuth 1.0/2.0 profiles, to get the access token :
         clientFilter.setAuthenticationManager(authenticationManager());
         final ClientAuthenticationEntryPoint googleEntryPoint = new ClientAuthenticationEntryPoint();
         googleEntryPoint.setClient(googleClient);
-	http.authorizeRequests().antMatchers("/google").hasRole("USER").and()
+        http.authorizeRequests().antMatchers("/google").hasRole("USER").and()
           .addFilterBefore(clientFilter, AnonymousAuthenticationFilter.class).exceptionHandling()
           .authenticationEntryPoint(googleEntryPoint).and();
       }
