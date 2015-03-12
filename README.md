@@ -206,6 +206,61 @@ Or for all the OAuth 1.0/2.0 profiles, to get the access token :
     // or
     String accessToken = facebookProfile.getAccessToken();
 
+### Java config sample
+
+    @Configuration
+    public class Pac4jConfiguration {
+
+      @Value("${google.key}")
+      private String key;
+
+      @Value("${google.secret}")
+      private String secret;
+
+      @Value("${callbackUrl}")
+      private String callbackUrl;
+
+      @Bean(initMethod = "init")
+      public Clients clients() {
+        return new Clients(callbackUrl, googleClient());
+      }
+
+      @Bean
+      public Google2Client googleClient() {
+        return new Google2Client(key, secret);
+      }
+    }
+
+    @Configuration
+    @EnableWebMvcSecurity
+    public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+      @Autowired
+      private Clients clients;
+
+      @Autowired
+      private Google2Client googleClient;
+
+      @Override
+      protected void configure(final HttpSecurity http) throws Exception {
+        final ClientAuthenticationFilter clientFilter = new ClientAuthenticationFilter("/callback");
+        clientFilter.setClients(clients);
+        clientFilter.setAuthenticationManager(authenticationManager());
+        final ClientAuthenticationEntryPoint googleEntryPoint = new ClientAuthenticationEntryPoint();
+        googleEntryPoint.setClient(googleClient);
+	http.authorizeRequests().antMatchers("/google").hasRole("USER").and()
+          .addFilterBefore(clientFilter, AnonymousAuthenticationFilter.class).exceptionHandling()
+          .authenticationEntryPoint(googleEntryPoint).and();
+      }
+
+      @Override
+      protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+        final ClientAuthenticationProvider clientProvider = new ClientAuthenticationProvider();
+        clientProvider.setClients(clients);
+        auth.authenticationProvider(clientProvider);
+      }
+    }
+
 ### Demo
 
 A demo with Facebook, Twitter, CAS, form authentication and basic auth authentication providers is available at [spring-security-pac4j-demo](https://github.com/pac4j/spring-security-pac4j-demo).
