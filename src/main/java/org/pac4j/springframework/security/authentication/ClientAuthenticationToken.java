@@ -1,5 +1,5 @@
 /*
-  Copyright 2012 - 2014 Jerome Leleu
+  Copyright 2012 - 2015 Jerome Leleu
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -21,44 +21,63 @@ import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.profile.UserProfile;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * This token represents a credentials ({@link Credentials}), a client name and an user profile ( {@link UserProfile}).
- * 
+ * This token represents a credentials: {@link #credentials}, a client name: {@link #clientName},
+ * a user profile: {@link #userProfile} and an optional user (details): {@link #userDetails}.
+ *
  * @author Jerome Leleu
  * @since 1.0.0
  */
 public final class ClientAuthenticationToken extends AbstractAuthenticationToken {
-    
+
     private static final long serialVersionUID = 8303047831754762526L;
-    
+
     private final Credentials credentials;
-    
+
     private UserProfile userProfile = null;
-    
+
     private final String clientName;
-    
+
+    private final UserDetails userDetails;
+
     public ClientAuthenticationToken(final Credentials credentials, final String clientName) {
         super(null);
         this.credentials = credentials;
         this.clientName = clientName;
+        this.userDetails = null;
         setAuthenticated(false);
     }
-    
+
     public ClientAuthenticationToken(final Credentials credentials, final String clientName,
-                                     final UserProfile userProfile,
-                                     final Collection<? extends GrantedAuthority> authorities) {
+            final UserProfile userProfile,
+            final Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.credentials = credentials;
         this.clientName = clientName;
         this.userProfile = userProfile;
+        this.userDetails = null;
         setAuthenticated(true);
     }
-    
+
+    public ClientAuthenticationToken(final Credentials credentials, final String clientName,
+            final UserProfile userProfile, final Collection<? extends GrantedAuthority> authorities,
+            final UserDetails userDetails) {
+        super(authorities);
+        this.credentials = credentials;
+        this.clientName = clientName;
+        this.userProfile = userProfile;
+        this.userDetails = userDetails;
+        setAuthenticated(true);
+    }
+
+    @Override
     public Object getCredentials() {
         return this.credentials;
     }
-    
+
+    @Override
     public Object getPrincipal() {
         if (this.userProfile != null) {
             return this.userProfile.getTypedId();
@@ -66,12 +85,16 @@ public final class ClientAuthenticationToken extends AbstractAuthenticationToken
             return null;
         }
     }
-    
+
     public UserProfile getUserProfile() {
         return this.userProfile;
     }
-    
+
     public String getClientName() {
         return this.clientName;
+    }
+
+    public UserDetails getUserDetails() {
+        return this.userDetails;
     }
 }

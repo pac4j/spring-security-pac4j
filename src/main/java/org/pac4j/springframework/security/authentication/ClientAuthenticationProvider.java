@@ -1,5 +1,5 @@
 /*
-  Copyright 2012 - 2014 Jerome Leleu
+  Copyright 2012 - 2015 Jerome Leleu
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -38,21 +38,22 @@ import org.springframework.security.core.userdetails.UserDetailsChecker;
 /**
  * This provider authenticates credentials stored in ( {@link ClientAuthenticationToken}) to get the user profile and finally the user
  * details (and authorities).
- * 
+ *
  * @author Jerome Leleu
  * @since 1.0.0
  */
 public final class ClientAuthenticationProvider implements AuthenticationProvider, InitializingBean {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(ClientAuthenticationProvider.class);
-    
+
     private Clients clients;
-    
+
     private AuthenticationUserDetailsService<ClientAuthenticationToken> userDetailsService =
             new CopyRolesUserDetailsService();
-    
+
     private UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
-    
+
+    @Override
     @SuppressWarnings({
         "unchecked", "rawtypes"
     })
@@ -63,25 +64,26 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
             return null;
         }
         final ClientAuthenticationToken token = (ClientAuthenticationToken) authentication;
-        
+
         // get the credentials
         final Credentials credentials = (Credentials) authentication.getCredentials();
         logger.debug("credentials : {}", credentials);
-        
+
         // get the right client
         final String clientName = token.getClientName();
         final Client client = this.clients.findClient(clientName);
         // get the user profile
         final UserProfile userProfile = client.getUserProfile(credentials, null);
         logger.debug("userProfile : {}", userProfile);
-        
+
         // by default, no authorities
         Collection<? extends GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         // get user details and check them
+        UserDetails userDetails = null;
         if (this.userDetailsService != null) {
             final ClientAuthenticationToken tmpToken = new ClientAuthenticationToken(credentials, clientName,
-                                                                                     userProfile, null);
-            final UserDetails userDetails = this.userDetailsService.loadUserDetails(tmpToken);
+                    userProfile, null);
+            userDetails = this.userDetailsService.loadUserDetails(tmpToken);
             logger.debug("userDetails : {}", userDetails);
             if (userDetails != null) {
                 this.userDetailsChecker.check(userDetails);
@@ -89,46 +91,48 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
                 logger.debug("authorities : {}", authorities);
             }
         }
-        
+
         // new token with credentials (like previously) and user profile and
         // authorities
         final ClientAuthenticationToken result = new ClientAuthenticationToken(credentials, clientName, userProfile,
-                                                                               authorities);
+                authorities, userDetails);
         result.setDetails(authentication.getDetails());
         logger.debug("result : {}", result);
         return result;
     }
-    
+
+    @Override
     public boolean supports(final Class<?> authentication) {
         return (ClientAuthenticationToken.class.isAssignableFrom(authentication));
     }
-    
+
+    @Override
     public void afterPropertiesSet() {
         CommonHelper.assertNotNull("clients", this.clients);
         this.clients.init();
-        
+
     }
-    
+
     public Clients getClients() {
         return this.clients;
     }
-    
+
     public void setClients(final Clients clients) {
         this.clients = clients;
     }
-    
+
     public AuthenticationUserDetailsService<ClientAuthenticationToken> getUserDetailsService() {
         return this.userDetailsService;
     }
-    
+
     public void setUserDetailsService(final AuthenticationUserDetailsService<ClientAuthenticationToken> userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
-    
+
     public UserDetailsChecker getUserDetailsChecker() {
         return this.userDetailsChecker;
     }
-    
+
     public void setUserDetailsChecker(final UserDetailsChecker userDetailsChecker) {
         this.userDetailsChecker = userDetailsChecker;
     }
