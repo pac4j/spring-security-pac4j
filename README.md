@@ -35,6 +35,7 @@ It's available under the Apache 2 license and based on my [pac4j](https://github
 <tr><td>Foursquare</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>FoursquareClient</td><td>FoursquareProfile</td></tr>
 <tr><td>Bitbucket</td><td>OAuth 1.0</td><td>pac4j-oauth</td><td>BitbucketClient</td><td>BitbucketProfile</td></tr>
 <tr><td>ORCiD</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>OrcidClient</td><td>OrcidProfile</td></tr>
+<tr><td>Strava</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>StravaClient</td><td>StravaProfile</td></tr>
 <tr><td>Web sites with basic auth authentication</td><td>HTTP</td><td>pac4j-http</td><td>BasicAuthClient</td><td>HttpProfile</td></tr>
 <tr><td>Web sites with form authentication</td><td>HTTP</td><td>pac4j-http</td><td>FormClient</td><td>HttpProfile</td></tr>
 <tr><td>Google - Deprecated</td><td>OpenID</td><td>pac4j-openid</td><td>GoogleOpenIdClient</td><td>GoogleOpenIdProfile</td></tr>
@@ -78,7 +79,7 @@ For example, to add OAuth support, add the following XML snippet :
     <dependency>
       <groupId>org.pac4j</groupId>
       <artifactId>pac4j-oauth</artifactId>
-      <version>1.6.0</version>
+      <version>1.7.0</version>
     </dependency>
 
 As these snapshot dependencies are only available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j/), the appropriate repository must be added in the *pom.xml* file also :
@@ -271,14 +272,14 @@ A demo with Facebook, Twitter, CAS, form authentication and basic auth authentic
 
 ## Versions
 
-The current version **1.2.5-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j) as a Maven dependency :
+The current version **1.2.6-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j) as a Maven dependency :
 
-The last released version is the **1.2.4** :
+The last released version is the **1.2.5** :
 
     <dependency>
         <groupId>org.pac4j</groupId>
         <artifactId>spring-security-pac4j</artifactId>
-        <version>1.2.4</version>
+        <version>1.2.5</version>
     </dependency>
 
 See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes).
