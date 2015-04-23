@@ -9,7 +9,8 @@ It supports these 6 authentication mechanisms on client side :
 3. HTTP (form & basic auth authentications)
 4. OpenID
 5. SAML (2.0)
-6. Google App Engine UserService.
+6. Google App Engine UserService
+7. OpenID Connect.
 
 It's available under the Apache 2 license and based on my [pac4j](https://github.com/pac4j/pac4j) library.
 
@@ -40,6 +41,7 @@ It's available under the Apache 2 license and based on my [pac4j](https://github
 <tr><td>Yahoo</td><td>OpenID</td><td>pac4j-openid</td><td>YahooOpenIdClient</td><td>YahooOpenIdProfile</td></tr>
 <tr><td>SAML Identity Provider</td><td>SAML 2.0</td><td>pac4j-saml</td><td>Saml2Client</td><td>Saml2Profile</td></tr>
 <tr><td>Google App Engine User Service</td><td>Gae User Service Mechanism</td><td>pac4j-gae</td><td>GaeUserServiceClient</td><td>GaeUserServiceProfile</td></tr>
+<tr><td>OpenID Identity Provider</td><td>OpenID Connect 1.0</td><td>pac4j-oidc</td><td>OidcClient</td><td>OidcProfile</td></tr>
 </table>
 
 
@@ -68,7 +70,8 @@ If you want to use a specific client support, you need to add the appropriate Ma
 * for HTTP support, the *pac4j-http* dependency is required
 * for OpenID support, the *pac4j-openid* dependency is required
 * for SAML support, the *pac4j-saml* dependency is required
-* for Google App Engine, the *pac4j-gae* dependency is required.
+* for Google App Engine, the *pac4j-gae* dependency is required
+* for OpenID Connect support, the *pac4j-oidc* dependency is required.
 
 For example, to add OAuth support, add the following XML snippet :
 
