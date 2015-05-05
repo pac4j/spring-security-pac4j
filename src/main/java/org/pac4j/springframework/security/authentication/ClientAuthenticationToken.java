@@ -79,6 +79,8 @@ public final class ClientAuthenticationToken extends AbstractAuthenticationToken
 
     @Override
     public Object getPrincipal() {
+        if (this.userDetails != null)
+            return this.userDetails;
         if (this.userProfile != null) {
             return this.userProfile.getTypedId();
         } else {
