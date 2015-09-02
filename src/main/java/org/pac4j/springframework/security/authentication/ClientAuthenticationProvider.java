@@ -94,7 +94,7 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
 
         // new token with credentials (like previously) and user profile and
         // authorities
-        final ClientAuthenticationToken result = new ClientAuthenticationToken(credentials, clientName, userProfile,
+        final ClientAuthenticationToken result = new ClientAuthenticationToken(null, clientName, userProfile,
                 authorities, userDetails);
         result.setDetails(authentication.getDetails());
         logger.debug("result : {}", result);
