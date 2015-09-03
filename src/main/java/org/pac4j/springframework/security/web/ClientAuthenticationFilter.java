@@ -59,7 +59,7 @@ public final class ClientAuthenticationFilter extends AbstractAuthenticationProc
     }
 
     protected ClientAuthenticationFilter() {
-        super("/j_spring_pac4j_security_check");
+        super("/callback");
     }
 
     @Override
