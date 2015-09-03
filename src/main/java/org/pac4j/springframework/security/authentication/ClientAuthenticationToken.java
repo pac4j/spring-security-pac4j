@@ -34,7 +34,7 @@ public final class ClientAuthenticationToken extends AbstractAuthenticationToken
 
     private static final long serialVersionUID = 8303047831754762526L;
 
-    private final Credentials credentials;
+    private Credentials credentials;
 
     private UserProfile userProfile = null;
 
@@ -86,6 +86,11 @@ public final class ClientAuthenticationToken extends AbstractAuthenticationToken
         } else {
             return null;
         }
+    }
+
+    @Override
+    public void eraseCredentials() {
+        this.credentials = null;
     }
 
     public UserProfile getUserProfile() {
