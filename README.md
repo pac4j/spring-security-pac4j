@@ -176,6 +176,8 @@ You can protect your urls and force the user to be authenticated by a client by 
         <property name="client" ref="casClient" />
     </bean>
 
+For SAML support which requires Javascript POST (POST binding), add: `<security:headers disabled="true" />`.
+
 ### Get redirection urls
 
 You can also explicitely compute a redirection url to a provider for authentication by using the *getRedirectionUrl* method of the client. For example with Facebook :  
