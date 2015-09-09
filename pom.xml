@@ -55,7 +55,7 @@
 
     <properties>
         <spring.security.version>4.0.2.RELEASE</spring.security.version>
-        <servlet.version>3.1.0</servlet.version>
+        <servlet.version>3.0.1</servlet.version>
         <pac4j.version>1.7.0</pac4j.version>
     </properties>
 
