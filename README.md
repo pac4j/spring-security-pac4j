@@ -146,6 +146,8 @@ To authenticate/get the profile of the users in your application after they have
         <property name="clients" ref="clients" />
     </bean>
 
+By default, the callback url is defined on /callback
+
 ### Protect the urls
 
 You can protect your urls and force the user to be authenticated by a client by using the defining the appropriate security configuration with entry points. For example :
