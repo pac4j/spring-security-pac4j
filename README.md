@@ -1,6 +1,6 @@
 ## What is the spring-security-pac4j library ? [![Build Status](https://travis-ci.org/pac4j/spring-security-pac4j.png?branch=master)](https://travis-ci.org/pac4j/spring-security-pac4j)
 
-The **spring-security-pac4j** library is a web multi-protocols client for [Spring Security](http://static.springsource.org/spring-security/site/index.html).
+The **spring-security-pac4j** library is a [Spring Security](http://static.springsource.org/spring-security/site/index.html) extension which makes multi-protocol support really easy and consistent. It successfully replaces the spring-security-cas, spring-security-oauth, spring-security-saml2-core, spring-security-openid and Spring Social libraries and also adds missing protocols.
 
 It supports these 7 authentication mechanisms on client side : 
 
