@@ -26,9 +26,11 @@ import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
+import org.pac4j.core.exception.CredentialsException;
 import org.pac4j.core.exception.RequiresHttpAction;
 import org.pac4j.core.util.CommonHelper;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
+import org.pac4j.springframework.security.exception.AuthenticationCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -87,7 +89,10 @@ public final class ClientAuthenticationFilter extends AbstractAuthenticationProc
         } catch (final RequiresHttpAction e) {
             logger.info("Requires additionnal HTTP action", e);
             return null;
+        } catch (CredentialsException ce) {
+            throw new AuthenticationCredentialsException("Error retrieving credentials", ce);
         }
+
         logger.debug("credentials : {}", credentials);
         // if credentials/profile is null, return to the saved request url
         if (credentials == null) {

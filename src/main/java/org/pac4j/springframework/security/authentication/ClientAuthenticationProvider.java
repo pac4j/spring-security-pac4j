@@ -55,7 +55,7 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
 
     @Override
     @SuppressWarnings({
-        "unchecked", "rawtypes"
+            "unchecked", "rawtypes"
     })
     public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
         logger.debug("authentication : {}", authentication);
