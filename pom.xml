@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-   Copyright 2012 - 2014 Jerome Leleu
+   Copyright 2012 - 2015 Jerome Leleu
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@
     <groupId>org.pac4j</groupId>
     <artifactId>spring-security-pac4j</artifactId>
     <packaging>jar</packaging>
-    <name>Spring Security pac4j</name>
+    <name>pac4j extension for Spring Security</name>
     <version>1.4.0-SNAPSHOT</version>
-    <description>Java multi protocols (CAS, OAuth, OpenID, HTTP...) client for Spring Security</description>
+    <description>Security extension for Spring Security based on pac4j</description>
     <url>https://github.com/pac4j/spring-security-pac4j</url>
 
     <licenses>
@@ -54,9 +54,10 @@
     </developers>
 
     <properties>
-        <spring.security.version>4.0.2.RELEASE</spring.security.version>
+        <spring.security.version>4.0.3.RELEASE</spring.security.version>
+        <spring.version>4.2.2.RELEASE</spring.version>
         <servlet.version>3.0.1</servlet.version>
-        <pac4j.version>1.7.0</pac4j.version>
+        <pac4j.version>1.8.1-SNAPSHOT</pac4j.version>
     </properties>
 
     <dependencies>
@@ -70,6 +71,11 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
