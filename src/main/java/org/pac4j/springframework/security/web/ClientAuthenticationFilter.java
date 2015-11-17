@@ -38,9 +38,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 /**
- * This filter handles callbacks after authentication from the provider. It listens HTTP requests on /j_spring_pac4j_security_check by
- * default or whatever suffix url you can define by constructor. An
- * {@link org.pac4j.springframework.security.authentication.ClientAuthenticationToken} is created to finish the authentication process.
+ * This filter handles callbacks after authentication from the provider. It listens HTTP requests on /callback by
+ * default or any suffix url you can define by constructor. An {@link org.pac4j.springframework.security.authentication.ClientAuthenticationToken}
+ * is created to finish the authentication process.
  *
  * @author Jerome Leleu
  * @since 1.0.0
@@ -68,7 +68,6 @@ public final class ClientAuthenticationFilter extends AbstractAuthenticationProc
     public void afterPropertiesSet() {
         super.afterPropertiesSet();
         CommonHelper.assertNotNull("clients", this.clients);
-        this.clients.init();
     }
 
     @Override
@@ -100,7 +99,7 @@ public final class ClientAuthenticationFilter extends AbstractAuthenticationProc
             return null;
         }
         // and create token from credential
-        final ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, client.getName());
+        final ClientAuthenticationToken token = new ClientAuthenticationToken(context, credentials, client.getName());
         // set details
         token.setDetails(this.authenticationDetailsSource.buildDetails(request));
         logger.debug("token : {}", token);

@@ -1,89 +1,205 @@
-## What is the spring-security-pac4j library ? [![Build Status](https://travis-ci.org/pac4j/spring-security-pac4j.png?branch=master)](https://travis-ci.org/pac4j/spring-security-pac4j)
+<p align="center">
+  <img src="https://pac4j.github.io/pac4j/img/logo-spring-security.png" width="300" />
+</p>
 
-The **spring-security-pac4j** library is a [Spring Security](http://static.springsource.org/spring-security/site/index.html) extension which makes multi-protocol support really easy and consistent. It successfully replaces the spring-security-cas, spring-security-oauth, spring-security-saml2-core, spring-security-openid and Spring Social libraries and also adds missing protocols.
+If you already use the [Spring Security](http://projects.spring.io/spring-security) security library, you need to use the `spring-security-pac4j` security extension which makes multi-protocol (CAS, OAuth, SAML...) support really easy and consistent. It successfully replaces the spring-security-cas, spring-security-oauth, spring-security-saml2-core, spring-security-openid and Spring Social libraries and also adds missing protocols.
 
-It supports these 7 authentication mechanisms on client side : 
+If you are looking for a full security library, you can directly use a pac4j implementation for your environment: [`spring-webmvc-pac4j`](https://github.com/pac4j/spring-webmvc-pac4j) for Spring MVC / Boot, [`j2e-pac4j`](https://github.com/pac4j/j2e-pac4j) for J2E, [`play-pac4j`](https://github.com/pac4j/play-pac4j) for Play framework v2... See all the frameworks and tools supported by [pac4j](http://www.pac4j.org).
 
-1. OAuth (1.0 & 2.0)
-2. CAS (1.0, 2.0, SAML, logout & proxy)
-3. HTTP (form & basic auth authentications)
-4. OpenID
-5. SAML (2.0)
-6. Google App Engine UserService
-7. OpenID Connect.
+`spring-security-pac4` supports many authentication mechanisms, called [**clients**](https://github.com/pac4j/pac4j/wiki/Clients):
 
-It's available under the Apache 2 license and based on the [pac4j](https://github.com/pac4j/pac4j) library.
+- **indirect / stateful clients** are for UI when the user authenticates once at an external provider (like Facebook, a CAS server...) or via a local form (or basic auth popup).
 
-If you are looking for a **full security library for your J2E** web application (using servlets and filters), you should consider using [j2e-pac4j](https://github.com/pac4j/j2e-pac4j). If you use **Spring Web MVC / Spring Boot**, you should consider using the [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) security library. See all the frameworks and tools supported by [pac4j](http://www.pac4j.org).
+See the [authentication flows](https://github.com/pac4j/pac4j/wiki/Authentication-flows).
 
-
-## Providers supported
-
-<table>
-<tr><th>Provider</th><th>Protocol</th><th>Maven dependency</th><th>Client class</th><th>Profile class</th></tr>
-<tr><td>CAS server</td><td>CAS</td><td>pac4j-cas</td><td>CasClient & CasProxyReceptor</td><td>CasProfile</td></tr>
-<tr><td>CAS server using OAuth Wrapper</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>CasOAuthWrapperClient</td><td>CasOAuthWrapperProfile</td></tr>
-<tr><td>DropBox</td><td>OAuth 1.0</td><td>pac4j-oauth</td><td>DropBoxClient</td><td>DropBoxProfile</td></tr>
-<tr><td>Facebook</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>FacebookClient</td><td>FacebookProfile</td></tr>
-<tr><td>GitHub</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>GitHubClient</td><td>GitHubProfile</td></tr>
-<tr><td>Google</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>Google2Client</td><td>Google2Profile</td></tr>
-<tr><td>LinkedIn</td><td>OAuth 1.0 & 2.0</td><td>pac4j-oauth</td><td>LinkedInClient & LinkedIn2Client</td><td>LinkedInProfile & LinkedIn2Profile</td></tr>
-<tr><td>Twitter</td><td>OAuth 1.0</td><td>pac4j-oauth</td><td>TwitterClient</td><td>TwitterProfile</td></tr>
-<tr><td>Windows Live</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>WindowsLiveClient</td><td>WindowsLiveProfile</td></tr>
-<tr><td>WordPress</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>WordPressClient</td><td>WordPressProfile</td></tr>
-<tr><td>Yahoo</td><td>OAuth 1.0</td><td>pac4j-oauth</td><td>YahooClient</td><td>YahooProfile</td></tr>
-<tr><td>PayPal</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>PayPalClient</td><td>PayPalProfile</td></tr>
-<tr><td>Vk</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>VkClient</td><td>VkProfile</td></tr>
-<tr><td>Foursquare</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>FoursquareClient</td><td>FoursquareProfile</td></tr>
-<tr><td>Bitbucket</td><td>OAuth 1.0</td><td>pac4j-oauth</td><td>BitbucketClient</td><td>BitbucketProfile</td></tr>
-<tr><td>ORCiD</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>OrcidClient</td><td>OrcidProfile</td></tr>
-<tr><td>Strava</td><td>OAuth 2.0</td><td>pac4j-oauth</td><td>StravaClient</td><td>StravaProfile</td></tr>
-<tr><td>Web sites with basic auth authentication</td><td>HTTP</td><td>pac4j-http</td><td>BasicAuthClient</td><td>HttpProfile</td></tr>
-<tr><td>Web sites with form authentication</td><td>HTTP</td><td>pac4j-http</td><td>FormClient</td><td>HttpProfile</td></tr>
-<tr><td>Yahoo</td><td>OpenID</td><td>pac4j-openid</td><td>YahooOpenIdClient</td><td>YahooOpenIdProfile</td></tr>
-<tr><td>SAML Identity Provider</td><td>SAML 2.0</td><td>pac4j-saml</td><td>Saml2Client</td><td>Saml2Profile</td></tr>
-<tr><td>Google App Engine User Service</td><td>Gae User Service Mechanism</td><td>pac4j-gae</td><td>GaeUserServiceClient</td><td>GaeUserServiceProfile</td></tr>
-<tr><td>OpenID Identity Provider</td><td>OpenID Connect 1.0</td><td>pac4j-oidc</td><td>OidcClient</td><td>OidcProfile</td></tr>
-</table>
+| The authentication mechanism you want | The `pac4j-*` submodule(s) you must use
+|---------------------------------------|----------------------------------------
+| OAuth (1.0 & 2.0): Facebook, Twitter, Google, Yahoo, LinkedIn, Github... | `pac4j-oauth`
+| CAS (1.0, 2.0, 3.0, SAML, logout, proxy) | `pac4j-cas`
+| SAML (2.0) | `pac4j-saml`
+| OpenID Connect (1.0) | `pac4j-oidc`
+| HTTP (form, basic auth)<br />+ LDAP<br />or Relational DB<br />or MongoDB<br />or Stormpath<br />or CAS REST API| `pac4j-http`<br />+ `pac4j-ldap`<br />or `pac4j-sql`<br />or `pac4j-mongo`<br />or `pac4j-stormpath`<br />or `pac4j-cas`
+| Google App Engine UserService | `pac4j-gae`
+| OpenID | `pac4j-openid`
 
 
-## Technical description
+## How to use it?
 
-This library has **only 4 classes** :
+First, you need to add a dependency on this library as well as on the appropriate `pac4j` submodules. Then, you must define the [**clients**](https://github.com/pac4j/pac4j/wiki/Clients) for authentication.
 
-1. the **ClientAuthenticationFilter** class is called after authentication at the provider (on the /j_spring_pac4j_security_check url by default) : it creates the ClientAuthenticationToken token and calls the authentication manager to finish the authentication
-2. the **ClientAuthenticationToken** class is the token for an authentication (= provider's credentials + the user profile)
-3. the **ClientAuthenticationProvider** class is the provider responsible for authenticating ClientAuthenticationToken tokens : it calls the provider to get the access token and the user profile and computes the authorities
-4. the **ClientAuthenticationEntryPoint** class redirects the user to the provider for authentication.
+Define the `ClientAuthenticationFilter` and `ClientAuthenticationProvider` to finish authentication processes.
 
-and is based on the <i>pac4j-*</i> libraries.
+Use the `ClientAuthenticationEntryPoint` entry point (using the `clientName` property for authentication) to start login at identity providers for the secured urls of your web application.
 
-Learn more by browsing the [spring-security-pac4j Javadoc](http://www.pac4j.org/apidocs/spring-security-pac4j/index.html) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/index.html).
+Just follow these easy steps:
 
 
-## How to use it ?
+### Add the required dependencies (`spring-security-pac4j-*` + `pac4j-*` libraries)
 
-### Add the required dependencies
+You need to add a dependency on `spring-security-pac4j` (<em>groupId</em>: **org.pac4j**, *version*: **1.4.0-SNAPSHOT**) as well as on the appropriate `pac4j` submodules (<em>groupId</em>: **org.pac4j**, *version*: **1.8.1-SNAPSHOT**): the `pac4j-oauth` dependency for OAuth support, the `pac4j-cas` dependency for CAS support, the `pac4j-ldap` module for LDAP authentication, ...
 
-If you want to use a specific client support, you need to add the appropriate Maven dependency in the *pom.xml* file :
 
-* for OAuth support, the *pac4j-oauth* dependency is required
-* for CAS support, the *pac4j-cas* dependency is required
-* for HTTP support, the *pac4j-http* dependency is required
-* for OpenID support, the *pac4j-openid* dependency is required
-* for SAML support, the *pac4j-saml* dependency is required
-* for Google App Engine, the *pac4j-gae* dependency is required
-* for OpenID Connect support, the *pac4j-oidc* dependency is required.
+### Define the configuration (`Clients` + `XXXClient`)
 
-For example, to add OAuth support, add the following XML snippet :
+Each authentication mechanism (Facebook, Twitter, a CAS server...) is defined by a client (implementing the `org.pac4j.core.client.Client` interface). All clients must be gathered in a `org.pac4j.core.client.Clients` class.
+You have to define all the clients in your Spring context XML file:
 
-    <dependency>
-      <groupId>org.pac4j</groupId>
-      <artifactId>pac4j-oauth</artifactId>
-      <version>1.7.0</version>
-    </dependency>
+    <bean id="facebookClient" class="org.pac4j.oauth.client.FacebookClient">
+        <property name="key" value="fbKey" />
+        <property name="secret" value="fbSecret" />
+    </bean>
 
-As these snapshot dependencies are only available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j/), the appropriate repository must be added in the *pom.xml* file also :
+    <bean id="twitterClient" class="org.pac4j.oauth.client.TwitterClient">
+        <property name="key" value="twKey" />
+        <property name="secret" value="twSecret" />
+    </bean>
+
+	<bean id="usernamePasswordAuthenticator" class="org.pac4j.http.credentials.authenticator.test.SimpleTestUsernamePasswordAuthenticator" />
+
+    <bean id="formClient" class="org.pac4j.http.client.indirect.FormClient">
+        <property name="loginUrl" value="http://localhost:8080/loginForm.jsp" />
+        <property name="authenticator" ref="usernamePasswordAuthenticator" />
+    </bean>
+
+
+    <bean id="casClient" class="org.pac4j.cas.client.CasClient">
+        <property name="casLoginUrl" value="http://mycasserverurl" />
+    </bean>
+
+    <bean id="clients" class="org.pac4j.core.client.Clients">
+        <property name="callbackUrl" value="http://localhost:8080/callback" />
+        <property name="clients">
+        	<list>
+        		<ref bean="facebookClient" />
+        		<ref bean="twitterClient" />
+        		<ref bean="formClient" />
+        		<ref bean="casClient" />
+        	</list>
+        </property>
+    </bean>
+
+"http://localhost:8080/callback" is the url of the callback endpoint (see below).
+
+
+### Define the callback endpoint
+
+Indirect clients rely on external identity providers (like Facebook) and thus require to define a callback endpoint in the application where the user will be redirected after login at the identity provider.  
+Thus, you need to define the appropriate `ClientAuthenticationFilter` in your Spring context XML file:
+
+    <bean id="clientFilter" class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
+        <property name="clients" ref="clients" />
+        <property name="authenticationManager" ref="authenticationManager" />
+    </bean>
+
+    <bean id="clientProvider" class="org.pac4j.springframework.security.authentication.ClientAuthenticationProvider">
+        <property name="clients" ref="clients" />
+    </bean>
+
+Notice you have one additional element for Spring Security:
+- the provider: `ClientAuthenticationProvider` with uses by default the `CopyRolesUserDetailsService` user details service to set the roles from the ones in the user profile (granted via by any `AuthorizationGenerator` attached to the client used).
+
+
+### Protect an url
+
+You can protect an url and require the user to be authenticated by a client by using the appropriate security configuration with entry points. For example :
+
+    <security:http pattern="/facebook/**" entry-point-ref="facebookEntryPoint">
+        <security:intercept-url pattern="/facebook/**" access="isAuthenticated()" />
+    </security:http>
+    <security:http pattern="/twitter/**" entry-point-ref="twitterEntryPoint">
+        <security:intercept-url pattern="/twitter/**" access="isAuthenticated()" />
+    </security:http>
+    ...
+    <security:http pattern="/**" entry-point-ref="casEntryPoint">
+        <security:csrf disabled="true"/>
+        <security:headers disabled="true" />
+        <security:custom-filter after="CAS_FILTER" ref="clientFilter" />
+        <security:intercept-url pattern="/cas/**" access="isAuthenticated()" />
+        <security:intercept-url pattern="/**" access="permitAll()" />
+        <security:logout logout-success-url="/" />
+    </security:http>
+    ...
+    <bean id="facebookEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="clients" ref="clients" />
+        <property name="clientName" value="FacebookClient" />
+    </bean>
+    <bean id="twitterEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="clients" ref="clients" />
+        <property name="clientName" value="TwitterClient" />
+    </bean>
+    ...
+    <bean id="casEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="clients" ref="clients" />
+        <property name="clientName" value="CasClient" />
+    </bean>
+
+For SAML support which requires Javascript POST (POST binding), notice the `<security:headers disabled="true" />`.
+
+
+### Get redirection urls
+
+You can also explicitly compute a redirection url to a provider by using the `getRedirectAction` method of the client, in order to create an explicit link for login. For example with Facebook:
+
+    <%
+    	WebContext context = new J2EContext(request, response);
+        Clients clients = (Clients) application.getAttribute("clients");
+        FacebookClient fbClient = (FacebookClient) clients.findClient(context, "FacebookClient");
+	    String redirectionUrl = fbClient.getRedirectAction(context, false).getLocation();
+	%>
+
+
+### Get the user profile
+
+
+After a successful authentication, you can get the identity of the user using the regular `SecurityContextHolder` class :
+
+    ClientAuthenticationToken token = (ClientAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+    // user profile
+    UserProfile userProfile = token.getUserProfile();
+    CommonProfile commonProfile = (CommonProfile) userProfile;
+
+The retrieved profile is at least a `CommonProfile`, from which you can retrieve the most common properties that all profiles share. But you can also cast the user profile to the appropriate profile according to the provider used for authentication. For example, after a Facebook authentication:
+ 
+    FacebookProfile facebookProfile = (FacebookProfile) commonProfile;
+
+
+### Logout
+
+For logout, like for any other Spring Security webapp, use the default logout filter (in your Spring context XML file):
+
+    <security:logout logout-success-url="/" />
+
+
+## Migration guide (1.3 -> 1.4)
+
+The entry points no longer accept a specific client directly: they now require two parameters:
+- `clients`: the defined clients
+- `clientName`: the name of the client to use to start the login process.
+
+
+## Demo
+
+The demo webapp: [spring-security-pac4j-demo](https://github.com/pac4j/spring-security-pac4j-demo) is available for tests and implement many authentication mechanisms: Facebook, Twitter, form, basic auth, CAS, SAML...
+
+
+## Release notes
+
+See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/1.4.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/1.8.1/index.html).
+
+
+## Need help?
+
+If you have any question, please use the following mailing lists:
+
+- [pac4j users](https://groups.google.com/forum/?hl=en#!forum/pac4j-users)
+- [pac4j developers](https://groups.google.com/forum/?hl=en#!forum/pac4j-dev)
+
+
+## Development
+
+The current version 1.4.0-SNAPSHOT is under development.
+
+Maven artifacts are built via Travis: [![Build Status](https://travis-ci.org/pac4j/spring-security-pac4j.png?branch=master)](https://travis-ci.org/pac4j/spring-security-pac4j) and available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j). This repository must be added in the Maven *pom.xml* file for example:
 
     <repositories>
       <repository>
@@ -98,201 +214,3 @@ As these snapshot dependencies are only available in the [Sonatype snapshots rep
         </snapshots>
       </repository>
     </repositories>
-
-### Define the clients
-
-All the clients used to communicate with various providers (Facebook, Twitter, a CAS server...) must be defined in your Spring security context file. For example :
-
-    <bean id="facebookClient" class="org.pac4j.oauth.client.FacebookClient">
-        <property name="key" value="fbkey" />
-        <property name="secret" value="fbsecret" />
-    </bean>
-    <bean id="twitterClient" class="org.pac4j.oauth.client.TwitterClient">
-        <property name="key" value="twkey" />
-        <property name="secret" value="twsecret" />
-    </bean>
-	<bean id="usernamePasswordAuthenticator" class="org.pac4j.http.credentials.SimpleTestUsernamePasswordAuthenticator" />
-    <bean id="formClient" class="org.pac4j.http.client.FormClient">
-        <property name="loginUrl" value="http://localhost:8080/theForm.jsp" />
-        <property name="usernamePasswordAuthenticator" ref="usernamePasswordAuthenticator" />
-    </bean>
-    <bean id="basicAuthClient" class="org.pac4j.http.client.BasicAuthClient">
-        <property name="usernamePasswordAuthenticator" ref="usernamePasswordAuthenticator" />
-    </bean>
-    <bean id="casClient" class="org.pac4j.cas.client.CasClient">
-        <property name="casLoginUrl" value="http://localhost:8888/cas/login" />
-    </bean>
-    <bean id="clients" class="org.pac4j.core.client.Clients">
-        <property name="callbackUrl" value="http://localhost:8080/callback" />
-        <property name="clients">
-        	<list>
-        		<ref bean="facebookClient" />
-        		<ref bean="twitterClient" />
-        		<ref bean="formClient" />
-        		<ref bean="basicAuthClient" />
-        		<ref bean="casClient" />
-        	</list>
-        </property>
-    </bean>
-
-### Define the appropriate filter and provider
-
-To authenticate/get the profile of the users in your application after they have been successfully authenticated at the providers, you need to define a filter to receive callbacks (with credentials from the providers) and a provider to finish the authentication process :
-
-    <bean id="clientFilter" class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
-    	<constructor-arg value="/callback"/>
-        <property name="clients" ref="clients" />
-        <property name="authenticationManager" ref="authenticationManager" />
-    </bean>
-    <bean id="clientProvider" class="org.pac4j.springframework.security.authentication.ClientAuthenticationProvider">
-        <property name="clients" ref="clients" />
-    </bean>
-
-By default, the callback url is defined on /callback
-
-### Protect the urls
-
-You can protect your urls and force the user to be authenticated by a client by using the defining the appropriate security configuration with entry points. For example :
-
-    <security:http pattern="/facebook/**" entry-point-ref="facebookEntryPoint">
-        <security:custom-filter after="CAS_FILTER" ref="clientFilter" />
-        <security:intercept-url pattern="/facebook/**" access="IS_AUTHENTICATED_FULLY" />
-    </security:http>
-    <security:http pattern="/twitter/**" entry-point-ref="twitterEntryPoint">
-        <security:custom-filter after="CAS_FILTER" ref="clientFilter" />
-        <security:intercept-url pattern="/twitter/**" access="IS_AUTHENTICATED_FULLY" />
-    </security:http>
-    ...
-    <security:http pattern="/**" entry-point-ref="casEntryPoint">
-        <security:custom-filter after="CAS_FILTER" ref="clientFilter" />
-        <security:intercept-url pattern="/cas/**" access="IS_AUTHENTICATED_FULLY" />
-        <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-        <security:logout />
-    </security:http>
-	<bean id="facebookEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
-        <property name="client" ref="facebookClient" />
-    </bean>
-    <bean id="twitterEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
-        <property name="client" ref="twitterClient" />
-    </bean>
-    ...
-    <bean id="casEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
-        <property name="client" ref="casClient" />
-    </bean>
-
-For SAML support which requires Javascript POST (POST binding), add: `<security:headers disabled="true" />`.
-
-### Get redirection urls
-
-You can also explicitely compute a redirection url to a provider for authentication by using the *getRedirectionUrl* method of the client. For example with Facebook :  
-
-    <%
-    	WebContext context = new J2EContext(request, response); 
-	    FacebookClient fbClient = (FacebookClient) application.getAttribute("FacebookClient");
-	    String redirectionUrl = fbClient.getRedirectionUrl(context, false, false);
-	%>
-
-### Get the user profile
-
-After successful authentication, you can get the authentication of the user using the well-known *SecurityContextHolder* class :
-
-    ClientAuthenticationToken token = (ClientAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-    // user profile
-    UserProfile userProfile = token.getUserProfile();
-    CommonProfile commonProfile = (CommonProfile) userProfile;
-    
-The profile returned is a *CommonProfile*, from which you can retrieve the most common properties that all profiles share. 
-But you can also cast the user profile to the appropriate profile according to the provider used for authentication.
-For example, after a Facebook authentication :
- 
-    // facebook profile
-    FacebookProfile facebookProfile = (FacebookProfile) commonProfile;
-
-Or for all the OAuth 1.0/2.0 profiles, to get the access token :
-    
-    OAuth10Profile oauthProfile = (OAuth10Profile) commonProfile
-    String accessToken = oauthProfile.getAccessToken();
-    // or
-    String accessToken = facebookProfile.getAccessToken();
-
-### Java config sample
-
-    @Configuration
-    public class Pac4jConfiguration {
-
-      @Value("${google.key}")
-      private String key;
-
-      @Value("${google.secret}")
-      private String secret;
-
-      @Value("${callbackUrl}")
-      private String callbackUrl;
-
-      @Bean(initMethod = "init")
-      public Clients clients() {
-        return new Clients(callbackUrl, googleClient());
-      }
-
-      @Bean
-      public Google2Client googleClient() {
-        return new Google2Client(key, secret);
-      }
-    }
-
-    @Configuration
-    @EnableWebMvcSecurity
-    public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-      @Autowired
-      private Clients clients;
-
-      @Autowired
-      private Google2Client googleClient;
-
-      @Override
-      protected void configure(final HttpSecurity http) throws Exception {
-        final ClientAuthenticationFilter clientFilter = new ClientAuthenticationFilter("/callback");
-        clientFilter.setClients(clients);
-        clientFilter.setAuthenticationManager(authenticationManager());
-        final ClientAuthenticationEntryPoint googleEntryPoint = new ClientAuthenticationEntryPoint();
-        googleEntryPoint.setClient(googleClient);
-        http.authorizeRequests().antMatchers("/google").hasRole("USER").and()
-          .addFilterBefore(clientFilter, AnonymousAuthenticationFilter.class).exceptionHandling()
-          .authenticationEntryPoint(googleEntryPoint).and();
-      }
-
-      @Override
-      protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        final ClientAuthenticationProvider clientProvider = new ClientAuthenticationProvider();
-        clientProvider.setClients(clients);
-        auth.authenticationProvider(clientProvider);
-      }
-    }
-
-### Demo
-
-A demo with Facebook, Twitter, CAS, form authentication and basic auth authentication providers is available at [spring-security-pac4j-demo](https://github.com/pac4j/spring-security-pac4j-demo).
-
-
-## Versions
-
-The current version **1.4.0-SNAPSHOT** is under development. It's available on the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j) as a Maven dependency :
-
-The last released version is the **1.3.0** :
-
-    <dependency>
-        <groupId>org.pac4j</groupId>
-        <artifactId>spring-security-pac4j</artifactId>
-        <version>1.3.0</version>
-    </dependency>
-
-See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes).
-
-
-## Contact
-
-If you have any question, please use the following mailing lists :
-- [pac4j users](https://groups.google.com/forum/?hl=en#!forum/pac4j-users)
-- [pac4j developers](https://groups.google.com/forum/?hl=en#!forum/pac4j-dev)
-

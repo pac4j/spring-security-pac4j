@@ -1,5 +1,5 @@
 /*
-  Copyright 2012 - 2014 Jerome Leleu
+  Copyright 2012 - 2015 Jerome Leleu
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.pac4j.core.client.Client;
+import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.RequiresHttpAction;
@@ -34,7 +35,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 /**
  * This entry point redirects the user to the provider.
- * 
+ *
  * @author Jerome Leleu
  * @since 1.0.0
  */
@@ -43,28 +44,40 @@ public final class ClientAuthenticationEntryPoint implements AuthenticationEntry
 
     private static final Logger logger = LoggerFactory.getLogger(ClientAuthenticationEntryPoint.class);
 
-    private Client client;
+    private Clients clients;
+
+    private String clientName;
 
     public void commence(final HttpServletRequest request, final HttpServletResponse response,
             final AuthenticationException authException) throws IOException, ServletException {
-        logger.debug("client : {}", this.client);
         final WebContext context = new J2EContext(request, response);
+        final Client client = clients.findClient(context, clientName);
+        logger.debug("client : {}", client);
         try {
-            this.client.redirect(context, true, false);
+            client.redirect(context, true);
         } catch (final RequiresHttpAction e) {
             logger.debug("extra HTTP action required : {}", e.getCode());
         }
     }
 
     public void afterPropertiesSet() throws Exception {
-        CommonHelper.assertNotNull("client", this.client);
+        CommonHelper.assertNotNull("clients", clients);
+        CommonHelper.assertNotBlank("clientName", clientName);
     }
 
-    public Client getClient() {
-        return this.client;
+    public Clients getClients() {
+        return clients;
     }
 
-    public void setClient(final Client client) {
-        this.client = client;
+    public void setClients(Clients clients) {
+        this.clients = clients;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 }

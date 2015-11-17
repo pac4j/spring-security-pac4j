@@ -17,9 +17,11 @@ package org.pac4j.springframework.security.authentication;
 
 import java.util.Collection;
 
+import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.profile.UserProfile;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -32,7 +34,9 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public final class ClientAuthenticationToken extends AbstractAuthenticationToken {
 
-    private static final long serialVersionUID = 8303047831754762526L;
+    private static final long serialVersionUID = 8303047831754762527L;
+
+    private WebContext context;
 
     private Credentials credentials;
 
@@ -42,18 +46,20 @@ public final class ClientAuthenticationToken extends AbstractAuthenticationToken
 
     private final UserDetails userDetails;
 
-    public ClientAuthenticationToken(final Credentials credentials, final String clientName) {
+    public ClientAuthenticationToken(final WebContext context, final Credentials credentials, final String clientName) {
         super(null);
+        this.context = context;
         this.credentials = credentials;
         this.clientName = clientName;
         this.userDetails = null;
         setAuthenticated(false);
     }
 
-    public ClientAuthenticationToken(final Credentials credentials, final String clientName,
+    public ClientAuthenticationToken(final WebContext context, final Credentials credentials, final String clientName,
             final UserProfile userProfile,
             final Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
+        this.context = context;
         this.credentials = credentials;
         this.clientName = clientName;
         this.userProfile = userProfile;
@@ -61,15 +67,20 @@ public final class ClientAuthenticationToken extends AbstractAuthenticationToken
         setAuthenticated(true);
     }
 
-    public ClientAuthenticationToken(final Credentials credentials, final String clientName,
+    public ClientAuthenticationToken(final WebContext context, final Credentials credentials, final String clientName,
             final UserProfile userProfile, final Collection<? extends GrantedAuthority> authorities,
             final UserDetails userDetails) {
         super(authorities);
+        this.context = context;
         this.credentials = credentials;
         this.clientName = clientName;
         this.userProfile = userProfile;
         this.userDetails = userDetails;
         setAuthenticated(true);
+    }
+
+    public WebContext getContext() {
+        return context;
     }
 
     @Override
@@ -90,7 +101,13 @@ public final class ClientAuthenticationToken extends AbstractAuthenticationToken
 
     @Override
     public void eraseCredentials() {
-        this.credentials = null;
+        credentials.clear();
+        if (userProfile != null) {
+            userProfile.clear();
+        }
+        if (userDetails != null && userDetails instanceof CredentialsContainer) {
+            ((CredentialsContainer) userDetails).eraseCredentials();
+        }
     }
 
     public UserProfile getUserProfile() {
