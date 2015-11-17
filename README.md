@@ -96,7 +96,7 @@ Thus, you need to define the appropriate `ClientAuthenticationFilter` in your Sp
     </bean>
 
 Notice you have one additional element for Spring Security:
-- the provider: `ClientAuthenticationProvider` with uses by default the `CopyRolesUserDetailsService` user details service to set the roles from the ones in the user profile (granted via by any `AuthorizationGenerator` attached to the client used).
+- the provider: `ClientAuthenticationProvider` with uses by default the `CopyRolesUserDetailsService` user details service to set the roles from the ones in the user profile (granted by any `AuthorizationGenerator` attached to the client used).
 
 
 ### Protect an url
@@ -172,7 +172,7 @@ For logout, like for any other Spring Security webapp, use the default logout fi
 
 ## Migration guide (1.3 -> 1.4)
 
-The entry points no longer accept a specific client directly: they now require two parameters:
+The entry points no longer accept a specific client directly, they now require two parameters:
 - `clients`: the defined clients
 - `clientName`: the name of the client to use to start the login process.
 
