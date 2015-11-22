@@ -68,6 +68,7 @@ public final class ClientAuthenticationFilter extends AbstractAuthenticationProc
     public void afterPropertiesSet() {
         super.afterPropertiesSet();
         CommonHelper.assertNotNull("clients", this.clients);
+        this.clients.init();
     }
 
     @Override
@@ -99,14 +100,14 @@ public final class ClientAuthenticationFilter extends AbstractAuthenticationProc
             return null;
         }
         // and create token from credential
-        final ClientAuthenticationToken token = new ClientAuthenticationToken(context, credentials, client.getName());
+        final ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, client.getName());
         // set details
         token.setDetails(this.authenticationDetailsSource.buildDetails(request));
-        logger.debug("token : {}", token);
+        logger.debug("token: {}", token);
 
         // authenticate
         final Authentication authentication = getAuthenticationManager().authenticate(token);
-        logger.debug("authentication : {}", authentication);
+        logger.debug("authentication: {}", authentication);
         return authentication;
     }
 

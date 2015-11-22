@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.pac4j.core.client.Client;
-import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.RequiresHttpAction;
@@ -44,40 +43,28 @@ public final class ClientAuthenticationEntryPoint implements AuthenticationEntry
 
     private static final Logger logger = LoggerFactory.getLogger(ClientAuthenticationEntryPoint.class);
 
-    private Clients clients;
-
-    private String clientName;
+    private Client client;
 
     public void commence(final HttpServletRequest request, final HttpServletResponse response,
-            final AuthenticationException authException) throws IOException, ServletException {
+                         final AuthenticationException authException) throws IOException, ServletException {
+        logger.debug("client: {}", this.client);
         final WebContext context = new J2EContext(request, response);
-        final Client client = clients.findClient(context, clientName);
-        logger.debug("client : {}", client);
         try {
-            client.redirect(context, true);
+            this.client.redirect(context, true);
         } catch (final RequiresHttpAction e) {
-            logger.debug("extra HTTP action required : {}", e.getCode());
+            logger.debug("extra HTTP action required: {}", e.getCode());
         }
     }
 
     public void afterPropertiesSet() throws Exception {
-        CommonHelper.assertNotNull("clients", clients);
-        CommonHelper.assertNotBlank("clientName", clientName);
+        CommonHelper.assertNotNull("client", this.client);
     }
 
-    public Clients getClients() {
-        return clients;
+    public Client getClient() {
+        return this.client;
     }
 
-    public void setClients(Clients clients) {
-        this.clients = clients;
-    }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setClient(final Client client) {
+        this.client = client;
     }
 }

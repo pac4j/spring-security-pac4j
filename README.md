@@ -120,17 +120,14 @@ You can protect an url and require the user to be authenticated by a client by u
     </security:http>
     ...
     <bean id="facebookEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
-        <property name="clients" ref="clients" />
-        <property name="clientName" value="FacebookClient" />
+        <property name="client" ref="facebookClient" />
     </bean>
     <bean id="twitterEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
-        <property name="clients" ref="clients" />
-        <property name="clientName" value="TwitterClient" />
+        <property name="client" ref="twitterClient" />
     </bean>
     ...
     <bean id="casEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
-        <property name="clients" ref="clients" />
-        <property name="clientName" value="CasClient" />
+        <property name="client" ref="casClient" />
     </bean>
 
 For SAML support which requires Javascript POST (POST binding), notice the `<security:headers disabled="true" />`.
@@ -168,13 +165,6 @@ The retrieved profile is at least a `CommonProfile`, from which you can retrieve
 For logout, like for any other Spring Security webapp, use the default logout filter (in your Spring context XML file):
 
     <security:logout logout-success-url="/" />
-
-
-## Migration guide (1.3 -> 1.4)
-
-The entry points no longer accept a specific client directly, they now require two parameters:
-- `clients`: the defined clients
-- `clientName`: the name of the client to use to start the login process.
 
 
 ## Demo

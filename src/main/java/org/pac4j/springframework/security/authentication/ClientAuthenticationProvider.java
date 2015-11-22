@@ -20,7 +20,6 @@ import java.util.Collection;
 
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
-import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.util.CommonHelper;
@@ -72,8 +71,7 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
 
         // get the right client
         final String clientName = token.getClientName();
-        final WebContext context = token.getContext();
-        final Client client = this.clients.findClient(context, clientName);
+        final Client client = this.clients.findClient(clientName);
         // get the user profile
         final UserProfile userProfile = client.getUserProfile(credentials, null);
         logger.debug("userProfile : {}", userProfile);
@@ -83,7 +81,7 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
         // get user details and check them
         UserDetails userDetails = null;
         if (this.userDetailsService != null) {
-            final ClientAuthenticationToken tmpToken = new ClientAuthenticationToken(context, credentials, clientName,
+            final ClientAuthenticationToken tmpToken = new ClientAuthenticationToken(credentials, clientName,
                     userProfile, null);
             userDetails = this.userDetailsService.loadUserDetails(tmpToken);
             logger.debug("userDetails : {}", userDetails);
@@ -96,7 +94,7 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
 
         // new token with credentials (like previously) and user profile and
         // authorities
-        final ClientAuthenticationToken result = new ClientAuthenticationToken(context, credentials, clientName, userProfile,
+        final ClientAuthenticationToken result = new ClientAuthenticationToken(credentials, clientName, userProfile,
                 authorities, userDetails);
         result.setDetails(authentication.getDetails());
         logger.debug("result : {}", result);
@@ -111,6 +109,7 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
     @Override
     public void afterPropertiesSet() {
         CommonHelper.assertNotNull("clients", this.clients);
+        this.clients.init();
     }
 
     public Clients getClients() {
