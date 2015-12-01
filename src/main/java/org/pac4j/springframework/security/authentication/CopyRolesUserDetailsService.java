@@ -34,45 +34,13 @@ import java.util.List;
  */
 public class CopyRolesUserDetailsService implements AuthenticationUserDetailsService<ClientAuthenticationToken> {
 
-
     public UserDetails loadUserDetails(final ClientAuthenticationToken token) throws UsernameNotFoundException {
         final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         for (String role: token.getUserProfile().getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role));
         }
 
-        return new UserDetails() {
-
-            private static final long serialVersionUID = 6523314653561682296L;
-
-            public Collection<? extends GrantedAuthority> getAuthorities() {
-                return authorities;
-            }
-
-            public String getPassword() {
-                return null;
-            }
-
-            public String getUsername() {
-                return token.getUserProfile().getId();
-            }
-
-            public boolean isAccountNonExpired() {
-                return true;
-            }
-
-            public boolean isAccountNonLocked() {
-                return true;
-            }
-
-            public boolean isCredentialsNonExpired() {
-                return true;
-            }
-
-            public boolean isEnabled() {
-                return true;
-            }
-        };
-
+        return new ClientUserDetails(token.getUserProfile().getId(), authorities);
     }
+
 }
