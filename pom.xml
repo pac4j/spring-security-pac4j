@@ -27,7 +27,7 @@
     <artifactId>spring-security-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>pac4j extension for Spring Security</name>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.4.0</version>
     <description>Security extension for Spring Security based on pac4j</description>
     <url>https://github.com/pac4j/spring-security-pac4j</url>
 
