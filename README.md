@@ -38,7 +38,7 @@ Just follow these easy steps:
 
 You need to add a dependency on `spring-security-pac4j` (<em>groupId</em>: **org.pac4j**, *version*: **1.4.0**) as well as on the appropriate `pac4j` submodules (<em>groupId</em>: **org.pac4j**, *version*: **1.8.1**): the `pac4j-oauth` dependency for OAuth support, the `pac4j-cas` dependency for CAS support, the `pac4j-ldap` module for LDAP authentication, ...
 
-All artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
+All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
 
 ### Define the configuration (`Clients` + `XXXClient`)
