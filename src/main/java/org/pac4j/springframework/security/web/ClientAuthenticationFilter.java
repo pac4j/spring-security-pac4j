@@ -96,7 +96,7 @@ public final class ClientAuthenticationFilter extends AbstractAuthenticationProc
         logger.debug("credentials : {}", credentials);
         // if credentials/profile is null, return to the saved request url
         if (credentials == null) {
-            getSuccessHandler().onAuthenticationSuccess(request, response, null);
+            getFailureHandler().onAuthenticationFailure(request, response, null);
             return null;
         }
         // and create token from credential
