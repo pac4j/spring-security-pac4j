@@ -135,18 +135,6 @@ You can protect an url and require the user to be authenticated by a client by u
 For SAML support which requires Javascript POST (POST binding), notice the `<security:headers disabled="true" />`.
 
 
-### Get redirection urls
-
-You can also explicitly compute a redirection url to a provider by using the `getRedirectAction` method of the client, in order to create an explicit link for login. For example with Facebook:
-
-    <%
-    	WebContext context = new J2EContext(request, response);
-        Clients clients = (Clients) application.getAttribute("clients");
-        FacebookClient fbClient = (FacebookClient) clients.findClient(context, "FacebookClient");
-	    String redirectionUrl = fbClient.getRedirectAction(context, false).getLocation();
-	%>
-
-
 ### Get the user profile
 
 
