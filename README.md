@@ -97,8 +97,10 @@ Thus, you need to define the appropriate `ClientAuthenticationFilter` in your Sp
         <property name="clients" ref="clients" />
     </bean>
 
+The default failure handler will return a 401 error page, but you can explicitely define your own in the `ClientAuthenticationFilter` as well as a specific success handler.
+
 Notice you have one additional element for Spring Security:
-- the provider: `ClientAuthenticationProvider` with uses by default the `CopyRolesUserDetailsService` user details service to set the roles from the ones in the user profile (granted by any `AuthorizationGenerator` attached to the client used).
+- the provider: `ClientAuthenticationProvider` which uses by default the `CopyRolesUserDetailsService` user details service to set the roles from the ones in the user profile (granted by any `AuthorizationGenerator` attached to the client used).
 
 
 ### Protect an url
