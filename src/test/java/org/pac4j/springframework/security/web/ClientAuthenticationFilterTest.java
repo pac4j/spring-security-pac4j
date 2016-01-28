@@ -20,12 +20,10 @@ import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.internal.util.reflection.Whitebox;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
@@ -48,7 +46,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -56,10 +53,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- *
- *  @author Mohd Farid mohd.farid@devfactory.com
+ * @author Mohd Farid mohd.farid@devfactory.com
  * @since 1.4.2
- *
  */
 
 @RunWith(PowerMockRunner.class)
@@ -69,31 +64,31 @@ public class ClientAuthenticationFilterTest {
     ClientAuthenticationFilter clientAuthenticationFilter;
 
     @Mock
-    Clients clients;
+    private Clients clients;
 
     @Mock
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Mock
-    HttpServletRequest request;
+    private HttpServletRequest request;
 
     @Mock
-    HttpServletResponse response;
+    private HttpServletResponse response;
 
     @Mock
-    J2EContext j2EContext;
+    private J2EContext j2EContext;
 
     @Mock
-    Client client;
+    private Client client;
 
     @Mock
-    Credentials credentials;
+    private Credentials credentials;
 
     @Mock
-    ClientAuthenticationToken clientAuthenticationToken;
+    private ClientAuthenticationToken clientAuthenticationToken;
 
     @Mock
-    Authentication authentication;
+    private Authentication authentication;
 
     @Before
     public void setup() throws Exception {
@@ -136,12 +131,11 @@ public class ClientAuthenticationFilterTest {
         when(client.getCredentials(j2EContext)).thenThrow(credentialsException);
 
         //when
-        try{
+        try {
             clientAuthenticationFilter.attemptAuthentication(request, response);
             fail("An AuthenticationCredentialsException must have occurred as the getCredentials() " +
                     "method had thrown CredentialsException exception.");
-        }
-        catch (AuthenticationCredentialsException ex){
+        } catch (AuthenticationCredentialsException ex) {
             assertEquals("Error retrieving credentials", ex.getMessage());
             assertEquals(credentialsException, ex.getCause());
         }
@@ -178,12 +172,12 @@ public class ClientAuthenticationFilterTest {
 
     @Test
     public void testGettersAndSetters() throws Exception {
-            Validator validator = ValidatorBuilder.create().with(new SetterTester()).with(new GetterTester()).build();
-            validator.validate(PojoClassFactory.getPojoClass(ClientAuthenticationFilter.class));
+        Validator validator = ValidatorBuilder.create().with(new SetterTester()).with(new GetterTester()).build();
+        validator.validate(PojoClassFactory.getPojoClass(ClientAuthenticationFilter.class));
     }
 
     @Test
-    public void testConstructor(){
+    public void testConstructor() {
         //when
         ClientAuthenticationFilter clientAuthenticationFilter = new ClientAuthenticationFilter("suffix-url");
 
