@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint;
+import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -39,6 +40,7 @@ import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 import static org.mockito.internal.util.reflection.Whitebox.getInternalState;
 
 /**
@@ -57,7 +59,7 @@ public class ClientAuthenticationTokenTest {
 
     @Before
     public void setUp() throws Exception {
-        userDetails = mock(UserDetails.class);
+        userDetails = mock(UserDetails.class, withSettings().extraInterfaces(CredentialsContainer.class));
         userProfile = mock(UserProfile.class);
         credentials = mock(Credentials.class);
 
@@ -176,5 +178,6 @@ public class ClientAuthenticationTokenTest {
         //then
         verify(credentials).clear();
         verify(userProfile).clear();
+        verify((CredentialsContainer) userDetails).eraseCredentials();
     }
 }
