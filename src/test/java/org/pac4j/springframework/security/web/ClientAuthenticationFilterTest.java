@@ -59,7 +59,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({J2EContext.class, ClientAuthenticationToken.class, ClientAuthenticationFilter.class})
-public class ClientAuthenticationFilterTest {
+public final class ClientAuthenticationFilterTest {
+
+    private final static String CLIENT_NAME = "CLIENT_NAME";
 
     ClientAuthenticationFilter clientAuthenticationFilter;
 
@@ -96,10 +98,10 @@ public class ClientAuthenticationFilterTest {
         clientAuthenticationFilter.setClients(clients);
         clientAuthenticationFilter.setAuthenticationManager(authenticationManager);
         PowerMockito.whenNew(J2EContext.class).withAnyArguments().thenReturn(j2EContext);
-        when(client.getName()).thenReturn("CLIENT_NAME");
+        when(client.getName()).thenReturn(CLIENT_NAME);
         when(clients.findClient(j2EContext)).thenReturn(client);
         clientAuthenticationFilter.setClients(clients);
-        PowerMockito.whenNew(ClientAuthenticationToken.class).withArguments(credentials, "CLIENT_NAME").thenReturn(clientAuthenticationToken);
+        PowerMockito.whenNew(ClientAuthenticationToken.class).withArguments(credentials, CLIENT_NAME, j2EContext).thenReturn(clientAuthenticationToken);
         when(authenticationManager.authenticate(clientAuthenticationToken)).thenReturn(authentication);
     }
 
@@ -167,7 +169,7 @@ public class ClientAuthenticationFilterTest {
         assertNull("authentication result must be null when getCredentials() returns null",
                 authenticationResult);
         verify(j2EContext).setSessionAttribute(Pac4jConstants.REQUESTED_URL, "");
-        verify(j2EContext).setSessionAttribute("CLIENT_NAME" + IndirectClient.ATTEMPTED_AUTHENTICATION_SUFFIX, "");
+        verify(j2EContext).setSessionAttribute(CLIENT_NAME + IndirectClient.ATTEMPTED_AUTHENTICATION_SUFFIX, "");
     }
 
     @Test

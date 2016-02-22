@@ -22,6 +22,7 @@ import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
 import org.junit.Before;
 import org.junit.Test;
+import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint;
@@ -47,13 +48,20 @@ import static org.mockito.internal.util.reflection.Whitebox.getInternalState;
  * @author Mohd Farid mohd.farid@devfactory.com
  * @since 1.4.2
  */
-public class ClientAuthenticationTokenTest {
+public final class ClientAuthenticationTokenTest {
+
+    private final static String CLIENT_NAME = "SomeClientName";
+    private final static String ROLE_USER = "ROLE_USER";
+    private final static String ROLE_ADMIN = "ROLE_ADMIN";
+    private final static String ID = "SomeUserId";
 
     private Credentials credentials;
 
     private UserProfile userProfile;
 
     private UserDetails userDetails;
+
+    private WebContext webContext;
 
     private List<GrantedAuthority> authorities;
 
@@ -62,13 +70,14 @@ public class ClientAuthenticationTokenTest {
         userDetails = mock(UserDetails.class, withSettings().extraInterfaces(CredentialsContainer.class));
         userProfile = mock(UserProfile.class);
         credentials = mock(Credentials.class);
+        webContext = mock(WebContext.class);
 
         authorities = new ArrayList<>();
         GrantedAuthority userAuthority = mock(GrantedAuthority.class);
-        when(userAuthority.getAuthority()).thenReturn("ROLE_USER");
+        when(userAuthority.getAuthority()).thenReturn(ROLE_USER);
 
         GrantedAuthority adminAuthority = mock(GrantedAuthority.class);
-        when(adminAuthority.getAuthority()).thenReturn("ROLE_ADMIN");
+        when(adminAuthority.getAuthority()).thenReturn(ROLE_ADMIN);
         authorities.add(userAuthority);
         authorities.add(adminAuthority);
     }
@@ -82,11 +91,11 @@ public class ClientAuthenticationTokenTest {
     @Test
     public void testConstructor_credentials_clientName() {
         //when
-        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, "SomeClientName");
+        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, CLIENT_NAME, webContext);
 
         //then
         assertEquals(credentials, token.getCredentials());
-        assertEquals("SomeClientName", token.getClientName());
+        assertEquals(CLIENT_NAME, token.getClientName());
         assertEquals(null, token.getUserDetails());
         assertFalse(token.isAuthenticated());
     }
@@ -95,43 +104,43 @@ public class ClientAuthenticationTokenTest {
     @Test
     public void testConstructor_credentials_clientName_userProfile_authorities() {
         //when
-        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, "SomeClientName", userProfile, authorities);
+        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, CLIENT_NAME, webContext, userProfile, authorities);
 
         //then
         assertEquals(credentials, token.getCredentials());
         assertEquals(userProfile, token.getUserProfile());
-        assertEquals("SomeClientName", token.getClientName());
+        assertEquals(CLIENT_NAME, token.getClientName());
         assertEquals(null, token.getUserDetails());
         assertTrue(token.isAuthenticated());
         List<GrantedAuthority> authoritiesFound = (List<GrantedAuthority>) getInternalState(token, "authorities");
         assertEquals(2, authoritiesFound.size());
-        assertEquals("ROLE_USER", authoritiesFound.get(0).getAuthority());
-        assertEquals("ROLE_ADMIN", authoritiesFound.get(1).getAuthority());
+        assertEquals(ROLE_USER, authoritiesFound.get(0).getAuthority());
+        assertEquals(ROLE_ADMIN, authoritiesFound.get(1).getAuthority());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testConstructor_credentials_clientName_userProfile_authorities_userDetails() {
         //when
-        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, "SomeClientName", userProfile, authorities, userDetails);
+        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, CLIENT_NAME, webContext, userProfile, authorities, userDetails);
 
         //then
         assertEquals(credentials, token.getCredentials());
         assertEquals(userProfile, token.getUserProfile());
         assertEquals(userDetails, token.getUserDetails());
-        assertEquals("SomeClientName", token.getClientName());
+        assertEquals(CLIENT_NAME, token.getClientName());
         assertTrue(token.isAuthenticated());
         List<GrantedAuthority> authoritiesFound = (List<GrantedAuthority>) getInternalState(token, "authorities");
         assertEquals(2, authoritiesFound.size());
-        assertEquals("ROLE_USER", authoritiesFound.get(0).getAuthority());
-        assertEquals("ROLE_ADMIN", authoritiesFound.get(1).getAuthority());
+        assertEquals(ROLE_USER, authoritiesFound.get(0).getAuthority());
+        assertEquals(ROLE_ADMIN, authoritiesFound.get(1).getAuthority());
     }
 
 
     @Test
     public void testGetPrincipal_WhenUserDetailsAndProfileNotSet() throws Exception {
         //when
-        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, "SomeClientName");
+        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, CLIENT_NAME, webContext);
 
         //when
         Object principal = token.getPrincipal();
@@ -143,7 +152,7 @@ public class ClientAuthenticationTokenTest {
     @Test
     public void testGetPrincipal_WhenUserDetailsIsSet() throws Exception {
         //when
-        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, "SomeClientName", userProfile, authorities, userDetails);
+        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, CLIENT_NAME, webContext, userProfile, authorities, userDetails);
 
         //when
         Object principal = token.getPrincipal();
@@ -156,21 +165,21 @@ public class ClientAuthenticationTokenTest {
     @Test
     public void testGetPrincipal_WhenUserDetailsNotSet_ButUserProfileIsSet() throws Exception {
         //given
-        when(userProfile.getTypedId()).thenReturn("SomeUserId");
-        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, "SomeClientName", userProfile, authorities);
+        when(userProfile.getTypedId()).thenReturn(ID);
+        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, CLIENT_NAME, webContext, userProfile, authorities);
 
         //when
         Object principal = token.getPrincipal();
 
         //then
-        assertEquals("SomeUserId", principal);
+        assertEquals(ID, principal);
     }
 
     @Test
     public void testEraseCredentials() throws Exception {
         //given
-        when(userProfile.getTypedId()).thenReturn("SomeUserId");
-        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, "SomeClientName", userProfile, authorities, userDetails);
+        when(userProfile.getTypedId()).thenReturn(ID);
+        ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, CLIENT_NAME, webContext, userProfile, authorities, userDetails);
 
         //when
         token.eraseCredentials();
