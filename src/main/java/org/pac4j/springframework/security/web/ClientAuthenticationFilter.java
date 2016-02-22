@@ -104,7 +104,7 @@ public final class ClientAuthenticationFilter extends AbstractAuthenticationProc
             return null;
         }
         // and create token from credential
-        final ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, client.getName());
+        final ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, client.getName(), context);
         // set details
         token.setDetails(this.authenticationDetailsSource.buildDetails(request));
         logger.debug("token: {}", token);

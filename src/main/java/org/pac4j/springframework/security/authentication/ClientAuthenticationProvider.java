@@ -20,6 +20,7 @@ import java.util.Collection;
 
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
+import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.util.CommonHelper;
@@ -58,46 +59,47 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
             "unchecked", "rawtypes"
     })
     public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
-        logger.debug("authentication : {}", authentication);
+        logger.debug("authentication: {}", authentication);
         if (!supports(authentication.getClass())) {
-            logger.debug("unsupported authentication class : {}", authentication.getClass());
+            logger.debug("unsupported authentication class: {}", authentication.getClass());
             return null;
         }
         final ClientAuthenticationToken token = (ClientAuthenticationToken) authentication;
 
         // get the credentials
         final Credentials credentials = (Credentials) authentication.getCredentials();
-        logger.debug("credentials : {}", credentials);
+        logger.debug("credentials: {}", credentials);
 
         // get the right client
         final String clientName = token.getClientName();
         final Client client = this.clients.findClient(clientName);
         // get the user profile
-        final UserProfile userProfile = client.getUserProfile(credentials, null);
-        logger.debug("userProfile : {}", userProfile);
+        final WebContext context = token.getContext();
+        final UserProfile userProfile = client.getUserProfile(credentials, context);
+        logger.debug("userProfile: {}", userProfile);
 
         // by default, no authorities
-        Collection<? extends GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
         // get user details and check them
         UserDetails userDetails = null;
         if (this.userDetailsService != null) {
-            final ClientAuthenticationToken tmpToken = new ClientAuthenticationToken(credentials, clientName,
+            final ClientAuthenticationToken tmpToken = new ClientAuthenticationToken(credentials, clientName, context,
                     userProfile, null);
             userDetails = this.userDetailsService.loadUserDetails(tmpToken);
-            logger.debug("userDetails : {}", userDetails);
+            logger.debug("userDetails: {}", userDetails);
             if (userDetails != null) {
                 this.userDetailsChecker.check(userDetails);
                 authorities = userDetails.getAuthorities();
-                logger.debug("authorities : {}", authorities);
+                logger.debug("authorities: {}", authorities);
             }
         }
 
         // new token with credentials (like previously) and user profile and
         // authorities
-        final ClientAuthenticationToken result = new ClientAuthenticationToken(credentials, clientName, userProfile,
+        final ClientAuthenticationToken result = new ClientAuthenticationToken(credentials, clientName, context, userProfile,
                 authorities, userDetails);
         result.setDetails(authentication.getDetails());
-        logger.debug("result : {}", result);
+        logger.debug("result: {}", result);
         return result;
     }
 
