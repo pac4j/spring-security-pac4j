@@ -23,7 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
+import org.pac4j.core.client.IndirectClient;
 import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.exception.CredentialsException;
@@ -96,11 +98,13 @@ public final class ClientAuthenticationFilter extends AbstractAuthenticationProc
         logger.debug("credentials : {}", credentials);
         // if credentials/profile is null, return to the saved request url
         if (credentials == null) {
-            getSuccessHandler().onAuthenticationSuccess(request, response, null);
+            context.setSessionAttribute(Pac4jConstants.REQUESTED_URL, "");
+            context.setSessionAttribute(client.getName() + IndirectClient.ATTEMPTED_AUTHENTICATION_SUFFIX, "");
+            getFailureHandler().onAuthenticationFailure(request, response, new AuthenticationCredentialsException("No credentials"));
             return null;
         }
         // and create token from credential
-        final ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, client.getName());
+        final ClientAuthenticationToken token = new ClientAuthenticationToken(credentials, client.getName(), context);
         // set details
         token.setDetails(this.authenticationDetailsSource.buildDetails(request));
         logger.debug("token: {}", token);

@@ -36,9 +36,9 @@ Just follow these easy steps:
 
 ### Add the required dependencies (`spring-security-pac4j-*` + `pac4j-*` libraries)
 
-You need to add a dependency on `spring-security-pac4j` (<em>groupId</em>: **org.pac4j**, *version*: **1.4.0**) as well as on the appropriate `pac4j` submodules (<em>groupId</em>: **org.pac4j**, *version*: **1.8.1**): the `pac4j-oauth` dependency for OAuth support, the `pac4j-cas` dependency for CAS support, the `pac4j-ldap` module for LDAP authentication, ...
+You need to add a dependency on `spring-security-pac4j` (<em>groupId</em>: **org.pac4j**, *version*: **1.4.2**) as well as on the appropriate `pac4j` submodules (<em>groupId</em>: **org.pac4j**, *version*: **1.8.7**): the `pac4j-oauth` dependency for OAuth support, the `pac4j-cas` dependency for CAS support, the `pac4j-ldap` module for LDAP authentication, ...
 
-All artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
+All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
 
 ### Define the configuration (`Clients` + `XXXClient`)
@@ -97,8 +97,10 @@ Thus, you need to define the appropriate `ClientAuthenticationFilter` in your Sp
         <property name="clients" ref="clients" />
     </bean>
 
+The default failure handler will return a 401 error page, but you can explicitely define your own in the `ClientAuthenticationFilter` as well as a specific success handler.
+
 Notice you have one additional element for Spring Security:
-- the provider: `ClientAuthenticationProvider` with uses by default the `CopyRolesUserDetailsService` user details service to set the roles from the ones in the user profile (granted by any `AuthorizationGenerator` attached to the client used).
+- the provider: `ClientAuthenticationProvider` which uses by default the `CopyRolesUserDetailsService` user details service to set the roles from the ones in the user profile (granted by any `AuthorizationGenerator` attached to the client used).
 
 
 ### Protect an url
@@ -135,18 +137,6 @@ You can protect an url and require the user to be authenticated by a client by u
 For SAML support which requires Javascript POST (POST binding), notice the `<security:headers disabled="true" />`.
 
 
-### Get redirection urls
-
-You can also explicitly compute a redirection url to a provider by using the `getRedirectAction` method of the client, in order to create an explicit link for login. For example with Facebook:
-
-    <%
-    	WebContext context = new J2EContext(request, response);
-        Clients clients = (Clients) application.getAttribute("clients");
-        FacebookClient fbClient = (FacebookClient) clients.findClient(context, "FacebookClient");
-	    String redirectionUrl = fbClient.getRedirectAction(context, false).getLocation();
-	%>
-
-
 ### Get the user profile
 
 
@@ -176,7 +166,7 @@ The demo webapp: [spring-security-pac4j-demo](https://github.com/pac4j/spring-se
 
 ## Release notes
 
-See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/1.4.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/1.8.1/index.html).
+See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/1.4.2) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/1.8.7/index.html).
 
 
 ## Need help?
@@ -189,7 +179,7 @@ If you have any question, please use the following mailing lists:
 
 ## Development
 
-The next version 1.4.1-SNAPSHOT is under development.
+The version 1.4.3-SNAPSHOT is under development.
 
 Maven artifacts are built via Travis: [![Build Status](https://travis-ci.org/pac4j/spring-security-pac4j.png?branch=master)](https://travis-ci.org/pac4j/spring-security-pac4j) and available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j). This repository must be added in the Maven *pom.xml* file for example:
 
