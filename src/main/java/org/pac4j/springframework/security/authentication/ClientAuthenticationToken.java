@@ -97,10 +97,10 @@ public final class ClientAuthenticationToken extends AbstractAuthenticationToken
 
     @Override
     public void eraseCredentials() {
-        credentials.clear();
-        if (userProfile != null) {
-            userProfile.clear();
-        }
+        //credentials.clear();
+        //if (userProfile != null) {
+            //userProfile.clear();
+        //}
         if (userDetails != null && userDetails instanceof CredentialsContainer) {
             ((CredentialsContainer) userDetails).eraseCredentials();
         }

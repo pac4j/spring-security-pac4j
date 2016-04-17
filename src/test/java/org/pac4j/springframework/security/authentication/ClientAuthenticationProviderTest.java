@@ -27,6 +27,7 @@ import org.mockito.internal.util.reflection.Whitebox;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.credentials.Credentials;
+import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.UserProfile;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -40,6 +41,8 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -95,8 +98,8 @@ public class ClientAuthenticationProviderTest {
         ClientAuthenticationProvider authenticationProvider = new ClientAuthenticationProvider();
         Clients clients = mock(Clients.class);
         Client client = mock(Client.class);
-        UserProfile userProfile = mock(UserProfile.class);
-        List<String> roles = new ArrayList<>();
+        CommonProfile userProfile = mock(CommonProfile.class);
+        Set<String> roles = new TreeSet<>();
         roles.add("ROLE_USER");
         roles.add("ROLE_ADMIN");
         when(userProfile.getRoles()).thenReturn(roles);
@@ -115,8 +118,10 @@ public class ClientAuthenticationProviderTest {
 
         List<? extends GrantedAuthority> authoritiesFound = (List<? extends GrantedAuthority>) resultAuthentication.getAuthorities();
         assertEquals(2, authoritiesFound.size());
-        assertEquals("ROLE_USER", authoritiesFound.get(0).getAuthority());
-        assertEquals("ROLE_ADMIN", authoritiesFound.get(1).getAuthority());
+
+        //tree set is sorted
+        assertEquals("ROLE_ADMIN", authoritiesFound.get(0).getAuthority());
+        assertEquals("ROLE_USER", authoritiesFound.get(1).getAuthority());
 
         assertTrue(resultAuthentication.isAuthenticated());
     }

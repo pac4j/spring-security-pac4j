@@ -25,9 +25,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -52,7 +50,7 @@ public class CopyRolesUserDetailsServiceTest {
         //given
         userDetailsService = new CopyRolesUserDetailsService();
 
-        List<String> roles = new ArrayList<String>();
+        Set<String> roles = new TreeSet<String>();
         roles.add("ROLE_USER");
         roles.add("ROLE_ADMIN");
         Mockito.when(userProfile.getRoles()).thenReturn(roles);
@@ -68,7 +66,8 @@ public class CopyRolesUserDetailsServiceTest {
         assertEquals(2, userDetails.getAuthorities().size());
 
         Iterator<? extends GrantedAuthority> iterator = userDetails.getAuthorities().iterator();
-        assertEquals("ROLE_USER", iterator.next().getAuthority());
+        //tree set is sorted
         assertEquals("ROLE_ADMIN", iterator.next().getAuthority());
+        assertEquals("ROLE_USER", iterator.next().getAuthority());
     }
 }

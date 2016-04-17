@@ -57,7 +57,7 @@
         <spring.security.version>4.0.3.RELEASE</spring.security.version>
         <spring.version>4.2.2.RELEASE</spring.version>
         <servlet.version>3.0.1</servlet.version>
-        <pac4j.version>1.8.8-SNAPSHOT</pac4j.version>
+        <pac4j.version>1.9.0-SNAPSHOT</pac4j.version>
         <powermockito.version>1.6.3</powermockito.version>
     </properties>
 
