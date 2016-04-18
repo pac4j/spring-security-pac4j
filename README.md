@@ -36,7 +36,7 @@ Just follow these easy steps:
 
 ### Add the required dependencies (`spring-security-pac4j-*` + `pac4j-*` libraries)
 
-You need to add a dependency on `spring-security-pac4j` (<em>groupId</em>: **org.pac4j**, *version*: **1.4.2**) as well as on the appropriate `pac4j` submodules (<em>groupId</em>: **org.pac4j**, *version*: **1.8.7**): the `pac4j-oauth` dependency for OAuth support, the `pac4j-cas` dependency for CAS support, the `pac4j-ldap` module for LDAP authentication, ...
+You need to add a dependency on `spring-security-pac4j` (<em>groupId</em>: **org.pac4j**, *version*: **1.4.3**) as well as on the appropriate `pac4j` submodules (<em>groupId</em>: **org.pac4j**, *version*: **1.8.8**): the `pac4j-oauth` dependency for OAuth support, the `pac4j-cas` dependency for CAS support, the `pac4j-ldap` module for LDAP authentication, ...
 
 All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
@@ -166,7 +166,7 @@ The demo webapp: [spring-security-pac4j-demo](https://github.com/pac4j/spring-se
 
 ## Release notes
 
-See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/1.4.2) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/1.8.7/index.html).
+See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/1.4.3) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/1.8.8/index.html).
 
 
 ## Need help?
