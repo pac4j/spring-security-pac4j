@@ -54,8 +54,8 @@
     </developers>
 
     <properties>
-        <spring.security.version>4.0.3.RELEASE</spring.security.version>
-        <spring.version>4.2.2.RELEASE</spring.version>
+        <spring.security.version>4.0.4.RELEASE</spring.security.version>
+        <spring.version>4.2.5.RELEASE</spring.version>
         <servlet.version>3.0.1</servlet.version>
         <pac4j.version>1.9.0-SNAPSHOT</pac4j.version>
         <powermockito.version>1.6.3</powermockito.version>
@@ -211,6 +211,27 @@
 						</supportedProjectTypes>
 					</configuration>
 				</plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <version>3.0.3</version>
+                    <configuration>
+                        <effort>Low</effort> <!-- Max -->
+                        <threshold>Max</threshold> <!-- Medium Low -->
+                        <failOnError>true</failOnError>
+                        <excludeFilterFile>findbugs-exclude.xml</excludeFilterFile>
+                        <includeTests>true</includeTests>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>run-findbugs</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
 			</plugins>
 		</pluginManagement>
     </build>

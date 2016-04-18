@@ -81,7 +81,8 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
         try {
             userProfile = client.getUserProfile(credentials, context);
         } catch (RequiresHttpAction requiresHttpAction) {
-            throw new AuthenticationCredentialsException(requiresHttpAction.getMessage(), requiresHttpAction);
+            logger.debug("HTTP action required", requiresHttpAction.getMessage());
+            return null;
         }
         logger.debug("userProfile: {}", userProfile);
 
