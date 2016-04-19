@@ -50,7 +50,7 @@ public final class ClientAuthenticationEntryPoint implements AuthenticationEntry
         logger.debug("client: {}", this.client);
         final WebContext context = new J2EContext(request, response);
         try {
-            this.client.redirect(context, true);
+            this.client.redirect(context);
         } catch (final RequiresHttpAction e) {
             logger.debug("extra HTTP action required: {}", e.getCode());
         }

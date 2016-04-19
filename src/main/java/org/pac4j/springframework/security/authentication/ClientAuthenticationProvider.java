@@ -22,8 +22,10 @@ import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
+import org.pac4j.core.exception.RequiresHttpAction;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.util.CommonHelper;
+import org.pac4j.springframework.security.exception.AuthenticationCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -75,7 +77,13 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
         final Client client = this.clients.findClient(clientName);
         // get the user profile
         final WebContext context = token.getContext();
-        final UserProfile userProfile = client.getUserProfile(credentials, context);
+        UserProfile userProfile = null;
+        try {
+            userProfile = client.getUserProfile(credentials, context);
+        } catch (RequiresHttpAction requiresHttpAction) {
+            logger.debug("HTTP action required", requiresHttpAction.getMessage());
+            return null;
+        }
         logger.debug("userProfile: {}", userProfile);
 
         // by default, no authorities

@@ -77,20 +77,20 @@ public class ClientAuthenticationEntryPointTest {
         clientAuthenticationEntryPoint.commence(request, response, null);
 
         //then
-        Mockito.verify(client).redirect(j2EContext, true);
+        Mockito.verify(client).redirect(j2EContext);
     }
 
     @Test
     public void testCommence_ForExceptionScenario() throws Exception {
         //given
         RequiresHttpAction requiresHttpAction = mock(RequiresHttpAction.class);
-        doThrow(requiresHttpAction).when(client).redirect(j2EContext, true);
+        doThrow(requiresHttpAction).when(client).redirect(j2EContext);
 
         //when
         clientAuthenticationEntryPoint.commence(request, response, null);
 
         //then
-        Mockito.verify(client).redirect(j2EContext, true);
+        Mockito.verify(client).redirect(j2EContext);
     }
 
     @Test
