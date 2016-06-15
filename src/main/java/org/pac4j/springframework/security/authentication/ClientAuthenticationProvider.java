@@ -22,7 +22,7 @@ import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.credentials.Credentials;
-import org.pac4j.core.exception.RequiresHttpAction;
+import org.pac4j.core.exception.HttpAction;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.core.util.CommonHelper;
 import org.pac4j.springframework.security.exception.AuthenticationCredentialsException;
@@ -80,7 +80,7 @@ public final class ClientAuthenticationProvider implements AuthenticationProvide
         UserProfile userProfile = null;
         try {
             userProfile = client.getUserProfile(credentials, context);
-        } catch (RequiresHttpAction requiresHttpAction) {
+        } catch (HttpAction requiresHttpAction) {
             logger.debug("HTTP action required", requiresHttpAction.getMessage());
             return null;
         }

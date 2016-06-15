@@ -32,7 +32,7 @@ import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.exception.CredentialsException;
-import org.pac4j.core.exception.RequiresHttpAction;
+import org.pac4j.core.exception.HttpAction;
 import org.pac4j.springframework.security.authentication.ClientAuthenticationToken;
 import org.pac4j.springframework.security.exception.AuthenticationCredentialsException;
 import org.powermock.api.mockito.PowerMockito;
@@ -146,7 +146,7 @@ public final class ClientAuthenticationFilterTest {
     @Test
     public void testAttemptAuthentication_ForRequiresHttpActionScenario() throws Exception {
         //given
-        RequiresHttpAction requiresHttpAction = mock(RequiresHttpAction.class);
+        HttpAction requiresHttpAction = mock(HttpAction.class);
         when(client.getCredentials(j2EContext)).thenThrow(requiresHttpAction);
 
         //when

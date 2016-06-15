@@ -27,7 +27,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.context.J2EContext;
-import org.pac4j.core.exception.RequiresHttpAction;
+import org.pac4j.core.exception.HttpAction;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -83,7 +83,7 @@ public class ClientAuthenticationEntryPointTest {
     @Test
     public void testCommence_ForExceptionScenario() throws Exception {
         //given
-        RequiresHttpAction requiresHttpAction = mock(RequiresHttpAction.class);
+        HttpAction requiresHttpAction = mock(HttpAction.class);
         doThrow(requiresHttpAction).when(client).redirect(j2EContext);
 
         //when

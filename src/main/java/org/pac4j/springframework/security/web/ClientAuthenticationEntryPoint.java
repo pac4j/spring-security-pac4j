@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.exception.RequiresHttpAction;
+import org.pac4j.core.exception.HttpAction;
 import org.pac4j.core.util.CommonHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +51,7 @@ public final class ClientAuthenticationEntryPoint implements AuthenticationEntry
         final WebContext context = new J2EContext(request, response);
         try {
             this.client.redirect(context);
-        } catch (final RequiresHttpAction e) {
+        } catch (final HttpAction e) {
             logger.debug("extra HTTP action required: {}", e.getCode());
         }
     }
