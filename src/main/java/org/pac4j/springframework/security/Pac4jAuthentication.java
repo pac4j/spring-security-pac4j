@@ -1,7 +1,6 @@
 package org.pac4j.springframework.security;
 
 import org.pac4j.core.profile.AbstractProfileManager;
-import org.pac4j.core.profile.AnonymousProfile;
 import org.pac4j.core.profile.CommonProfile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,28 +12,29 @@ import java.util.*;
  * Pac4j authentication containing the user profiles.
  *
  * @author Jerome Leleu
- * @since 1.5.0
+ * @since 2.0.0
  */
 public class Pac4jAuthentication<U extends CommonProfile> extends AbstractProfileManager<U> implements Authentication {
 
     private final LinkedHashMap<String, U> profiles;
 
+    private final List<GrantedAuthority> authorities = new ArrayList<>();
+
     public Pac4jAuthentication(final LinkedHashMap<String, U> profiles) {
         super(null);
         this.profiles = profiles;
+        final List<U> listProfiles = getProfiles();
+        for (final U profile : listProfiles) {
+            final Set<String> roles = profile.getRoles();
+            for (final String role : roles) {
+                this.authorities.add(new SimpleGrantedAuthority(role));
+            }
+        }
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        final List<GrantedAuthority> authorities = new ArrayList<>();
-        final List<U> profiles = getProfiles();
-        for (final U profile : profiles) {
-            final Set<String> roles = profile.getRoles();
-            for (final String role : roles) {
-                authorities.add(new SimpleGrantedAuthority(role));
-            }
-        }
-        return authorities;
+        return this.authorities;
     }
 
     @Override
@@ -92,12 +92,6 @@ public class Pac4jAuthentication<U extends CommonProfile> extends AbstractProfil
     @Override
     public Object getPrincipal() {
         return getProfile();
-    }
-
-    @Override
-    public boolean isAuthenticated() {
-        final Optional<U> profile = retrieve(true);
-        return profile.isPresent() && !(profile.get() instanceof AnonymousProfile);
     }
 
     @Override

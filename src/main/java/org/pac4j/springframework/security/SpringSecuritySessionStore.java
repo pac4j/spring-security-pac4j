@@ -5,6 +5,7 @@ import org.pac4j.core.context.Pac4jConstants;
 import org.pac4j.core.context.session.J2ESessionStore;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.util.CommonHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -15,7 +16,7 @@ import java.util.LinkedHashMap;
  * to store / get user profiles and make them naturally available to Spring Security
  *
  * @author Jerome Leleu
- * @since 1.5.0
+ * @since 2.0.0
  */
 public class SpringSecuritySessionStore implements SessionStore<J2EContext> {
 
@@ -56,6 +57,7 @@ public class SpringSecuritySessionStore implements SessionStore<J2EContext> {
     }
 
     public void setInternalSessionStore(SessionStore<J2EContext> internalSessionStore) {
+        CommonHelper.assertNotNull("internalSessionStore", internalSessionStore);
         this.internalSessionStore = internalSessionStore;
     }
 }

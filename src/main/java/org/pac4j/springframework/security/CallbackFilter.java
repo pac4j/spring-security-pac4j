@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static org.pac4j.core.util.CommonHelper.assertNotNull;
+
 /**
  * <p>This filter finishes the login process for an indirect client, based on the {@link #callbackLogic}.</p>
  *
@@ -18,7 +20,7 @@ import java.io.IOException;
  * {@link #setMultiProfile(Boolean)} (whether multiple profiles should be kept) and ({@link #setRenewSession(Boolean)} (whether the session must be renewed after login).</p>
  *
  * @author Jerome Leleu
- * @since 1.5.0
+ * @since 2.0.0
  */
 public class CallbackFilter implements Filter {
 
@@ -40,8 +42,11 @@ public class CallbackFilter implements Filter {
     @Override
     public void doFilter(final ServletRequest req, final ServletResponse resp, final FilterChain chain) throws IOException, ServletException {
 
-        final J2EContext context = new J2EContext((HttpServletRequest) req, (HttpServletResponse) resp, internalSessionStore);
-        callbackLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.multiProfile, this.renewSession);
+        assertNotNull("callbackLogic", this.callbackLogic);
+        assertNotNull("internalSessionStore", this.internalSessionStore);
+
+        final J2EContext context = new J2EContext((HttpServletRequest) req, (HttpServletResponse) resp, this.internalSessionStore);
+        callbackLogic.perform(context, this.config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.multiProfile, this.renewSession);
     }
 
     @Override
