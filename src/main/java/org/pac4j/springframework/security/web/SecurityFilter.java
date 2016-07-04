@@ -1,10 +1,10 @@
-package org.pac4j.springframework.security;
+package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.DefaultSecurityLogic;
-import org.pac4j.core.engine.SecurityLogic;
 import org.pac4j.core.http.J2ENopHttpActionAdapter;
+import org.pac4j.springframework.security.store.SpringSecuritySessionStore;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

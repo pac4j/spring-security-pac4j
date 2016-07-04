@@ -1,4 +1,4 @@
-package org.pac4j.springframework.security;
+package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.client.Client;
 import org.pac4j.core.context.J2EContext;
