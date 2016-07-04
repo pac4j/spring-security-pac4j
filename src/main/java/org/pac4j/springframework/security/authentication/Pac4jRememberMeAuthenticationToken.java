@@ -26,4 +26,22 @@ public class Pac4jRememberMeAuthenticationToken extends RememberMeAuthentication
     public LinkedHashMap<String, CommonProfile> getInternalProfilesMap() {
         return this.profiles;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        final Pac4jRememberMeAuthenticationToken that = (Pac4jRememberMeAuthenticationToken) o;
+
+        return profiles != null ? profiles.equals(that.profiles) : that.profiles == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (profiles != null ? profiles.hashCode() : 0);
+        return result;
+    }
 }
