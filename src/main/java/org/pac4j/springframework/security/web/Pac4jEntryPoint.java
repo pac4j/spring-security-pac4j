@@ -36,6 +36,7 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic<Object, J2EContext> im
         if (client != null) {
             clients.add(client);
         }
+
         final J2EContext context = new J2EContext(request, response);
 
         try {
