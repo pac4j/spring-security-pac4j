@@ -20,6 +20,7 @@ public class Pac4jAuthenticationToken extends AbstractAuthenticationToken implem
     public Pac4jAuthenticationToken(final LinkedHashMap<String, CommonProfile> profiles) {
         super(SpringSecurityHelper.buildAuthorities(profiles));
         this.profiles = profiles;
+        setAuthenticated(true);
     }
 
     @Override

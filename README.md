@@ -200,7 +200,8 @@ Though, if you use it in sections without the pac4j `SecurityFilter` (legacy Spr
 
 ```xml
 <bean id="pac4jEntryPoint" class="org.pac4j.springframework.security.web.Pac4jEntryPoint">
-    <property name="client" ref="facebookClient" />
+    <property name="config" ref="config" />
+    <property name="client" value="facebookClient" />
 </bean>
 ```
 

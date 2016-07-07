@@ -20,6 +20,7 @@ public class Pac4jRememberMeAuthenticationToken extends RememberMeAuthentication
     public Pac4jRememberMeAuthenticationToken(final LinkedHashMap<String, CommonProfile> profiles) {
         super("rme", ProfileHelper.flatIntoOneProfile(profiles).get(), SpringSecurityHelper.buildAuthorities(profiles));
         this.profiles = profiles;
+        setAuthenticated(true);
     }
 
     @Override
