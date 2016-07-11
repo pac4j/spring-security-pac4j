@@ -22,6 +22,6 @@ public final class Pac4jEntryPoint implements AuthenticationEntryPoint {
     public void commence(final HttpServletRequest request, final HttpServletResponse response,
                          final AuthenticationException authException) throws IOException, ServletException {
 
-        throw new TechnicalException("The pac4j entry point should never be called: you must define a pac4j 'securityFilter' or the pac4j 'callbackFilter in the corresponding security:http section");
+        throw new TechnicalException("The pac4j entry point should never be called: you must define a pac4j 'SecurityFilter' or the pac4j 'CallbackFilter' in the corresponding security:http section");
     }
 }
