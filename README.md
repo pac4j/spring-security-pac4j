@@ -190,19 +190,10 @@ Notice that:
 <security:authentication-manager />
 ```
 
-2) as you need an entry point for each `security:http` section, you should use the `Pac4jEntryPoint`. In fact, it will never be called as the `SecurityFilter` will handle everything: 
+2) as you need an entry point for each `security:http` section, you should use the `Pac4jEntryPoint` (which in fact, will never be called):
  
 ```xml
 <bean id="pac4jEntryPoint" class="org.pac4j.springframework.security.web.Pac4jEntryPoint" />
-```
-
-Though, if you use it in sections without the pac4j `SecurityFilter` (legacy Spring Security sections), it will return a 401 error page or redirect to an identity provider for login if defined with an indirect client:
-
-```xml
-<bean id="pac4jEntryPoint" class="org.pac4j.springframework.security.web.Pac4jEntryPoint">
-    <property name="config" ref="config" />
-    <property name="client" value="facebookClient" />
-</bean>
 ```
 
 
@@ -277,7 +268,7 @@ For logout, like for any other Spring Security webapp, use the default logout fi
 The `spring-security-pac4j` library has strongly changed in version 2:
 
 - the `ClientAuthenticationProvider` has been removed as the authentication happens in the `SecurityFilter` (for direct clients) or in the `CallbackFilter` (for indirect clients)
-- the `ClientAuthenticationEntryPoint` is replaced by the `Pac4jEntryPoint` and is never really used except for legacy sections and migration purposes
+- the `ClientAuthenticationEntryPoint` is replaced by the `Pac4jEntryPoint` which is never really used
 - the `ClientAuthenticationToken` is replaced by the `Pac4jAuthenticationToken` and `Pac4jRememberMeAuthenticationToken` (depending on the use case)
 - the security is ensured by the `SecurityFilter` (as usually in the pac4j world)
 - the `CallbackFilter` finishes the login process for indirect clients (as usually in the pac4j world).
