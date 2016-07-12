@@ -268,7 +268,7 @@ Like for any Spring Security webapp, use the default logout filter (in your Spri
 The `spring-security-pac4j` library has strongly changed in version 2:
 
 - the `ClientAuthenticationProvider` has been removed as the authentication happens in the `SecurityFilter` (for direct clients) or in the `CallbackFilter` (for indirect clients)
-- the `ClientAuthenticationEntryPoint` is replaced by the `Pac4jEntryPoint` which is never really used
+- the `ClientAuthenticationEntryPoint` is replaced by the `Pac4jEntryPoint` which should never be called
 - the `ClientAuthenticationToken` is replaced by the `Pac4jAuthenticationToken` and `Pac4jRememberMeAuthenticationToken` (depending on the use case)
 - the security is ensured by the `SecurityFilter` (as usually in the pac4j world)
 - the `CallbackFilter` finishes the login process for indirect clients (as usually in the pac4j world).
