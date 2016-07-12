@@ -233,7 +233,7 @@ In the `securityContext` file:
 
 ### 5) Get the user profile
 
-For any Spring Security web application, you can get the authenticated user via the `SecurityContextHolder.getContext().getAuthentication()`.
+Like for any Spring Security web application, you can get the authenticated user via the `SecurityContextHolder.getContext().getAuthentication()`.
 If the user is authenticated or remembered, the appropriate token will be stored in the context: `Pac4jAuthenticationToken` or `Pac4jRememberMeAuthenticationToken`.
 As both implement the same interface: `Pac4jAuthentication` you should use it and get the main profile (`getProfile` method) or all profiles (`getProfiles` method) of the authenticated user: 
 
@@ -254,7 +254,7 @@ FacebookProfile facebookProfile = (FacebookProfile) commonProfile;
 
 ### 6) Logout
 
-For logout, like for any other Spring Security webapp, use the default logout filter (in your Spring context XML file):
+Like for any Spring Security webapp, use the default logout filter (in your Spring context XML file):
 
 ```xml
 <security:logout logout-success-url="/" />
