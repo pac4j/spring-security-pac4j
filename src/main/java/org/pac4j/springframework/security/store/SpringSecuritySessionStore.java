@@ -30,11 +30,13 @@ import java.util.List;
  */
 public class SpringSecuritySessionStore implements SessionStore<J2EContext> {
 
-    private final Authorizer<CommonProfile> IS_REMEMBERED_AUTHORIZER = new IsRememberedAuthorizer<>();
+    private final static Authorizer<CommonProfile> IS_REMEMBERED_AUTHORIZER = new IsRememberedAuthorizer<>();
 
-    private final Authorizer<CommonProfile> IS_FULLY_AUTHENTICATED_AUTHORIZER = new IsFullyAuthenticatedAuthorizer<>();
+    private final static Authorizer<CommonProfile> IS_FULLY_AUTHENTICATED_AUTHORIZER = new IsFullyAuthenticatedAuthorizer<>();
 
     private SessionStore<J2EContext> internalSessionStore = new J2ESessionStore();
+
+    public final static SpringSecuritySessionStore INSTANCE = new SpringSecuritySessionStore();
 
     @Override
     public String getOrCreateSessionId(final J2EContext context) {

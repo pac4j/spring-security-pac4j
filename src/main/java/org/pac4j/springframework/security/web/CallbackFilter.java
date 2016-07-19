@@ -1,11 +1,9 @@
 package org.pac4j.springframework.security.web;
 
-import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.CallbackLogic;
 import org.pac4j.core.engine.J2ERenewSessionCallbackLogic;
 import org.pac4j.core.http.J2ENopHttpActionAdapter;
-import org.pac4j.springframework.security.store.SpringSecuritySessionStore;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -23,19 +21,15 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
  * @author Jerome Leleu
  * @since 2.0.0
  */
-public class CallbackFilter implements Filter {
+public class CallbackFilter extends AbstractConfigFilter {
 
     private CallbackLogic<Object, J2EContext> callbackLogic = new J2ERenewSessionCallbackLogic();
-
-    private Config config;
 
     private String defaultUrl;
 
     private Boolean multiProfile;
 
     private Boolean renewSession;
-
-    private SpringSecuritySessionStore internalSessionStore = new SpringSecuritySessionStore();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException { }
@@ -44,10 +38,9 @@ public class CallbackFilter implements Filter {
     public void doFilter(final ServletRequest req, final ServletResponse resp, final FilterChain chain) throws IOException, ServletException {
 
         assertNotNull("callbackLogic", this.callbackLogic);
-        assertNotNull("internalSessionStore", this.internalSessionStore);
 
-        final J2EContext context = new J2EContext((HttpServletRequest) req, (HttpServletResponse) resp, this.internalSessionStore);
-        callbackLogic.perform(context, this.config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.multiProfile, this.renewSession);
+        final J2EContext context = new J2EContext((HttpServletRequest) req, (HttpServletResponse) resp, retrieveSessionStore());
+        callbackLogic.perform(context, getConfig(), J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.multiProfile, this.renewSession);
     }
 
     @Override
@@ -59,14 +52,6 @@ public class CallbackFilter implements Filter {
 
     public void setCallbackLogic(final CallbackLogic<Object, J2EContext> callbackLogic) {
         this.callbackLogic = callbackLogic;
-    }
-
-    public Config getConfig() {
-        return config;
-    }
-
-    public void setConfig(final Config config) {
-        this.config = config;
     }
 
     public String getDefaultUrl() {
@@ -91,13 +76,5 @@ public class CallbackFilter implements Filter {
 
     public void setRenewSession(final Boolean renewSession) {
         this.renewSession = renewSession;
-    }
-
-    public SpringSecuritySessionStore getInternalSessionStore() {
-        return internalSessionStore;
-    }
-
-    public void setInternalSessionStore(final SpringSecuritySessionStore internalSessionStore) {
-        this.internalSessionStore = internalSessionStore;
     }
 }
