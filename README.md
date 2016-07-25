@@ -137,7 +137,7 @@ It must be defined in a Spring application context file (or via a Java configura
 
 Notice that you can define:
 
-1) a specific [`SessionStore`](https://github.com/pac4j/pac4j/wiki/SessionStore) using the `setSessionStore(sessionStore)` method (by default, the `J2ESessionStore` uses the HTTP session)
+1) a specific [`SessionStore`](https://github.com/pac4j/pac4j/wiki/SessionStore) using the `setSessionStore(sessionStore)` method (by default, it uses the `J2ESessionStore` which relies on the J2E HTTP session)
 
 2) specific [matchers](https://github.com/pac4j/pac4j/wiki/Matchers) via the `matchers` map.
 
