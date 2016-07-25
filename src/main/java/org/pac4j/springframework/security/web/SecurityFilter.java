@@ -47,7 +47,7 @@ public class SecurityFilter implements Filter {
         final HttpServletResponse response = (HttpServletResponse) resp;
         final SpringSecurityContext context = new SpringSecurityContext(request, response, config.getSessionStore());
 
-        securityLogic.perform(context, getConfig(), (ctx, parameters) -> {
+        securityLogic.perform(context, this.config, (ctx, parameters) -> {
 
             filterChain.doFilter(request, response);
             return null;

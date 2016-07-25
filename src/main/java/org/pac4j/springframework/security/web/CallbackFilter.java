@@ -43,7 +43,7 @@ public class CallbackFilter implements Filter {
         assertNotNull("config", this.config);
 
         final SpringSecurityContext context = new SpringSecurityContext((HttpServletRequest) req, (HttpServletResponse) resp, config.getSessionStore());
-        callbackLogic.perform(context, getConfig(), (code, ctx) -> null, this.defaultUrl, this.multiProfile, this.renewSession);
+        callbackLogic.perform(context, this.config, (code, ctx) -> null, this.defaultUrl, this.multiProfile, this.renewSession);
     }
 
     @Override
