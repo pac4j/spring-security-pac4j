@@ -135,7 +135,11 @@ It must be defined in a Spring application context file (or via a Java configura
 
 `http://localhost:8080/callback` is the url of the callback endpoint, which is only necessary for indirect clients.
 
-Notice that you can define specific [matchers](https://github.com/pac4j/pac4j/wiki/Matchers) via the `matchers` map.
+Notice that you can define:
+
+1) a specific [`SessionStore`](https://github.com/pac4j/pac4j/wiki/SessionStore) using the `setSessionStore(sessionStore)` method (by default, the `J2ESessionStore` uses the HTTP session)
+
+2) specific [matchers](https://github.com/pac4j/pac4j/wiki/Matchers) via the `matchers` map.
 
 
 ### 3) Protect urls (`SecurityFilter`)

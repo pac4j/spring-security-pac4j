@@ -1,8 +1,8 @@
 package org.pac4j.springframework.security.web;
 
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.config.Config;
 import org.pac4j.core.engine.DefaultSecurityLogic;
-import org.pac4j.core.http.J2ENopHttpActionAdapter;
+import org.pac4j.springframework.security.context.SpringSecurityContext;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +20,11 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
  * @author Jerome Leleu
  * @since 2.0.0
  */
-public class SecurityFilter extends AbstractConfigFilter {
+public class SecurityFilter implements Filter {
 
-    private DefaultSecurityLogic<Object, J2EContext> securityLogic;
+    private DefaultSecurityLogic<Object, SpringSecurityContext> securityLogic = new DefaultSecurityLogic<>();
+
+    private Config config;
 
     private String clients;
 
@@ -32,11 +34,6 @@ public class SecurityFilter extends AbstractConfigFilter {
 
     private Boolean multiProfile;
 
-    public SecurityFilter() {
-        securityLogic = new DefaultSecurityLogic<>();
-        securityLogic.setSaveProfileInSession(true);
-    }
-
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException { }
 
@@ -44,27 +41,37 @@ public class SecurityFilter extends AbstractConfigFilter {
     public void doFilter(final ServletRequest req, final ServletResponse resp, final FilterChain filterChain) throws IOException, ServletException {
 
         assertNotNull("securityLogic", this.securityLogic);
+        assertNotNull("config", this.config);
 
         final HttpServletRequest request = (HttpServletRequest) req;
         final HttpServletResponse response = (HttpServletResponse) resp;
-        final J2EContext context = new J2EContext(request, response, retrieveSessionStore());
+        final SpringSecurityContext context = new SpringSecurityContext(request, response, config.getSessionStore());
 
         securityLogic.perform(context, getConfig(), (ctx, parameters) -> {
 
             filterChain.doFilter(request, response);
             return null;
-        }, J2ENopHttpActionAdapter.INSTANCE, this.clients, this.authorizers, this.matchers, this.multiProfile);
+
+        }, (code, ctx) -> null, this.clients, this.authorizers, this.matchers, this.multiProfile);
     }
 
     @Override
     public void destroy() { }
 
-    public DefaultSecurityLogic<Object, J2EContext> getSecurityLogic() {
+    public DefaultSecurityLogic<Object, SpringSecurityContext> getSecurityLogic() {
         return securityLogic;
     }
 
-    public void setSecurityLogic(final DefaultSecurityLogic<Object, J2EContext> securityLogic) {
+    public void setSecurityLogic(final DefaultSecurityLogic<Object, SpringSecurityContext> securityLogic) {
         this.securityLogic = securityLogic;
+    }
+
+    public Config getConfig() {
+        return config;
+    }
+
+    public void setConfig(Config config) {
+        this.config = config;
     }
 
     public String getClients() {
