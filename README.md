@@ -194,11 +194,25 @@ Notice that:
 <security:authentication-manager />
 ```
 
-2) as you need an entry point for each `security:http` section, you should use the `Pac4jEntryPoint` (which in fact, will never be called):
+2) as you need an entry point for each `security:http` section, you should use the `Pac4jEntryPoint`:
  
 ```xml
 <bean id="pac4jEntryPoint" class="org.pac4j.springframework.security.web.Pac4jEntryPoint" />
 ```
+
+Generally, the `Pac4jEntryPoint` won't be called as the `SecurityFilter` will be called before. Though, if you want to use Spring Security annotations (like `@PreAuthorize`), you may want to not define a `SecurityFilter`.
+In that case, the entry point will be called and its behaviour will depend on its configuration:
+
+a) if you define the security configuration and an indirect client, the user will be redirected to the corresponding identity provider for login:
+
+```xml
+<bean id="pac4jEntryPoint" class="org.pac4j.springframework.security.web.Pac4jEntryPoint">
+    <property name="config" ref="config" />
+    <property name="clientName" value="FacebookClient" />
+</bean>
+```
+
+b) a 401 error page will be displayed otherwise.
 
 
 ### 4) Define the callback endpoint only for indirect clients (`CallbackFilter`)
