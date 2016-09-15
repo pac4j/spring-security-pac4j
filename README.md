@@ -2,7 +2,7 @@
   <img src="https://pac4j.github.io/pac4j/img/logo-spring-security.png" width="300" />
 </p>
 
-The `spring-security-pac4j` project is an **easy and powerful security library for Spring Security** (in Spring Boot) web applications which supports authentication and authorization, but also advanced features like session fixation and CSRF protection.
+The `spring-security-pac4j` project is an **easy and powerful security library for Spring Security** (with or without Spring Boot) web applications. It supports authentication and authorization, but also advanced features like session fixation and CSRF protection.
 It's based on Java 8, Spring Security 4.1 and on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. It's available under the Apache 2 license.
 
 [**Main concepts and components:**](http://www.pac4j.org/docs/main-concepts-and-components.html)
