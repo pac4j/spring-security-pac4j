@@ -28,7 +28,7 @@ Just follow these easy steps to secure your Spring Security web application:
 You need to add a dependency on:
  
 - the `spring-security-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **2.0.0**)
-- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **1.9.1**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
+- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **1.9.2**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
 
 All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
@@ -291,7 +291,7 @@ The demo webapp: [spring-security-pac4j-demo](https://github.com/pac4j/spring-se
 
 ## Release notes
 
-See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/2.0.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/1.9.1/index.html).
+See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/2.0.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/1.9.2/index.html).
 
 
 ## Need help?

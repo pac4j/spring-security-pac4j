@@ -1,8 +1,9 @@
 package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.config.Config;
+import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.DefaultSecurityLogic;
-import org.pac4j.springframework.security.context.SpringSecurityContext;
+import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
  */
 public class SecurityFilter implements Filter {
 
-    private DefaultSecurityLogic<Object, SpringSecurityContext> securityLogic = new DefaultSecurityLogic<>();
+    private DefaultSecurityLogic<Object, J2EContext> securityLogic;
 
     private Config config;
 
@@ -33,6 +34,11 @@ public class SecurityFilter implements Filter {
     private String matchers;
 
     private Boolean multiProfile;
+
+    public SecurityFilter() {
+        securityLogic = new DefaultSecurityLogic<>();
+        ((DefaultSecurityLogic<Object, J2EContext>) securityLogic).setProfileManagerFactory(SpringSecurityProfileManager::new);
+    }
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException { }
@@ -45,7 +51,7 @@ public class SecurityFilter implements Filter {
 
         final HttpServletRequest request = (HttpServletRequest) req;
         final HttpServletResponse response = (HttpServletResponse) resp;
-        final SpringSecurityContext context = new SpringSecurityContext(request, response, config.getSessionStore());
+        final J2EContext context = new J2EContext(request, response, config.getSessionStore());
 
         securityLogic.perform(context, this.config, (ctx, parameters) -> {
 
@@ -58,11 +64,11 @@ public class SecurityFilter implements Filter {
     @Override
     public void destroy() { }
 
-    public DefaultSecurityLogic<Object, SpringSecurityContext> getSecurityLogic() {
+    public DefaultSecurityLogic<Object, J2EContext> getSecurityLogic() {
         return securityLogic;
     }
 
-    public void setSecurityLogic(final DefaultSecurityLogic<Object, SpringSecurityContext> securityLogic) {
+    public void setSecurityLogic(final DefaultSecurityLogic<Object, J2EContext> securityLogic) {
         this.securityLogic = securityLogic;
     }
 
@@ -70,7 +76,7 @@ public class SecurityFilter implements Filter {
         return config;
     }
 
-    public void setConfig(Config config) {
+    public void setConfig(final Config config) {
         this.config = config;
     }
 
