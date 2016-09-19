@@ -40,6 +40,21 @@ public class SecurityFilter implements Filter {
         ((DefaultSecurityLogic<Object, J2EContext>) securityLogic).setProfileManagerFactory(SpringSecurityProfileManager::new);
     }
 
+    public SecurityFilter(final Config config) {
+        this();
+        this.config = config;
+    }
+
+    public SecurityFilter(final Config config, final String clients) {
+        this(config);
+        this.clients = clients;
+    }
+
+    public SecurityFilter(final Config config, final String clients, final String authorizers) {
+        this(config, clients);
+        this.authorizers = authorizers;
+    }
+
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException { }
 

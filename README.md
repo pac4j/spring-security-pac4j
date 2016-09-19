@@ -38,7 +38,7 @@ All released artifacts are available in the [Maven central repository](http://se
 
 The configuration (`org.pac4j.core.config.Config`) contains all the clients and authorizers required by the application to handle security.
 
-It must be defined in a Spring application context file (or via a Java configuration class):
+It must be defined in a Spring application context file:
 
 ```xml
 <bean id="samlConfig" class="org.pac4j.saml.client.SAML2ClientConfiguration">
@@ -135,6 +135,54 @@ It must be defined in a Spring application context file (or via a Java configura
 </bean>
 ```
 
+or via a Java configuration class:
+
+```java
+@onfiguration
+public class Pac4jConfig {
+
+    ...
+
+    @Bean
+    public Config config() {
+        final OidcConfiguration oidcConfiguration = new OidcConfiguration();
+        oidcConfiguration.setClientId(clientId);
+        oidcConfiguration.setSecret(clientSecret);
+        final GoogleOidcClient oidcClient = new GoogleOidcClient(oidcConfiguration);
+        oidcClient.setAuthorizationGenerator(profile -> profile.addRole("ROLE_ADMIN"));
+
+        final SAML2ClientConfiguration cfg = new SAML2ClientConfiguration("resource:samlKeystore.jks", "pac4j-demo-passwd", "pac4j-demo-passwd", "resource:metadata-okta.xml");
+        cfg.setMaximumAuthenticationLifetime(3600);
+        cfg.setServiceProviderEntityId("http://localhost:8080/callback?client_name=SAML2Client");
+        cfg.setServiceProviderMetadataPath("sp-metadata.xml");
+        final SAML2Client saml2Client = new SAML2Client(cfg);
+
+        FacebookClient facebookClient = new FacebookClient(fbId, fbSecret);
+        TwitterClient twitterClient = new TwitterClient(twId, twSecret);
+        
+        FormClient formClient = new FormClient("http://localhost:8080/loginForm", new SimpleTestUsernamePasswordAuthenticator());
+        IndirectBasicAuthClient indirectBasicAuthClient = new IndirectBasicAuthClient(new SimpleTestUsernamePasswordAuthenticator());
+
+        CasClient casClient = new CasClient("https://casserverpac4j.herokuapp.com/login");
+
+        ParameterClient parameterClient = new ParameterClient("token", new JwtAuthenticator(salt));
+        parameterClient.setSupportGetRequest(true);
+        parameterClient.setSupportPostRequest(false);
+
+        DirectBasicAuthClient directBasicAuthClient = new DirectBasicAuthClient(new SimpleTestUsernamePasswordAuthenticator());
+
+        Clients clients = new Clients("http://localhost:8080/callback", oidcClient, saml2Client, facebookClient,
+                twitterClient, formClient, indirectBasicAuthClient, casClient, parameterClient, directBasicAuthClient);
+
+        Config config = new Config(clients);
+        config.addAuthorizer("admin", new RequireAnyRoleAuthorizer("ROLE_ADMIN"));
+        config.addAuthorizer("custom", new CustomAuthorizer());
+        config.addMatcher("excludedPath", new ExcludedPathMatcher("^/facebook/notprotected\\.html$"));
+        return config;
+    }
+}
+```
+
 `http://localhost:8080/callback` is the url of the callback endpoint, which is only necessary for indirect clients.
 
 Notice that you can define:
@@ -177,7 +225,7 @@ The following parameters are available:
 
 5) `multiProfile` (optional): it indicates whether multiple authentications (and thus multiple profiles) must be kept at the same time (`false` by default).
 
-In the `securityContext` file:
+You can define it in the `securityContext.xml` file:
 
 ```xml
 <bean id="facebookSecurityFilter" class="org.pac4j.springframework.security.web.SecurityFilter">
@@ -203,6 +251,34 @@ Notice that:
 <bean id="pac4jEntryPoint" class="org.pac4j.springframework.security.web.Pac4jEntryPoint" />
 ```
 
+Or via Java configuration:
+
+```java
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Configuration
+    @Order(1)
+    public static class FacebookWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+        @Autowired
+        private Config config;
+
+        protected void configure(final HttpSecurity http) throws Exception {
+
+            final SecurityFilter filter = new SecurityFilter(config, "FacebookClient");
+            filter.setMatchers("excludedPath");
+
+            http
+                    .antMatcher("/facebook/**")
+                    .addFilterBefore(filter, BasicAuthenticationFilter.class)
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+        }
+    }
+    
+    ...
+```
+
 ---
 
 ### 4) Define the callback endpoint only for indirect clients (`CallbackFilter`)
@@ -225,7 +301,7 @@ The following parameters are available:
 
 4) `renewSession` (optional): it indicates whether the web session must be renewed after login, to avoid session hijacking (`true` by default).
 
-In the `securityContext` file:
+You can define it in the `securityContext.xml` file:
 
 ```xml
 <bean id="callbackFilter" class="org.pac4j.springframework.security.web.CallbackFilter">
@@ -237,6 +313,37 @@ In the `securityContext` file:
     <security:custom-filter position="BASIC_AUTH_FILTER" ref="callbackFilter" />
 </security:http>
 ```
+
+Or via Java configuration:
+
+```java
+@EnableWebSecurity
+public class SecurityConfig {
+
+    ...
+    
+    @Configuration
+    @Order(14)
+    public static class CallbackWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+        @Autowired
+        private Config config;
+
+        protected void configure(final HttpSecurity http) throws Exception {
+
+            final CallbackFilter callbackFilter = new CallbackFilter(config);
+            callbackFilter.setMultiProfile(true);
+
+            http
+                    .antMatcher("/callback*")
+                    .addFilterBefore(callbackFilter, BasicAuthenticationFilter.class)
+                    .csrf().disable();
+        }
+    }
+    
+    ...
+```
+
 
 ---
 
@@ -286,7 +393,7 @@ The `spring-security-pac4j` library has strongly changed in version 2:
 
 ## Demo
 
-The demo webapp: [spring-security-pac4j-demo](https://github.com/pac4j/spring-security-pac4j-demo) is available for tests and implements many authentication mechanisms: Facebook, Twitter, form, basic auth, CAS, SAML, OpenID Connect, JWT...
+The demo webapps for Spring Security without Spring Boot: [spring-security-pac4j-demo](https://github.com/pac4j/spring-security-pac4j-demo) or with Spring Boot: [spring-security-pac4j-boot-demo](https://github.com/pac4j/spring-security-pac4j-boot-demo) are available for tests and implement many authentication mechanisms: Facebook, Twitter, form, basic auth, CAS, SAML, OpenID Connect, JWT...
 
 
 ## Release notes

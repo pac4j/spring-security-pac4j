@@ -39,6 +39,11 @@ public class CallbackFilter implements Filter {
         ((J2ERenewSessionCallbackLogic<J2EContext>) callbackLogic).setProfileManagerFactory(SpringSecurityProfileManager::new);
     }
 
+    public CallbackFilter(final Config config) {
+        this();
+        this.config = config;
+    }
+
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException { }
 
