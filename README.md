@@ -38,7 +38,7 @@ All released artifacts are available in the [Maven central repository](http://se
 
 The configuration (`org.pac4j.core.config.Config`) contains all the clients and authorizers required by the application to handle security.
 
-It must be defined in a Spring application context file:
+It can be defined in a Spring application context file:
 
 ```xml
 <bean id="samlConfig" class="org.pac4j.saml.client.SAML2ClientConfiguration">
