@@ -1,9 +1,10 @@
 package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.config.Config;
+import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.CallbackLogic;
 import org.pac4j.core.engine.J2ERenewSessionCallbackLogic;
-import org.pac4j.springframework.security.context.SpringSecurityContext;
+import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
  */
 public class CallbackFilter implements Filter {
 
-    private CallbackLogic<Object, SpringSecurityContext> callbackLogic = new J2ERenewSessionCallbackLogic<>();
+    private CallbackLogic<Object, J2EContext> callbackLogic;
 
     private Config config;
 
@@ -32,6 +33,16 @@ public class CallbackFilter implements Filter {
     private Boolean multiProfile;
 
     private Boolean renewSession;
+
+    public CallbackFilter() {
+        callbackLogic = new J2ERenewSessionCallbackLogic<>();
+        ((J2ERenewSessionCallbackLogic<J2EContext>) callbackLogic).setProfileManagerFactory(SpringSecurityProfileManager::new);
+    }
+
+    public CallbackFilter(final Config config) {
+        this();
+        this.config = config;
+    }
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException { }
@@ -42,18 +53,18 @@ public class CallbackFilter implements Filter {
         assertNotNull("callbackLogic", this.callbackLogic);
         assertNotNull("config", this.config);
 
-        final SpringSecurityContext context = new SpringSecurityContext((HttpServletRequest) req, (HttpServletResponse) resp, config.getSessionStore());
+        final J2EContext context = new J2EContext((HttpServletRequest) req, (HttpServletResponse) resp, config.getSessionStore());
         callbackLogic.perform(context, this.config, (code, ctx) -> null, this.defaultUrl, this.multiProfile, this.renewSession);
     }
 
     @Override
     public void destroy() { }
 
-    public CallbackLogic<Object, SpringSecurityContext> getCallbackLogic() {
+    public CallbackLogic<Object, J2EContext> getCallbackLogic() {
         return callbackLogic;
     }
 
-    public void setCallbackLogic(final CallbackLogic<Object, SpringSecurityContext> callbackLogic) {
+    public void setCallbackLogic(final CallbackLogic<Object, J2EContext> callbackLogic) {
         this.callbackLogic = callbackLogic;
     }
 
@@ -61,7 +72,7 @@ public class CallbackFilter implements Filter {
         return config;
     }
 
-    public void setConfig(Config config) {
+    public void setConfig(final Config config) {
         this.config = config;
     }
 
