@@ -303,6 +303,10 @@ The following parameters are available:
 
 5) `suffix` (optional): it defines on which endpoint the filter applies (`/callback` by default).
 
+
+The callback endpoint must not be protected.
+
+
 You can define it in the `securityContext.xml` file:
 
 ```xml
@@ -310,7 +314,7 @@ You can define it in the `securityContext.xml` file:
     <property name="config" ref="config" />
     <property name="multiProfile" value="true" />
 </bean>
-<security:http pattern="/**" entry-point-ref="pac4jEntryPoint">
+<security:http pattern="/**" entry-point-ref="noEntryPoint">
     ...
     <security:custom-filter position="BASIC_AUTH_FILTER" ref="callbackFilter" />
     ...
