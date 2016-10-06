@@ -299,7 +299,9 @@ The following parameters are available:
 
 3) `multiProfile` (optional): it indicates whether multiple authentications (and thus multiple profiles) must be kept at the same time (`false` by default)
 
-4) `renewSession` (optional): it indicates whether the web session must be renewed after login, to avoid session hijacking (`true` by default).
+4) `renewSession` (optional): it indicates whether the web session must be renewed after login, to avoid session hijacking (`true` by default)
+
+5) `suffix` (optional): it defines on which endpoint the filter applies (`/callback` by default).
 
 You can define it in the `securityContext.xml` file:
 
@@ -308,9 +310,10 @@ You can define it in the `securityContext.xml` file:
     <property name="config" ref="config" />
     <property name="multiProfile" value="true" />
 </bean>
-<security:http create-session="always" pattern="/callback*" entry-point-ref="pac4jEntryPoint">
-    <security:csrf disabled="true"/>
+<security:http pattern="/**" entry-point-ref="pac4jEntryPoint">
+    ...
     <security:custom-filter position="BASIC_AUTH_FILTER" ref="callbackFilter" />
+    ...
 </security:http>
 ```
 
@@ -321,27 +324,25 @@ Or via Java configuration:
 public class SecurityConfig {
 
     ...
-    
-    @Configuration
-    @Order(14)
-    public static class CallbackWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-        @Autowired
-        private Config config;
+    @Autowired
+    private Config config;
 
-        protected void configure(final HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity http) throws Exception {
 
-            final CallbackFilter callbackFilter = new CallbackFilter(config);
-            callbackFilter.setMultiProfile(true);
+        CallbackFilter callbackFilter = new CallbackFilter(config);
+        callbackFilter.setMultiProfile(true);
 
-            http
-                    .antMatcher("/callback*")
-                    .addFilterBefore(callbackFilter, BasicAuthenticationFilter.class)
-                    .csrf().disable();
-        }
+        http
+            .antMatcher("/**")
+            .addFilterBefore(callbackFilter, BasicAuthenticationFilter.class)
+            .csrf().disable()
+            .logout()
+            .logoutSuccessUrl("/");
     }
     
     ...
+}
 ```
 
 
@@ -379,6 +380,10 @@ Like for any Spring Security webapp, use the default logout filter (in your Spri
 
 
 ## Migration guide
+
+### 2.0 -> 2.1
+
+The `CallbackFilter` only applies on `/callback` by default so if you need a different callback endpoint, this needs to be changed with the `setSuffix` method.
 
 ### 1.4 - > 2.0
 
