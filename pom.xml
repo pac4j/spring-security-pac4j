@@ -152,7 +152,21 @@
                         <Export-Package>org.pac4j.springframework.security.*;version=${project.version}</Export-Package>
                         <Import-Package>*</Import-Package>
                     </instructions>
+                    <!-- configure plugin to support jar packaging -->
+                    <supportedProjectTypes>
+                        <supportedProjectType>jar</supportedProjectType>
+                    </supportedProjectTypes>
                 </configuration>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
