@@ -27,7 +27,7 @@ Just follow these easy steps to secure your Spring Security web application:
 
 You need to add a dependency on:
  
-- the `spring-security-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **2.0.1**)
+- the `spring-security-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **2.1.0-SNAPSHOT**)
 - the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **1.9.2**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
 
 All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
@@ -38,7 +38,7 @@ All released artifacts are available in the [Maven central repository](http://se
 
 The configuration (`org.pac4j.core.config.Config`) contains all the clients and authorizers required by the application to handle security.
 
-It can be defined in a Spring application context file:
+It can be defined in the `securityContext.xml` file:
 
 ```xml
 <bean id="samlConfig" class="org.pac4j.saml.client.SAML2ClientConfiguration">
@@ -58,18 +58,11 @@ It can be defined in a Spring application context file:
     <property name="key" value="${fb.key}" />
     <property name="secret" value="${fb.secret}" />
 </bean>
-<bean id="twitterClient" class="org.pac4j.oauth.client.TwitterClient">
-    <property name="key" value="${tw.key}" />
-    <property name="secret" value="${tw.secret}" />
-</bean>
 
 <bean id="usernamePasswordAuthenticator" class="org.pac4j.http.credentials.authenticator.test.SimpleTestUsernamePasswordAuthenticator" />
 
 <bean id="formClient" class="org.pac4j.http.client.indirect.FormClient">
     <property name="loginUrl" value="http://localhost:8080/loginForm.jsp" />
-    <property name="authenticator" ref="usernamePasswordAuthenticator" />
-</bean>
-<bean id="indirectBasicAuthClient" class="org.pac4j.http.client.indirect.IndirectBasicAuthClient">
     <property name="authenticator" ref="usernamePasswordAuthenticator" />
 </bean>
 
@@ -89,22 +82,15 @@ It can be defined in a Spring application context file:
     <property name="supportPostRequest" value="false" />
 </bean>
 
-<bean id="directBasicAuthClient" class="org.pac4j.http.client.direct.DirectBasicAuthClient">
-    <constructor-arg name="usernamePasswordAuthenticator" ref="usernamePasswordAuthenticator" />
-</bean>
-
 <bean id="clients" class="org.pac4j.core.client.Clients">
     <property name="callbackUrl" value="http://localhost:8080/callback" />
     <property name="clients">
         <list>
             <ref bean="facebookClient" />
-            <ref bean="twitterClient" />
             <ref bean="formClient" />
-            <ref bean="indirectBasicAuthClient" />
             <ref bean="casClient" />
             <ref bean="samlClient" />
             <ref bean="parameterClient" />
-            <ref bean="directBasicAuthClient" />
         </list>
     </property>
 </bean>
@@ -228,27 +214,16 @@ The following parameters are available:
 You can define it in the `securityContext.xml` file:
 
 ```xml
+<security:authentication-manager />
+<bean id="noEntryPoint" class="org.pac4j.springframework.security.web.Pac4jEntryPoint" />
+
 <bean id="facebookSecurityFilter" class="org.pac4j.springframework.security.web.SecurityFilter">
     <property name="config" ref="config" />
     <property name="clients" value="FacebookClient" />
 </bean>
-<security:http create-session="always" pattern="/facebook/**" entry-point-ref="pac4jEntryPoint">
+<security:http create-session="always" pattern="/facebook/**" entry-point-ref="noEntryPoint">
     <security:custom-filter position="BASIC_AUTH_FILTER" ref="facebookSecurityFilter" />
 </security:http>
-```
-
-Notice that:
-
-1) you don't need to define any authentication manager for pac4j:
-
-```xml
-<security:authentication-manager />
-```
-
-2) as you need an entry point for each `security:http` section, you should use the `Pac4jEntryPoint` (which in fact, will never be called):
- 
-```xml
-<bean id="pac4jEntryPoint" class="org.pac4j.springframework.security.web.Pac4jEntryPoint" />
 ```
 
 Or via Java configuration:
@@ -257,27 +232,78 @@ Or via Java configuration:
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Configuration
-    @Order(1)
-    public static class FacebookWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+    ...
 
-        @Autowired
-        private Config config;
+    @Autowired
+    private Config config;
 
-        protected void configure(final HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
 
-            final SecurityFilter filter = new SecurityFilter(config, "FacebookClient");
-            filter.setMatchers("excludedPath");
+        final SecurityFilter filter = new SecurityFilter(config, "FacebookClient");
+        filter.setMatchers("excludedPath");
 
-            http
-                    .antMatcher("/facebook/**")
-                    .addFilterBefore(filter, BasicAuthenticationFilter.class)
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-        }
+        http
+               .antMatcher("/facebook/**")
+               .addFilterBefore(filter, BasicAuthenticationFilter.class)
+               .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
     }
-    
+        
     ...
 ```
+
+You don't need any authentication provider (thus the empty authentication manager).
+
+If you use the `SecurityFilter`, it will handle all the login process and authorization checks for you. So the defined entry point (`noEntryPoint`) of the corresponding `security:http` section should never be called.
+
+You can still perform additional authorization checks with Spring Security AFTER the user has been authenticated and authorized by *pac4j*:
+
+```xml
+<security:http create-session="always" pattern="/saml2/**" entry-point-ref="noEntryPoint">
+    <security:custom-filter position="BASIC_AUTH_FILTER" ref="samlSecurityFilter" />
+    <security:intercept-url pattern="/saml2/admin.jsp" access="hasRole('ADMIN')" />
+    <security:intercept-url pattern="/saml2/**" access="isAuthenticated()" />
+</security:http>
+```
+
+or
+
+```java
+http
+.antMatcher("/saml/**")
+    .authorizeRequests()
+        .antMatchers("/saml/admin.html").hasRole("ADMIN")
+        .antMatchers("/saml/**").authenticated()
+    .and()
+    .addFilterBefore(new SecurityFilter(config, "Saml2Client"), BasicAuthenticationFilter.class);
+```
+
+If you use the *pac4j* `AnonymousClient` or no `SecurityFilter` at all, the user transmitted to Spring Security will be anonymous and the entry point will be called for protected URLs.
+So you can use the `Pac4jEntryPoint` with a specific client to start the login process with the corresponding identity provider:
+
+```xml
+<bean id="casEntryPoint" class="org.pac4j.springframework.security.web.Pac4jEntryPoint">
+    <property name="config" ref="config" />
+    <property name="clientName" value="CasClient" />
+</bean>
+<security:http pattern="/**" entry-point-ref="casEntryPoint">
+    <security:custom-filter position="BASIC_AUTH_FILTER" ref="callbackFilter" />
+    <security:intercept-url pattern="/cas/**" access="isAuthenticated()" />
+</security:http>
+```
+
+or
+
+```java
+http
+.authorizeRequests()
+    .antMatchers("/cas/**").authenticated()
+    .anyRequest().permitAll()
+.and()
+.exceptionHandling().authenticationEntryPoint(new Pac4jEntryPoint(config, "CasClient"))
+.and()
+.addFilterBefore(callbackFilter, BasicAuthenticationFilter.class);
+```
+
 
 ---
 
@@ -340,9 +366,7 @@ public class SecurityConfig {
         http
             .antMatcher("/**")
             .addFilterBefore(callbackFilter, BasicAuthenticationFilter.class)
-            .csrf().disable()
-            .logout()
-            .logoutSuccessUrl("/");
+            ...
     }
     
     ...
@@ -385,9 +409,20 @@ Like for any Spring Security webapp, use the default logout filter (in your Spri
 
 ## Migration guide
 
+| Version 1.4 | Version 2.0 | Version 2.1 |
+|-------------|-------------|-------------|
+| The `ClientAuthenticationProvider` must be defined to perform login | No authentication provider is necessary | No authentication provider is necessary |
+| The `ClientAuthenticationToken` is used for login | The `Pac4j(RememberMe)AuthenticationToken` is used for login | The `Pac4j(RememberMe)AuthenticationToken` is used for login |
+| The `ClientAuthenticationFilter` applies on `/callback` to finish the login process | The `CallbackFilter` finishes the login process | The `CallbackFilter` applies on `/callback` to finish the login process |
+| The `ClientAuthenticationEntryPoint` redirects the user to the identity provider for login | The `Pac4jEntryPoint` must not be called and returns an error | The `Pac4jEntryPoint` can redirect the user to the identity provider for login |
+| The `security:intercept-url` tag protects URLs | The `SecurityFilter` can protect an URL | The `SecurityFilter` can protect an URL |
+
+
 ### 2.0 -> 2.1
 
 The `CallbackFilter` only applies on `/callback` by default so if you need a different callback endpoint, this needs to be changed with the `setSuffix` method.
+
+The `Pac4jEntryPoint` can be defined with the `config` and `clientName` parameters to redirect to an identity provider for login.
 
 ### 1.4 - > 2.0
 
@@ -397,7 +432,7 @@ The `spring-security-pac4j` library has strongly changed in version 2:
 - the `ClientAuthenticationEntryPoint` is replaced by the `Pac4jEntryPoint` which should never be called
 - the `ClientAuthenticationToken` is replaced by the `Pac4jAuthenticationToken` and `Pac4jRememberMeAuthenticationToken` (depending on the use case)
 - the security is ensured by the `SecurityFilter` (as usually in the pac4j world)
-- the `CallbackFilter` finishes the login process for indirect clients (as usually in the pac4j world).
+- the `CallbackFilter` finishes the login process for indirect clients (as usually in the pac4j world) and replaces the `ClientAuthenticationFilter`.
 
 
 ## Demo
