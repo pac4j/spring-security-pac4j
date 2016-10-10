@@ -80,7 +80,7 @@ public class CallbackFilter implements Filter {
         final J2EContext context = new J2EContext((HttpServletRequest) req, (HttpServletResponse) resp, config.getSessionStore());
 
         final String path = context.getPath();
-        logger.debug("path: {} vs suffix: {}", path, suffix);
+        logger.debug("path: {} | suffix: {}", path, suffix);
         final boolean pathEndsWithSuffix = path != null && path.endsWith(suffix);
 
         if (isBlank(suffix) || pathEndsWithSuffix) {
