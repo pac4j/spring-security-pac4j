@@ -24,6 +24,11 @@ public class Pac4jRememberMeAuthenticationToken extends RememberMeAuthentication
     }
 
     @Override
+    public String getName() {
+        return ((CommonProfile) getPrincipal()).getId();
+    }
+
+    @Override
     public LinkedHashMap<String, CommonProfile> getInternalProfilesMap() {
         return this.profiles;
     }

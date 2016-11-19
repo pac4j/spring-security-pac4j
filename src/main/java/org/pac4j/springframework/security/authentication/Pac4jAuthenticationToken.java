@@ -16,21 +16,28 @@ import java.util.LinkedHashMap;
 public class Pac4jAuthenticationToken extends AbstractAuthenticationToken implements Pac4jAuthentication {
 
     private final LinkedHashMap<String, CommonProfile> profiles;
+    private final CommonProfile profile;
 
     public Pac4jAuthenticationToken(final LinkedHashMap<String, CommonProfile> profiles) {
         super(SpringSecurityHelper.buildAuthorities(profiles));
         this.profiles = profiles;
+        this.profile = ProfileHelper.flatIntoOneProfile(profiles).get();
         setAuthenticated(true);
     }
 
     @Override
+    public String getName() {
+        return profile.getId();
+    }
+
+    @Override
     public Object getCredentials() {
-        return null;
+        return "";
     }
 
     @Override
     public Object getPrincipal() {
-        return ProfileHelper.flatIntoOneProfile(profiles);
+        return profile;
     }
 
     @Override
