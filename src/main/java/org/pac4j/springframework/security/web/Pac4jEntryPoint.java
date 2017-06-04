@@ -49,17 +49,18 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic<Object, J2EContext> im
             final Client client = config.getClients().findClient(clientName);
             currentClients.add(client);
 
-            if (startAuthentication(context, currentClients)) {
-                logger.debug("Redirecting to identity provider for login");
-                try {
-                    saveRequestedUrl(context, currentClients);
-                    redirectToIdentityProvider(context, currentClients);
-                } catch (final HttpAction e) {
-                    logger.debug("extra HTTP action required in Pac4jEntryPoint: {}", e.getCode());
+            try {
+                if (startAuthentication(context, currentClients)) {
+                    logger.debug("Redirecting to identity provider for login");
+                        saveRequestedUrl(context, currentClients);
+                        redirectToIdentityProvider(context, currentClients);
+                } else {
+                    unauthorized(context, currentClients);
                 }
-            } else {
-                unauthorized(context, currentClients);
+            } catch (final HttpAction e) {
+                logger.debug("extra HTTP action required in Pac4jEntryPoint: {}", e.getCode());
             }
+
         } else {
             throw new TechnicalException("The Pac4jEntryPoint has been defined without config, nor clientName: it must be defined in a <security:http> section with the pac4j SecurityFilter or CallbackFilter");
         }

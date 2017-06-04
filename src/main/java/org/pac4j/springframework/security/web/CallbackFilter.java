@@ -3,7 +3,8 @@ package org.pac4j.springframework.security.web;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.CallbackLogic;
-import org.pac4j.core.engine.J2ERenewSessionCallbackLogic;
+import org.pac4j.core.engine.DefaultCallbackLogic;
+import org.pac4j.core.http.J2ENopHttpActionAdapter;
 import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,8 +47,8 @@ public class CallbackFilter implements Filter {
     private String suffix = DEFAULT_CALLBACK_SUFFIX;
 
     public CallbackFilter() {
-        callbackLogic = new J2ERenewSessionCallbackLogic<>();
-        ((J2ERenewSessionCallbackLogic<J2EContext>) callbackLogic).setProfileManagerFactory(SpringSecurityProfileManager::new);
+        callbackLogic = new DefaultCallbackLogic<>();
+        ((DefaultCallbackLogic<Object, J2EContext>) callbackLogic).setProfileManagerFactory(SpringSecurityProfileManager::new);
     }
 
     public CallbackFilter(final Config config) {
@@ -85,7 +86,7 @@ public class CallbackFilter implements Filter {
 
         if (isBlank(suffix) || pathEndsWithSuffix) {
             assertNotNull("callbackLogic", this.callbackLogic);
-            callbackLogic.perform(context, this.config, (code, ctx) -> null, this.defaultUrl, this.multiProfile, this.renewSession);
+            callbackLogic.perform(context, this.config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.multiProfile, this.renewSession);
         } else {
             chain.doFilter(req, resp);
         }
