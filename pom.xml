@@ -12,7 +12,7 @@
     <artifactId>spring-security-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>pac4j implementation for Spring Security</name>
-    <version>2.1.3-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <description>Security library for Spring Security based on pac4j</description>
     <url>https://github.com/pac4j/spring-security-pac4j</url>
 
@@ -53,10 +53,10 @@
     </developers>
 
     <properties>
-        <spring.security.version>4.1.0.RELEASE</spring.security.version>
-        <spring.version>4.3.1.RELEASE</spring.version>
+        <spring.security.version>4.2.2.RELEASE</spring.security.version>
+        <spring.version>4.3.8.RELEASE</spring.version>
         <servlet.version>3.1.0</servlet.version>
-        <pac4j.version>1.9.4</pac4j.version>
+        <pac4j.version>2.1.0-SNAPSHOT</pac4j.version>
         <java.version>1.8</java.version>
     </properties>
 
@@ -94,7 +94,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
+                <version>3.6.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -119,7 +119,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -145,7 +145,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.3.0</version>
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>org.pac4j.springframework.security</Bundle-SymbolicName>
@@ -189,7 +189,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.3</version>
+                <version>3.0.4</version>
                 <configuration>
                     <effort>Low</effort>
                     <threshold>Max</threshold>
@@ -209,7 +209,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.6</version>
+                <version>3.8</version>
                 <configuration>
                     <includeTests>true</includeTests>
                     <printFailingErrors>true</printFailingErrors>

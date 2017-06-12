@@ -3,6 +3,8 @@ package org.pac4j.springframework.security.web;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.DefaultSecurityLogic;
+import org.pac4j.core.engine.SecurityLogic;
+import org.pac4j.core.http.J2ENopHttpActionAdapter;
 import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
 
 import javax.servlet.*;
@@ -23,7 +25,7 @@ import static org.pac4j.core.util.CommonHelper.assertNotNull;
  */
 public class SecurityFilter implements Filter {
 
-    private DefaultSecurityLogic<Object, J2EContext> securityLogic;
+    private SecurityLogic<Object, J2EContext> securityLogic;
 
     private Config config;
 
@@ -73,17 +75,17 @@ public class SecurityFilter implements Filter {
             filterChain.doFilter(request, response);
             return null;
 
-        }, (code, ctx) -> null, this.clients, this.authorizers, this.matchers, this.multiProfile);
+        }, J2ENopHttpActionAdapter.INSTANCE, this.clients, this.authorizers, this.matchers, this.multiProfile);
     }
 
     @Override
     public void destroy() { }
 
-    public DefaultSecurityLogic<Object, J2EContext> getSecurityLogic() {
+    public SecurityLogic<Object, J2EContext> getSecurityLogic() {
         return securityLogic;
     }
 
-    public void setSecurityLogic(final DefaultSecurityLogic<Object, J2EContext> securityLogic) {
+    public void setSecurityLogic(final SecurityLogic<Object, J2EContext> securityLogic) {
         this.securityLogic = securityLogic;
     }
 
