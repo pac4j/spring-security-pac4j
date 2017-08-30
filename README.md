@@ -238,7 +238,7 @@ public class Pac4jConfig {
 
 `http://localhost:8080/callback` is the url of the callback endpoint, which is only necessary for indirect clients.
 
-Notice that you can define pecific [matchers](http://www.pac4j.org/docs/matchers.html) via the `matchers` map.
+Notice that you can define specific [matchers](http://www.pac4j.org/docs/matchers.html) via the `matchers` map.
 
 ---
 
