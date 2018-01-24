@@ -3,7 +3,7 @@
 </p>
 
 <aside class="warning">
-    If you start with a fresh Spring Boot or Spring MVC webapp, you should certainly use [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) instead of this library, which is also very powerful, but a lot easier! 
+test
 </aside>
 
 The `spring-security-pac4j` project is an **easy and powerful security library for Spring Security** (with or without Spring Boot) web applications. It supports authentication and authorization, but also advanced features like session fixation and CSRF protection.
