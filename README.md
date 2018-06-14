@@ -5,7 +5,7 @@
 **WARNING: if you start with a fresh Spring Boot or Spring MVC webapp, you should certainly use [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) instead of this library, which offers similar capabilities, but is a lot easier!**
 
 The `spring-security-pac4j` project is an **easy and powerful security library for Spring Security** (with or without Spring Boot) web applications. It supports authentication and authorization, but also advanced features like session fixation and CSRF protection.
-It's based on Java 8, Spring Security 4.2 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v2**. It's available under the Apache 2 license.
+It's based on Java 8, Spring Security 5 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v2**. It's available under the Apache 2 license.
 
 [**Main concepts and components:**](http://www.pac4j.org/docs/main-concepts-and-components.html)
 
@@ -30,8 +30,8 @@ Just follow these easy steps to secure your Spring Security web application:
 
 You need to add a dependency on:
  
-- the `spring-security-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **3.0.0**)
-- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **2.1.0**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
+- the `spring-security-pac4j` library (<em>groupId</em>: **org.pac4j**, *version*: **3.1.0**)
+- the appropriate `pac4j` [submodules](http://www.pac4j.org/docs/clients.html) (<em>groupId</em>: **org.pac4j**, *version*: **2.3.1**): `pac4j-oauth` for OAuth support (Facebook, Twitter...), `pac4j-cas` for CAS support, `pac4j-ldap` for LDAP authentication, etc.
 
 All released artifacts are available in the [Maven central repository](http://search.maven.org/#search%7Cga%7C1%7Cpac4j).
 
@@ -608,7 +608,7 @@ The demo webapps for Spring Security without Spring Boot: [spring-security-pac4j
 
 ## Release notes
 
-See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/3.0.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/2.1.0/index.html).
+See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/3.1.0) and the [pac4j Javadoc](http://www.pac4j.org/apidocs/pac4j/2.3.1/index.html).
 
 
 ## Need help?
@@ -623,7 +623,7 @@ If you have any question, please use the following mailing lists:
 
 ## Development
 
-The version 3.0.1-SNAPSHOT is under development.
+The version 3.1.0-SNAPSHOT is under development.
 
 Maven artifacts are built via Travis: [![Build Status](https://travis-ci.org/pac4j/spring-security-pac4j.png?branch=master)](https://travis-ci.org/pac4j/spring-security-pac4j) and available in the [Sonatype snapshots repository](https://oss.sonatype.org/content/repositories/snapshots/org/pac4j). This repository must be added in the Maven `pom.xml` file for example:
 
