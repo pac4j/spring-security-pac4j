@@ -5,7 +5,7 @@ import org.pac4j.core.profile.ProfileHelper;
 import org.pac4j.springframework.security.util.SpringSecurityHelper;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Pac4j authentication token when the user is authenticated.
@@ -15,10 +15,10 @@ import java.util.LinkedHashMap;
  */
 public class Pac4jAuthenticationToken extends AbstractAuthenticationToken implements Pac4jAuthentication {
 
-    private final LinkedHashMap<String, CommonProfile> profiles;
+    private final List<CommonProfile> profiles;
     private final CommonProfile profile;
 
-    public Pac4jAuthenticationToken(final LinkedHashMap<String, CommonProfile> profiles) {
+    public Pac4jAuthenticationToken(final List<CommonProfile> profiles) {
         super(SpringSecurityHelper.buildAuthorities(profiles));
         this.profiles = profiles;
         this.profile = ProfileHelper.flatIntoOneProfile(profiles).get();
@@ -41,7 +41,7 @@ public class Pac4jAuthenticationToken extends AbstractAuthenticationToken implem
     }
 
     @Override
-    public LinkedHashMap<String, CommonProfile> getInternalProfilesMap() {
+    public List<CommonProfile> getProfiles() {
         return this.profiles;
     }
 }

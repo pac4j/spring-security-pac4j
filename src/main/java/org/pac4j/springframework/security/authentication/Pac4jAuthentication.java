@@ -19,7 +19,7 @@ public interface Pac4jAuthentication {
      * @return the main profile
      */
     default CommonProfile getProfile() {
-        return ProfileHelper.flatIntoOneProfile(getInternalProfilesMap()).get();
+        return ProfileHelper.flatIntoOneProfile(getProfiles()).get();
     }
 
     /**
@@ -27,14 +27,5 @@ public interface Pac4jAuthentication {
      *
      * @return the list of profiles
      */
-    default List<CommonProfile> getProfiles() {
-        return ProfileHelper.flatIntoAProfileList(getInternalProfilesMap());
-    }
-
-    /**
-     * Get all the profiles of the authenticated user as a map.
-     *
-     * @return the profiles map
-     */
-    LinkedHashMap<String, CommonProfile> getInternalProfilesMap();
+    List<CommonProfile> getProfiles();
 }

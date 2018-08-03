@@ -31,15 +31,14 @@ public final class SpringSecurityHelper {
     private final static Authorizer<CommonProfile> IS_FULLY_AUTHENTICATED_AUTHORIZER = new IsFullyAuthenticatedAuthorizer<>();
 
     /**
-     * Build a list of authorities from a map of profiles.
+     * Build a list of authorities from a list of profiles.
      *
      * @param profiles a map of profiles
      * @return a list of authorities
      */
-    public static List<GrantedAuthority> buildAuthorities(final LinkedHashMap<String, CommonProfile> profiles) {
+    public static List<GrantedAuthority> buildAuthorities(final List<CommonProfile> profiles) {
         final List<GrantedAuthority> authorities = new ArrayList<>();
-        final List<CommonProfile> listProfiles = ProfileHelper.flatIntoAProfileList(profiles);
-        for (final CommonProfile profile : listProfiles) {
+        for (final CommonProfile profile : profiles) {
             final Set<String> roles = profile.getRoles();
             for (final String role : roles) {
                 authorities.add(new SimpleGrantedAuthority(role));
@@ -58,9 +57,9 @@ public final class SpringSecurityHelper {
             final List<CommonProfile> listProfiles = ProfileHelper.flatIntoAProfileList(profiles);
             try {
                 if (IS_FULLY_AUTHENTICATED_AUTHORIZER.isAuthorized(null, listProfiles)) {
-                    SecurityContextHolder.getContext().setAuthentication(new Pac4jAuthenticationToken(profiles));
+                    SecurityContextHolder.getContext().setAuthentication(new Pac4jAuthenticationToken(listProfiles));
                 } else if (IS_REMEMBERED_AUTHORIZER.isAuthorized(null, listProfiles)) {
-                    SecurityContextHolder.getContext().setAuthentication(new Pac4jRememberMeAuthenticationToken(profiles));
+                    SecurityContextHolder.getContext().setAuthentication(new Pac4jRememberMeAuthenticationToken(listProfiles));
                 }
             } catch (final HttpAction e) {
                 throw new TechnicalException(e);

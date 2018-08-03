@@ -4,7 +4,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.DefaultLogoutLogic;
 import org.pac4j.core.engine.LogoutLogic;
-import org.pac4j.core.http.J2ENopHttpActionAdapter;
+import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
 import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
 
 import javax.servlet.*;

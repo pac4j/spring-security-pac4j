@@ -4,7 +4,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
-import org.pac4j.core.http.J2ENopHttpActionAdapter;
+import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
 import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
 
 import javax.servlet.*;
@@ -70,7 +70,7 @@ public class SecurityFilter implements Filter {
         final HttpServletResponse response = (HttpServletResponse) resp;
         final J2EContext context = new J2EContext(request, response, config.getSessionStore());
 
-        securityLogic.perform(context, this.config, (ctx, parameters) -> {
+        securityLogic.perform(context, this.config, (ctx, profiles, parameters) -> {
 
             filterChain.doFilter(request, response);
             return null;
