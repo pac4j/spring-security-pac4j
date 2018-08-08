@@ -4,7 +4,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.context.J2EContext;
 import org.pac4j.core.engine.CallbackLogic;
 import org.pac4j.core.engine.DefaultCallbackLogic;
-import org.pac4j.core.http.J2ENopHttpActionAdapter;
+import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
 import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +20,15 @@ import static org.pac4j.core.util.CommonHelper.isBlank;
 /**
  * <p>This filter finishes the login process for an indirect client, based on the {@link #callbackLogic}.</p>
  *
- * <p>The configuration can be provided via setter methods: {@link #setConfig(Config)} (security configuration), {@link #setDefaultUrl(String)} (default url after login if none was requested),
- * {@link #setMultiProfile(Boolean)} (whether multiple profiles should be kept) and ({@link #setRenewSession(Boolean)} (whether the session must be renewed after login).</p>
+ * <p>The configuration can be provided via setter methods:</p>
+ * <ul>
+ *     <li><code>{@link #setConfig(Config)}</code> (security configuration)</li>
+ *     <li><code>{@link #setDefaultUrl(String)}</code> (default url after login if none was requested)</li>
+ *     <li><code>{@link #setSaveInSession(Boolean)}</code> (whether the profile should be saved into the session)</li>
+ *     <li><code>{@link #setMultiProfile(Boolean)}</code> (whether multiple profiles should be kept)</li>
+ *     <li><code>{@link #setRenewSession(Boolean)}</code> (whether the session must be renewed after login)</li>
+ *     <li><code>{@link #setDefaultClient(String)}</code> (the default client if none is provided on the URL)</li>
+ * </ul>
  *
  * <p>This filter only applies if the suffix is blank or if the current request URL ends with the suffix (by default: <code>/callback</code>).</p>
  *
@@ -40,9 +47,13 @@ public class CallbackFilter implements Filter {
 
     private String defaultUrl;
 
+    private Boolean saveInSession;
+
     private Boolean multiProfile;
 
     private Boolean renewSession;
+
+    private String defaultClient;
 
     private String suffix = DEFAULT_CALLBACK_SUFFIX;
 
@@ -86,7 +97,8 @@ public class CallbackFilter implements Filter {
 
         if (isBlank(suffix) || pathEndsWithSuffix) {
             assertNotNull("callbackLogic", this.callbackLogic);
-            callbackLogic.perform(context, this.config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.multiProfile, this.renewSession);
+            callbackLogic.perform(context, this.config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.saveInSession,
+                    this.multiProfile, this.renewSession, this.defaultClient);
         } else {
             chain.doFilter(req, resp);
         }
@@ -133,6 +145,22 @@ public class CallbackFilter implements Filter {
 
     public void setRenewSession(final Boolean renewSession) {
         this.renewSession = renewSession;
+    }
+
+    public Boolean getSaveInSession() {
+        return saveInSession;
+    }
+
+    public void setSaveInSession(final Boolean saveInSession) {
+        this.saveInSession = saveInSession;
+    }
+
+    public String getDefaultClient() {
+        return defaultClient;
+    }
+
+    public void setDefaultClient(final String defaultClient) {
+        this.defaultClient = defaultClient;
     }
 
     public String getSuffix() {

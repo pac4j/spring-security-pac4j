@@ -84,6 +84,6 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic<Object, J2EContext> im
 
     @Override
     public String toString() {
-        return CommonHelper.toString(this.getClass(), "config", config, "clientName", clientName);
+        return CommonHelper.toNiceString(this.getClass(), "config", config, "clientName", clientName);
     }
 }
