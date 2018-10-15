@@ -26,17 +26,17 @@ It's based on Java 8, Spring Security 5 and on the **[pac4j security engine](htt
 
 ## Usage
 
-#### 1) [Add the required dependencies](https://github.com/pac4j/spring-security-pac4j/wiki/Dependencies)
+### 1) [Add the required dependencies](https://github.com/pac4j/spring-security-pac4j/wiki/Dependencies)
 
-#### 2) Define:
+### 2) Define:
 
-#### - the [security configuration](https://github.com/pac4j/spring-security-pac4j/wiki/Security-configuration)
-#### - the [callback configuration](https://github.com/pac4j/spring-security-pac4j/wiki/Callback-configuration), only for web applications
-#### - the [logout configuration](https://github.com/pac4j/spring-security-pac4j/wiki/Logout-configuration)
+### - the [security configuration](https://github.com/pac4j/spring-security-pac4j/wiki/Security-configuration)
+### - the [callback configuration](https://github.com/pac4j/spring-security-pac4j/wiki/Callback-configuration), only for web applications
+### - the [logout configuration](https://github.com/pac4j/spring-security-pac4j/wiki/Logout-configuration)
 
-#### 3) [Apply security](https://github.com/pac4j/spring-security-pac4j/wiki/Apply-security)
+### 3) [Apply security](https://github.com/pac4j/spring-security-pac4j/wiki/Apply-security)
 
-#### 4) [Get the authenticated user profiles](https://github.com/pac4j/spring-security-pac4j/wiki/Get-the-authenticated-user-profiles)
+### 4) [Get the authenticated user profiles](https://github.com/pac4j/spring-security-pac4j/wiki/Get-the-authenticated-user-profiles)
 
 
 ## Demo
