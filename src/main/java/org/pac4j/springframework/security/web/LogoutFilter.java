@@ -17,14 +17,22 @@ import static org.pac4j.core.util.CommonHelper.*;
 /**
  * <p>This filter handles the (application + identity provider) logout process, based on the {@link #logoutLogic}.</p>
  *
- * <p>The configuration can be provided via setters: {@link #setConfig(Config)} (security configuration), {@link #setDefaultUrl(String)} (default logourl url),
- * {@link #setLogoutUrlPattern(String)} (pattern that logout urls must match), {@link #setLocalLogout(Boolean)} (whether the application logout must be performed),
- * {@link #setDestroySession(Boolean)} (whether we must destroy the web session during the local logout) and {@link #setCentralLogout(Boolean)} (whether the centralLogout must be performed).</p>
+ * <p>The configuration can be provided via setters:</p>
+ * <ul>
+ *     <li><code>{@link #setConfig(Config)}</code> (security configuration)</li>
+ *     <li><code>{@link #setDefaultUrl(String)}</code> (default logourl url)</li>
+ *     <li><code>{@link #setLogoutUrlPattern(String)}</code> (pattern that logout urls must match)</li>
+ *     <li><code>{@link #setLocalLogout(Boolean)}</code> (whether the application logout must be performed)</li>
+ *     <li><code>{@link #setDestroySession(Boolean)}</code> (whether we must destroy the web session during the local logout)</li>
+ *     <li><code>{@link #setCentralLogout(Boolean)}</code> (whether the centralLogout must be performed).</li>
+ * </ul>
+ *
+ * <p>This filter may only apply for a specific suffix path if you define it via the <code>{@link #setSuffix(String)}</code> method.</p>
  *
  * @author Jerome Leleu
  * @since 3.0.0
  */
-public class LogoutFilter implements Filter {
+public class LogoutFilter extends AbstractPathFilter {
 
     private LogoutLogic<Object, J2EContext> logoutLogic;
 
@@ -67,8 +75,11 @@ public class LogoutFilter implements Filter {
         assertNotNull("config", config);
         final J2EContext context = new J2EContext((HttpServletRequest) req, (HttpServletResponse) resp, config.getSessionStore());
 
-        logoutLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
-
+        if (mustApply(context)) {
+            logoutLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
+        } else {
+            chain.doFilter(req, resp);
+        }
     }
 
     @Override

@@ -6,8 +6,6 @@ import org.pac4j.core.engine.CallbackLogic;
 import org.pac4j.core.engine.DefaultCallbackLogic;
 import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
 import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -15,12 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.pac4j.core.util.CommonHelper.assertNotNull;
-import static org.pac4j.core.util.CommonHelper.isBlank;
 
 /**
  * <p>This filter finishes the login process for an indirect client, based on the {@link #callbackLogic}.</p>
  *
- * <p>The configuration can be provided via setter methods:</p>
+ * <p>The configuration can be provided via setters:</p>
  * <ul>
  *     <li><code>{@link #setConfig(Config)}</code> (security configuration)</li>
  *     <li><code>{@link #setDefaultUrl(String)}</code> (default url after login if none was requested)</li>
@@ -35,11 +32,9 @@ import static org.pac4j.core.util.CommonHelper.isBlank;
  * @author Jerome Leleu
  * @since 2.0.0
  */
-public class CallbackFilter implements Filter {
+public class CallbackFilter extends AbstractPathFilter {
 
     public final static String DEFAULT_CALLBACK_SUFFIX = "/callback";
-
-    private final static Logger logger = LoggerFactory.getLogger(CallbackFilter.class);
 
     private CallbackLogic<Object, J2EContext> callbackLogic;
 
@@ -55,10 +50,9 @@ public class CallbackFilter implements Filter {
 
     private String defaultClient;
 
-    private String suffix = DEFAULT_CALLBACK_SUFFIX;
-
     public CallbackFilter() {
         callbackLogic = new DefaultCallbackLogic<>();
+        setSuffix(DEFAULT_CALLBACK_SUFFIX);
         ((DefaultCallbackLogic<Object, J2EContext>) callbackLogic).setProfileManagerFactory(SpringSecurityProfileManager::new);
     }
 
@@ -91,11 +85,7 @@ public class CallbackFilter implements Filter {
         assertNotNull("config", this.config);
         final J2EContext context = new J2EContext((HttpServletRequest) req, (HttpServletResponse) resp, config.getSessionStore());
 
-        final String path = context.getPath();
-        logger.debug("path: {} | suffix: {}", path, suffix);
-        final boolean pathEndsWithSuffix = path != null && path.endsWith(suffix);
-
-        if (isBlank(suffix) || pathEndsWithSuffix) {
+        if (mustApply(context)) {
             assertNotNull("callbackLogic", this.callbackLogic);
             callbackLogic.perform(context, this.config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.saveInSession,
                     this.multiProfile, this.renewSession, this.defaultClient);
@@ -161,13 +151,5 @@ public class CallbackFilter implements Filter {
 
     public void setDefaultClient(final String defaultClient) {
         this.defaultClient = defaultClient;
-    }
-
-    public String getSuffix() {
-        return suffix;
-    }
-
-    public void setSuffix(final String suffix) {
-        this.suffix = suffix;
     }
 }
