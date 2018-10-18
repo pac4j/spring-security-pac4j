@@ -2,14 +2,14 @@
   <img src="https://pac4j.github.io/pac4j/img/logo-spring-security.png" width="300" />
 </p>
 
-**WARNING: if you start with a fresh Spring Boot or Spring MVC webapp, you should certainly use [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) instead of this library, which offers similar capabilities, but is a lot easier!**
+**WARNING: if you start a fresh Spring Boot or Spring MVC project, you should certainly use [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) instead of this library, which offers similar capabilities, but is even easier!**
 
-The `spring-security-pac4j` project is an **easy and powerful security library for Spring Security** (with or without Spring Boot) web applications. It supports authentication and authorization, but also advanced features like session fixation and CSRF protection.
+The `spring-security-pac4j` project is an **easy and powerful security library for Spring Security web applications and web services (with or without Spring Boot)**. It supports authentication and authorization, but also advanced features like session fixation and CSRF protection.
 It's based on Java 8, Spring Security 5 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v3**. It's available under the Apache 2 license.
 
 [**Main concepts and components:**](http://www.pac4j.org/docs/main-concepts-and-components.html)
 
-1) A [**client**](http://www.pac4j.org/docs/clients.html) represents an authentication mechanism. It performs the login process and returns a user profile. An indirect client is for UI authentication while a direct client is for web services authentication:
+1) A [**client**](http://www.pac4j.org/docs/clients.html) represents an authentication mechanism. It performs the login process and returns a user profile. An indirect client is for web applications authentication while a direct client is for web services authentication:
 
 &#9656; OAuth - SAML - CAS - OpenID Connect - HTTP - OpenID - Google App Engine - Kerberos - LDAP - SQL - JWT - MongoDB - CouchDB - IP address - REST API
 
@@ -21,7 +21,9 @@ It's based on Java 8, Spring Security 5 and on the **[pac4j security engine](htt
 
 4) The `CallbackFilter` finishes the login process for an indirect client
 
-5) The `LogoutFilter` handles the logout process.
+5) The `LogoutFilter` logs out the user from the application and triggers the logout at the identity provider level
+
+6) The `Pac4jEntryPoint` handles when the user is not authenticated.
 
 
 ## Usage
