@@ -23,7 +23,11 @@ It's based on Java 8, Spring Security 5 and on the **[pac4j security engine](htt
 
 5) The `LogoutFilter` logs out the user from the application and triggers the logout at the identity provider level
 
-6) The `Pac4jEntryPoint` handles when the user is not authenticated.
+6) The `Pac4jEntryPoint` handles when the user is not authenticated
+
+7) The `J2EContext` and the `ProfileManager` components can be injected (for a Spring Boot/MVC webapp and using the `spring-webmvc-pac4j` library)
+
+8) The `@RequireAnyRole` and `@RequireAllRoles` annotations check the user roles (for a Spring Boot/MVC webapp and using the `spring-webmvc-pac4j` library).
 
 
 ## Usage
