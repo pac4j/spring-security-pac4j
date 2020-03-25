@@ -3,7 +3,7 @@
 </p>
 
 The `spring-security-pac4j` project is an **easy and powerful security library for Spring Security web applications and web services (with or without Spring Boot)**. It supports authentication and authorization, but also advanced features like session fixation and CSRF protection.
-It's based on Java 8, Spring Security 5 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v3**. It's available under the Apache 2 license.
+It's based on Java 8, Spring Security 5 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v4**. It's available under the Apache 2 license.
 
 <img src="https://pac4j.github.io/pac4j/img/warning_sign.png" width="60" /> <b>For a Spring Boot or Spring MVC project, you should use the [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) library instead of this one, which offers similar capabilities, but is easier!</b>
 
@@ -17,17 +17,19 @@ It's based on Java 8, Spring Security 5 and on the **[pac4j security engine](htt
 
 &#9656; Roles/permissions - Anonymous/remember-me/(fully) authenticated - Profile type, attribute -  CORS - CSRF - Security headers - IP address, HTTP method
 
-3) The `SecurityFilter` protects an url by checking that the user is authenticated and that the authorizations are valid, according to the clients and authorizers configuration. If the user is not authenticated, it performs authentication for direct clients or starts the login process for indirect clients
+3) A [**matcher**](http://www.pac4j.org/docs/matchers.html) defines whether the `SecurityFilter` must be applied and can be used for additional web processing
 
-4) The `CallbackFilter` finishes the login process for an indirect client
+4) The `SecurityFilter` protects an url by checking that the user is authenticated and that the authorizations are valid, according to the clients and authorizers configuration. If the user is not authenticated, it performs authentication for direct clients or starts the login process for indirect clients
 
-5) The `LogoutFilter` logs out the user from the application and triggers the logout at the identity provider level
+5) The `CallbackFilter` finishes the login process for an indirect client
 
-6) The `Pac4jEntryPoint` handles when the user is not authenticated
+6) The `LogoutFilter` logs out the user from the application and triggers the logout at the identity provider level
 
-7) The `J2EContext` and the `ProfileManager` components can be injected (for a Spring Boot/MVC webapp and using the `spring-webmvc-pac4j` library)
+7) The `Pac4jEntryPoint` handles when the user is not authenticated
 
-8) The `@RequireAnyRole` and `@RequireAllRoles` annotations check the user roles (for a Spring Boot/MVC webapp and using the `spring-webmvc-pac4j` library).
+8) The `J2EContext` and the `ProfileManager` components can be injected (for a Spring Boot/MVC webapp and using the `spring-webmvc-pac4j` library)
+
+9) The `@RequireAnyRole` and `@RequireAllRoles` annotations check the user roles (for a Spring Boot/MVC webapp and using the `spring-webmvc-pac4j` library).
 
 
 ## Usage
