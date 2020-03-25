@@ -1,40 +1,29 @@
 package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.JEESessionStore;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.DefaultLogoutLogic;
 import org.pac4j.core.engine.LogoutLogic;
-import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
-import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
+import org.pac4j.core.http.adapter.HttpActionAdapter;
+import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
+import org.pac4j.core.util.FindBest;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.pac4j.core.util.CommonHelper.*;
-
 /**
- * <p>This filter handles the (application + identity provider) logout process, based on the {@link #logoutLogic}.</p>
- *
- * <p>The configuration can be provided via setters:</p>
- * <ul>
- *     <li><code>{@link #setConfig(Config)}</code> (security configuration)</li>
- *     <li><code>{@link #setDefaultUrl(String)}</code> (default logourl url)</li>
- *     <li><code>{@link #setLogoutUrlPattern(String)}</code> (pattern that logout urls must match)</li>
- *     <li><code>{@link #setLocalLogout(Boolean)}</code> (whether the application logout must be performed)</li>
- *     <li><code>{@link #setDestroySession(Boolean)}</code> (whether we must destroy the web session during the local logout)</li>
- *     <li><code>{@link #setCentralLogout(Boolean)}</code> (whether the centralLogout must be performed).</li>
- * </ul>
- *
- * <p>This filter may only apply for a specific suffix path if you define it via the <code>{@link #setSuffix(String)}</code> method.</p>
+ * <p>This filter handles the (application + identity provider) logout process.</p>
  *
  * @author Jerome Leleu
  * @since 3.0.0
  */
 public class LogoutFilter extends AbstractPathFilter {
 
-    private LogoutLogic<Object, J2EContext> logoutLogic;
+    private LogoutLogic<Object, JEEContext> logoutLogic;
 
     private Config config;
 
@@ -48,13 +37,9 @@ public class LogoutFilter extends AbstractPathFilter {
 
     private Boolean centralLogout;
 
-    public LogoutFilter() {
-        logoutLogic = new DefaultLogoutLogic<>();
-        ((DefaultLogoutLogic<Object, J2EContext>) logoutLogic).setProfileManagerFactory(SpringSecurityProfileManager::new);
-    }
+    public LogoutFilter() {}
 
     public LogoutFilter(final Config config) {
-        this();
         this.config = config;
     }
 
@@ -69,14 +54,13 @@ public class LogoutFilter extends AbstractPathFilter {
     @Override
     public void doFilter(final ServletRequest req, final ServletResponse resp, final FilterChain chain) throws IOException, ServletException {
 
-        assertNotNull("logoutLogic", logoutLogic);
+        final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
+        final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
+        final LogoutLogic<Object, JEEContext> bestLogic = FindBest.logoutLogic(logoutLogic, config, DefaultLogoutLogic.INSTANCE);
 
-        final Config config = getConfig();
-        assertNotNull("config", config);
-        final J2EContext context = new J2EContext((HttpServletRequest) req, (HttpServletResponse) resp, config.getSessionStore());
-
+        final JEEContext context = new JEEContext((HttpServletRequest) req, (HttpServletResponse) resp, bestSessionStore);
         if (mustApply(context)) {
-            logoutLogic.perform(context, config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
+            bestLogic.perform(context, config, bestAdapter, this.defaultUrl, this.logoutUrlPattern, this.localLogout, this.destroySession, this.centralLogout);
         } else {
             chain.doFilter(req, resp);
         }
@@ -85,11 +69,11 @@ public class LogoutFilter extends AbstractPathFilter {
     @Override
     public void destroy() { }
 
-    public LogoutLogic<Object, J2EContext> getLogoutLogic() {
+    public LogoutLogic<Object, JEEContext> getLogoutLogic() {
         return logoutLogic;
     }
 
-    public void setLogoutLogic(final LogoutLogic<Object, J2EContext> logoutLogic) {
+    public void setLogoutLogic(final LogoutLogic<Object, JEEContext> logoutLogic) {
         this.logoutLogic = logoutLogic;
     }
 

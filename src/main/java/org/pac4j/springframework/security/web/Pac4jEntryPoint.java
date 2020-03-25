@@ -2,11 +2,16 @@ package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.client.Client;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.JEESessionStore;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.DefaultSecurityLogic;
-import org.pac4j.core.exception.HttpAction;
 import org.pac4j.core.exception.TechnicalException;
+import org.pac4j.core.exception.http.HttpAction;
+import org.pac4j.core.http.adapter.HttpActionAdapter;
+import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
 import org.pac4j.core.util.CommonHelper;
+import org.pac4j.core.util.FindBest;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -26,7 +31,7 @@ import java.util.List;
  * @author Jerome Leleu
  * @since 1.0.0
  */
-public class Pac4jEntryPoint extends DefaultSecurityLogic<Object, J2EContext> implements AuthenticationEntryPoint {
+public class Pac4jEntryPoint extends DefaultSecurityLogic<Object, JEEContext> implements AuthenticationEntryPoint {
 
     private Config config;
 
@@ -44,22 +49,28 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic<Object, J2EContext> im
                          final AuthenticationException authException) throws IOException, ServletException {
 
         if (config != null && CommonHelper.isNotBlank(clientName)) {
-            final J2EContext context = new J2EContext(request, response, config.getSessionStore());
+            final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
+            final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
+            final JEEContext context = new JEEContext(request, response, bestSessionStore);
+
             final List<Client> currentClients = new ArrayList<>();
-            final Client client = config.getClients().findClient(clientName);
+            final Client client = config.getClients().findClient(clientName).orElseThrow(() -> new TechnicalException("Cannot find clientName: " + clientName));
             currentClients.add(client);
 
+            HttpAction action;
             try {
                 if (startAuthentication(context, currentClients)) {
                     logger.debug("Redirecting to identity provider for login");
-                        saveRequestedUrl(context, currentClients);
-                        redirectToIdentityProvider(context, currentClients);
+                        saveRequestedUrl(context, currentClients, config.getClients().getAjaxRequestResolver());
+                        action = redirectToIdentityProvider(context, currentClients);
                 } else {
-                    unauthorized(context, currentClients);
+                    action = unauthorized(context, currentClients);
                 }
             } catch (final HttpAction e) {
                 logger.debug("extra HTTP action required in Pac4jEntryPoint: {}", e.getCode());
+                action = e;
             }
+            bestAdapter.adapt(action, context);
 
         } else {
             throw new TechnicalException("The Pac4jEntryPoint has been defined without config, nor clientName: it must be defined in a <security:http> section with the pac4j SecurityFilter or CallbackFilter");

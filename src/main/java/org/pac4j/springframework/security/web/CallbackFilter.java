@@ -1,33 +1,22 @@
 package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.JEESessionStore;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.CallbackLogic;
 import org.pac4j.core.engine.DefaultCallbackLogic;
-import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
-import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
+import org.pac4j.core.http.adapter.HttpActionAdapter;
+import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
+import org.pac4j.core.util.FindBest;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.pac4j.core.util.CommonHelper.assertNotNull;
-
 /**
- * <p>This filter finishes the login process for an indirect client, based on the {@link #callbackLogic}.</p>
- *
- * <p>The configuration can be provided via setters:</p>
- * <ul>
- *     <li><code>{@link #setConfig(Config)}</code> (security configuration)</li>
- *     <li><code>{@link #setDefaultUrl(String)}</code> (default url after login if none was requested)</li>
- *     <li><code>{@link #setSaveInSession(Boolean)}</code> (whether the profile should be saved into the session)</li>
- *     <li><code>{@link #setMultiProfile(Boolean)}</code> (whether multiple profiles should be kept)</li>
- *     <li><code>{@link #setRenewSession(Boolean)}</code> (whether the session must be renewed after login)</li>
- *     <li><code>{@link #setDefaultClient(String)}</code> (the default client if none is provided on the URL)</li>
- * </ul>
- *
- * <p>This filter only applies if the suffix is blank or if the current request URL ends with the suffix (by default: <code>/callback</code>).</p>
+ * <p>This filter finishes the login process for an indirect client.</p>
  *
  * @author Jerome Leleu
  * @since 2.0.0
@@ -36,7 +25,7 @@ public class CallbackFilter extends AbstractPathFilter {
 
     public final static String DEFAULT_CALLBACK_SUFFIX = "/callback";
 
-    private CallbackLogic<Object, J2EContext> callbackLogic;
+    private CallbackLogic<Object, JEEContext> callbackLogic;
 
     private Config config;
 
@@ -51,9 +40,7 @@ public class CallbackFilter extends AbstractPathFilter {
     private String defaultClient;
 
     public CallbackFilter() {
-        callbackLogic = new DefaultCallbackLogic<>();
         setSuffix(DEFAULT_CALLBACK_SUFFIX);
-        ((DefaultCallbackLogic<Object, J2EContext>) callbackLogic).setProfileManagerFactory(SpringSecurityProfileManager::new);
     }
 
     public CallbackFilter(final Config config) {
@@ -82,12 +69,13 @@ public class CallbackFilter extends AbstractPathFilter {
     @Override
     public void doFilter(final ServletRequest req, final ServletResponse resp, final FilterChain chain) throws IOException, ServletException {
 
-        assertNotNull("config", this.config);
-        final J2EContext context = new J2EContext((HttpServletRequest) req, (HttpServletResponse) resp, config.getSessionStore());
+        final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
+        final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
+        final CallbackLogic<Object, JEEContext> bestLogic = FindBest.callbackLogic(callbackLogic, config, DefaultCallbackLogic.INSTANCE);
 
+        final JEEContext context = new JEEContext((HttpServletRequest) req, (HttpServletResponse) resp, bestSessionStore);
         if (mustApply(context)) {
-            assertNotNull("callbackLogic", this.callbackLogic);
-            callbackLogic.perform(context, this.config, J2ENopHttpActionAdapter.INSTANCE, this.defaultUrl, this.saveInSession,
+            bestLogic.perform(context, this.config, bestAdapter, this.defaultUrl, this.saveInSession,
                     this.multiProfile, this.renewSession, this.defaultClient);
         } else {
             chain.doFilter(req, resp);
@@ -97,11 +85,11 @@ public class CallbackFilter extends AbstractPathFilter {
     @Override
     public void destroy() { }
 
-    public CallbackLogic<Object, J2EContext> getCallbackLogic() {
+    public CallbackLogic<Object, JEEContext> getCallbackLogic() {
         return callbackLogic;
     }
 
-    public void setCallbackLogic(final CallbackLogic<Object, J2EContext> callbackLogic) {
+    public void setCallbackLogic(final CallbackLogic<Object, JEEContext> callbackLogic) {
         this.callbackLogic = callbackLogic;
     }
 

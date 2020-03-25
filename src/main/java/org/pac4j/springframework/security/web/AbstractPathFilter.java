@@ -1,6 +1,6 @@
 package org.pac4j.springframework.security.web;
 
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +20,7 @@ public abstract class AbstractPathFilter implements Filter {
 
     private String suffix;
 
-    protected boolean mustApply(final J2EContext context) {
+    protected boolean mustApply(final JEEContext context) {
         final String path = context.getPath();
         logger.debug("path: {} | suffix: {}", path, suffix);
 

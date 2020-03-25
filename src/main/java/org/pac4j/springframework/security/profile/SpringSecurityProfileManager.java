@@ -5,6 +5,8 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.springframework.security.util.SpringSecurityHelper;
 
+import java.util.LinkedHashMap;
+
 /**
  * Specific profile manager for Spring Security.
  *
@@ -18,8 +20,8 @@ public class SpringSecurityProfileManager extends ProfileManager<CommonProfile> 
     }
 
     @Override
-    public void save(final boolean saveInSession, final CommonProfile profile, final boolean multiProfile) {
-        super.save(saveInSession, profile, multiProfile);
+    protected void saveAll(LinkedHashMap<String, CommonProfile> profiles, final boolean saveInSession) {
+        super.saveAll(profiles, saveInSession);
 
         SpringSecurityHelper.populateAuthentication(retrieveAll(saveInSession));
     }

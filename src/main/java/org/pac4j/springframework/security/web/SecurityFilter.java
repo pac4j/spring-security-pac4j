@@ -1,10 +1,14 @@
 package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.J2EContext;
+import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.session.JEESessionStore;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
-import org.pac4j.core.http.adapter.J2ENopHttpActionAdapter;
+import org.pac4j.core.http.adapter.HttpActionAdapter;
+import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
+import org.pac4j.core.util.FindBest;
 import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
 
 import javax.servlet.*;
@@ -12,20 +16,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.pac4j.core.util.CommonHelper.assertNotNull;
-
 /**
- * <p>This filter protects an url, based on the {@link #securityLogic}.</p>
- *
- * <p>The configuration can be provided via setter methods: {@link #setConfig(Config)} (security configuration), {@link #setClients(String)} (list of clients for authentication),
- * {@link #setAuthorizers(String)} (list of authorizers), {@link #setMatchers(String)} (list of matchers) and {@link #setMultiProfile(Boolean)} (whether multiple profiles should be kept).</p>
+ * <p>This filter protects an url.</p>
  *
  * @author Jerome Leleu
  * @since 2.0.0
  */
 public class SecurityFilter implements Filter {
 
-    private SecurityLogic<Object, J2EContext> securityLogic;
+    static {
+        Config.setProfileManagerFactory("SpringSecurityProfileManager", ctx -> new SpringSecurityProfileManager(ctx));
+    }
+
+    private SecurityLogic<Object, JEEContext> securityLogic;
 
     private Config config;
 
@@ -37,13 +40,9 @@ public class SecurityFilter implements Filter {
 
     private Boolean multiProfile;
 
-    public SecurityFilter() {
-        securityLogic = new DefaultSecurityLogic<>();
-        ((DefaultSecurityLogic<Object, J2EContext>) securityLogic).setProfileManagerFactory(SpringSecurityProfileManager::new);
-    }
+    public SecurityFilter() {}
 
     public SecurityFilter(final Config config) {
-        this();
         this.config = config;
     }
 
@@ -63,29 +62,29 @@ public class SecurityFilter implements Filter {
     @Override
     public void doFilter(final ServletRequest req, final ServletResponse resp, final FilterChain filterChain) throws IOException, ServletException {
 
-        assertNotNull("securityLogic", this.securityLogic);
-        assertNotNull("config", this.config);
+        final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
+        final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
+        final SecurityLogic<Object, JEEContext> bestLogic = FindBest.securityLogic(securityLogic, config, DefaultSecurityLogic.INSTANCE);
 
         final HttpServletRequest request = (HttpServletRequest) req;
         final HttpServletResponse response = (HttpServletResponse) resp;
-        final J2EContext context = new J2EContext(request, response, config.getSessionStore());
-
-        securityLogic.perform(context, this.config, (ctx, profiles, parameters) -> {
+        final JEEContext context = new JEEContext(request, response, bestSessionStore);
+        bestLogic.perform(context, this.config, (ctx, profiles, parameters) -> {
 
             filterChain.doFilter(request, response);
             return null;
 
-        }, J2ENopHttpActionAdapter.INSTANCE, this.clients, this.authorizers, this.matchers, this.multiProfile);
+        }, bestAdapter, this.clients, this.authorizers, this.matchers, this.multiProfile);
     }
 
     @Override
     public void destroy() { }
 
-    public SecurityLogic<Object, J2EContext> getSecurityLogic() {
+    public SecurityLogic<Object, JEEContext> getSecurityLogic() {
         return securityLogic;
     }
 
-    public void setSecurityLogic(final SecurityLogic<Object, J2EContext> securityLogic) {
+    public void setSecurityLogic(final SecurityLogic<Object, JEEContext> securityLogic) {
         this.securityLogic = securityLogic;
     }
 
