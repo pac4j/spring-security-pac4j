@@ -1,6 +1,7 @@
 package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.util.InitializableObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,7 @@ import static org.pac4j.core.util.CommonHelper.isBlank;
  * @author Jerome Leleu
  * @since 4.1.0
  */
-public abstract class AbstractPathFilter implements Filter {
+public abstract class AbstractPathFilter extends InitializableObject implements Filter {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
