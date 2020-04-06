@@ -127,15 +127,15 @@ public class CallbackFilter extends AbstractPathFilter {
                 final List<SecurityFilterChain> chains = springSecurityFilterChain.getFilterChains();
                 for (final SecurityFilterChain chain : chains) {
                     final List<Filter> filters = chain.getFilters();
-                    boolean process = false;
+                    boolean addFilter = false;
                     for (final Filter filter : filters) {
-                        if (process) {
+                        if (addFilter) {
                             additionalFilters.add(filter);
                         } else if (filter == this) {
-                            process = true;
+                            addFilter = true;
                         }
                     }
-                    if (process) {
+                    if (addFilter) {
                         break;
                     }
                 }
