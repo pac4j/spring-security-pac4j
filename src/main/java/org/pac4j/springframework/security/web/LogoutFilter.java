@@ -69,6 +69,9 @@ public class LogoutFilter extends AbstractPathFilter {
     @Override
     public void destroy() { }
 
+    @Override
+    protected void internalInit() { }
+
     public LogoutLogic<Object, JEEContext> getLogoutLogic() {
         return logoutLogic;
     }
