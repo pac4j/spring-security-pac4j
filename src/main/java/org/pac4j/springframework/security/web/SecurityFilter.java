@@ -26,6 +26,7 @@ public class SecurityFilter implements Filter {
 
     static {
         Config.setProfileManagerFactory("SpringSecurityProfileManager", ctx -> new SpringSecurityProfileManager(ctx));
+        Config.setProfileManagerFactory2("SpringSecurityProfileManager2", (ctx, store) -> new SpringSecurityProfileManager(ctx, store));
     }
 
     private SecurityLogic<Object, JEEContext> securityLogic;

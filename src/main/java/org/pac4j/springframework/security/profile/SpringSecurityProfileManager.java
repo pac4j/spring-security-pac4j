@@ -1,6 +1,8 @@
 package org.pac4j.springframework.security.profile;
 
+import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.WebContext;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.springframework.security.util.SpringSecurityHelper;
@@ -17,6 +19,10 @@ public class SpringSecurityProfileManager extends ProfileManager<CommonProfile> 
 
     public SpringSecurityProfileManager(final WebContext context) {
         super(context);
+    }
+
+    public SpringSecurityProfileManager(final WebContext context, final SessionStore<JEEContext> sessionStore) {
+        super(context, sessionStore);
     }
 
     @Override
