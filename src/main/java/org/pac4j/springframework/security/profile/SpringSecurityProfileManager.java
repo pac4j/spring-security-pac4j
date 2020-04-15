@@ -6,6 +6,7 @@ import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.springframework.security.util.SpringSecurityHelper;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.LinkedHashMap;
 
@@ -30,5 +31,12 @@ public class SpringSecurityProfileManager extends ProfileManager<CommonProfile> 
         super.saveAll(profiles, saveInSession);
 
         SpringSecurityHelper.populateAuthentication(retrieveAll(saveInSession));
+    }
+
+    @Override
+    public void remove(final boolean removeFromSession) {
+        super.remove(removeFromSession);
+
+        SecurityContextHolder.clearContext();
     }
 }
