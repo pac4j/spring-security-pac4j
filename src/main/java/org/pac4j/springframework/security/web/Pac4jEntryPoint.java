@@ -5,6 +5,7 @@ import org.pac4j.core.config.Config;
 import org.pac4j.core.context.JEEContext;
 import org.pac4j.core.context.session.JEESessionStore;
 import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.exception.http.HttpAction;
@@ -12,6 +13,8 @@ import org.pac4j.core.http.adapter.HttpActionAdapter;
 import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
 import org.pac4j.core.util.CommonHelper;
 import org.pac4j.core.util.FindBest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -33,6 +36,8 @@ import java.util.List;
  */
 public class Pac4jEntryPoint extends DefaultSecurityLogic<Object, JEEContext> implements AuthenticationEntryPoint {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Pac4jEntryPoint.class);
+
     private Config config;
 
     private String clientName;
@@ -53,21 +58,21 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic<Object, JEEContext> im
             final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
             final JEEContext context = new JEEContext(request, response, bestSessionStore);
 
-            final List<Client> currentClients = new ArrayList<>();
-            final Client client = config.getClients().findClient(clientName).orElseThrow(() -> new TechnicalException("Cannot find clientName: " + clientName));
+            final List<Client<? extends Credentials>> currentClients = new ArrayList<>();
+            final Client<? extends Credentials> client = config.getClients().findClient(clientName).orElseThrow(() -> new TechnicalException("Cannot find clientName: " + clientName));
             currentClients.add(client);
 
             HttpAction action;
             try {
                 if (startAuthentication(context, currentClients)) {
-                    logger.debug("Redirecting to identity provider for login");
+                    LOGGER.debug("Redirecting to identity provider for login");
                         saveRequestedUrl(context, currentClients, config.getClients().getAjaxRequestResolver());
                         action = redirectToIdentityProvider(context, currentClients);
                 } else {
                     action = unauthorized(context, currentClients);
                 }
             } catch (final HttpAction e) {
-                logger.debug("extra HTTP action required in Pac4jEntryPoint: {}", e.getCode());
+                LOGGER.debug("extra HTTP action required in Pac4jEntryPoint: {}", e.getCode());
                 action = e;
             }
             bestAdapter.adapt(action, context);
