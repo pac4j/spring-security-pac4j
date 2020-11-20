@@ -1,6 +1,6 @@
 package org.pac4j.springframework.security.web;
 
-import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.WebContext;
 import org.pac4j.core.util.InitializableObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public abstract class AbstractPathFilter extends InitializableObject implements 
 
     private String suffix;
 
-    protected boolean mustApply(final JEEContext context) {
+    protected boolean mustApply(final WebContext context) {
         final String path = context.getPath();
         logger.debug("path: {} | suffix: {}", path, suffix);
 

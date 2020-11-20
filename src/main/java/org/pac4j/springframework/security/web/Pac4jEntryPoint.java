@@ -2,10 +2,10 @@ package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.client.Client;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.JEEContextFactory;
+import org.pac4j.core.context.WebContext;
 import org.pac4j.core.context.session.JEESessionStore;
 import org.pac4j.core.context.session.SessionStore;
-import org.pac4j.core.credentials.Credentials;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.exception.http.HttpAction;
@@ -34,7 +34,7 @@ import java.util.List;
  * @author Jerome Leleu
  * @since 1.0.0
  */
-public class Pac4jEntryPoint extends DefaultSecurityLogic<Object, JEEContext> implements AuthenticationEntryPoint {
+public class Pac4jEntryPoint extends DefaultSecurityLogic implements AuthenticationEntryPoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Pac4jEntryPoint.class);
 
@@ -54,12 +54,12 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic<Object, JEEContext> im
                          final AuthenticationException authException) throws IOException, ServletException {
 
         if (config != null && CommonHelper.isNotBlank(clientName)) {
-            final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
-            final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
-            final JEEContext context = new JEEContext(request, response, bestSessionStore);
+            final SessionStore bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
+            final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
+            final WebContext context = FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response, bestSessionStore);
 
-            final List<Client<? extends Credentials>> currentClients = new ArrayList<>();
-            final Client<? extends Credentials> client = config.getClients().findClient(clientName).orElseThrow(() -> new TechnicalException("Cannot find clientName: " + clientName));
+            final List<Client> currentClients = new ArrayList<>();
+            final Client client = config.getClients().findClient(clientName).orElseThrow(() -> new TechnicalException("Cannot find clientName: " + clientName));
             currentClients.add(client);
 
             HttpAction action;

@@ -12,7 +12,7 @@
     <artifactId>spring-security-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>pac4j implementation for Spring Security</name>
-    <version>5.1.1-SNAPSHOT</version>
+    <version>6.0.0-SNAPSHOT</version>
     <description>Security library for Spring Security based on pac4j</description>
     <url>https://github.com/pac4j/spring-security-pac4j</url>
 
@@ -55,10 +55,9 @@
     <properties>
         <spring.security.version>5.4.1</spring.security.version>
         <spring.version>5.3.1</spring.version>
-        <servlet.version>3.1.0</servlet.version>
-        <pac4j.version>4.2.0</pac4j.version>
-        <java.version>1.8</java.version>
-        <jackson.version>2.11.3</jackson.version>
+        <servlet.version>4.0.1</servlet.version>
+        <pac4j.version>5.0.0-SNAPSHOT</pac4j.version>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
@@ -88,11 +87,6 @@
             <artifactId>pac4j-core</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -102,8 +96,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <release>${java.version}</release>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -193,9 +186,9 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.5</version>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.1.4</version>
                 <configuration>
                     <effort>Low</effort>
                     <threshold>Max</threshold>
@@ -204,7 +197,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>run-findbugs</id>
+                        <id>run-sportbugs</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>check</goal>

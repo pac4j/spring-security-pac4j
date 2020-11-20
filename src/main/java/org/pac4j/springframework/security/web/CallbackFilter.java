@@ -2,6 +2,8 @@ package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.JEEContextFactory;
+import org.pac4j.core.context.WebContext;
 import org.pac4j.core.context.session.JEESessionStore;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.CallbackLogic;
@@ -32,15 +34,11 @@ public class CallbackFilter extends AbstractPathFilter {
 
     public final static String DEFAULT_CALLBACK_SUFFIX = "/callback";
 
-    private CallbackLogic<Object, JEEContext> callbackLogic;
+    private CallbackLogic callbackLogic;
 
     private Config config;
 
     private String defaultUrl;
-
-    private Boolean saveInSession;
-
-    private Boolean multiProfile;
 
     private Boolean renewSession;
 
@@ -64,16 +62,6 @@ public class CallbackFilter extends AbstractPathFilter {
         this.defaultUrl = defaultUrl;
     }
 
-    public CallbackFilter(final Config config, final String defaultUrl, final boolean multiProfile) {
-        this(config, defaultUrl);
-        this.multiProfile = multiProfile;
-    }
-
-    public CallbackFilter(final Config config, final String defaultUrl, final boolean multiProfile, final boolean renewSession) {
-        this(config, defaultUrl, multiProfile);
-        this.renewSession = renewSession;
-    }
-
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException { }
 
@@ -85,15 +73,14 @@ public class CallbackFilter extends AbstractPathFilter {
 
         init();
 
-        final SessionStore<JEEContext> bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
+        final SessionStore bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
         final KeepActionHttpActionAdapter keepActionHttpActionAdapter = new KeepActionHttpActionAdapter();
-        final CallbackLogic<Object, JEEContext> bestLogic = FindBest.callbackLogic(callbackLogic, config, DefaultCallbackLogic.INSTANCE);
+        final CallbackLogic bestLogic = FindBest.callbackLogic(callbackLogic, config, DefaultCallbackLogic.INSTANCE);
 
-        final JEEContext context = new JEEContext(request, response, bestSessionStore);
+        final WebContext context = FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response, bestSessionStore);
         final boolean mustApply = mustApply(context);
         if (mustApply) {
-            bestLogic.perform(context, this.config, keepActionHttpActionAdapter, this.defaultUrl, this.saveInSession,
-                    this.multiProfile, this.renewSession, this.defaultClient);
+            bestLogic.perform(context, this.config, keepActionHttpActionAdapter, this.defaultUrl, this.renewSession, this.defaultClient);
 
             HttpServletRequest newRequest = request;
             HttpServletResponse newResponse = response;
@@ -108,8 +95,8 @@ public class CallbackFilter extends AbstractPathFilter {
                 }
             }
 
-            final JEEContext newContext = new JEEContext(newRequest, newResponse, bestSessionStore);
-            final HttpActionAdapter<Object, JEEContext> bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
+            final WebContext newContext = new JEEContext(newRequest, newResponse, bestSessionStore);
+            final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
             bestAdapter.adapt(keepActionHttpActionAdapter.getAction(), newContext);
         } else {
             chain.doFilter(req, resp);
@@ -143,11 +130,11 @@ public class CallbackFilter extends AbstractPathFilter {
         }
     }
 
-    public CallbackLogic<Object, JEEContext> getCallbackLogic() {
+    public CallbackLogic getCallbackLogic() {
         return callbackLogic;
     }
 
-    public void setCallbackLogic(final CallbackLogic<Object, JEEContext> callbackLogic) {
+    public void setCallbackLogic(final CallbackLogic callbackLogic) {
         this.callbackLogic = callbackLogic;
     }
 
@@ -167,28 +154,12 @@ public class CallbackFilter extends AbstractPathFilter {
         this.defaultUrl = defaultUrl;
     }
 
-    public Boolean getMultiProfile() {
-        return multiProfile;
-    }
-
-    public void setMultiProfile(final Boolean multiProfile) {
-        this.multiProfile = multiProfile;
-    }
-
     public Boolean getRenewSession() {
         return renewSession;
     }
 
     public void setRenewSession(final Boolean renewSession) {
         this.renewSession = renewSession;
-    }
-
-    public Boolean getSaveInSession() {
-        return saveInSession;
-    }
-
-    public void setSaveInSession(final Boolean saveInSession) {
-        this.saveInSession = saveInSession;
     }
 
     public String getDefaultClient() {

@@ -1,6 +1,6 @@
 package org.pac4j.springframework.security.util;
 
-import org.pac4j.core.context.JEEContext;
+import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.http.HttpAction;
 import org.pac4j.core.http.adapter.HttpActionAdapter;
 
@@ -10,12 +10,12 @@ import org.pac4j.core.http.adapter.HttpActionAdapter;
  * @author Jerome LELEU
  * @since 5.1.0
  */
-public class KeepActionHttpActionAdapter implements HttpActionAdapter<Object, JEEContext> {
+public class KeepActionHttpActionAdapter implements HttpActionAdapter {
 
     private HttpAction action;
 
     @Override
-    public Object adapt(final HttpAction action, final JEEContext context) {
+    public Object adapt(final HttpAction action, final WebContext context) {
         this.action = action;
         return null;
     }

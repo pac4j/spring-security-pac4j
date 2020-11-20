@@ -1,7 +1,7 @@
 package org.pac4j.springframework.security.authentication;
 
-import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileHelper;
+import org.pac4j.core.profile.UserProfile;
 
 import java.util.*;
 
@@ -18,7 +18,7 @@ public interface Pac4jAuthentication {
      *
      * @return the main profile
      */
-    default CommonProfile getProfile() {
+    default UserProfile getProfile() {
         return ProfileHelper.flatIntoOneProfile(getProfiles()).get();
     }
 
@@ -27,5 +27,5 @@ public interface Pac4jAuthentication {
      *
      * @return the list of profiles
      */
-    List<CommonProfile> getProfiles();
+    List<UserProfile> getProfiles();
 }

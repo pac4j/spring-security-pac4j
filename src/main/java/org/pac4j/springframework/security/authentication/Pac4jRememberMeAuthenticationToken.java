@@ -2,6 +2,7 @@ package org.pac4j.springframework.security.authentication;
 
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.profile.ProfileHelper;
+import org.pac4j.core.profile.UserProfile;
 import org.pac4j.springframework.security.util.SpringSecurityHelper;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
 
@@ -15,9 +16,9 @@ import java.util.List;
  */
 public class Pac4jRememberMeAuthenticationToken extends RememberMeAuthenticationToken implements Pac4jAuthentication {
 
-    private final List<CommonProfile> profiles;
+    private final List<UserProfile> profiles;
 
-    public Pac4jRememberMeAuthenticationToken(final List<CommonProfile> profiles) {
+    public Pac4jRememberMeAuthenticationToken(final List<UserProfile> profiles) {
         super("rme", ProfileHelper.flatIntoOneProfile(profiles).get(), SpringSecurityHelper.buildAuthorities(profiles));
         this.profiles = profiles;
         setAuthenticated(true);
@@ -47,7 +48,7 @@ public class Pac4jRememberMeAuthenticationToken extends RememberMeAuthentication
     }
 
     @Override
-    public List<CommonProfile> getProfiles() {
+    public List<UserProfile> getProfiles() {
         return this.profiles;
     }
 }
