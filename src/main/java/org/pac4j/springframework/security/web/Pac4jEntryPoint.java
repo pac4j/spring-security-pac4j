@@ -56,7 +56,7 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic implements Authenticat
         if (config != null && CommonHelper.isNotBlank(clientName)) {
             final SessionStore bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
             final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
-            final WebContext context = FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response, bestSessionStore);
+            final WebContext context = FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response);
 
             final List<Client> currentClients = new ArrayList<>();
             final Client client = config.getClients().findClient(clientName).orElseThrow(() -> new TechnicalException("Cannot find clientName: " + clientName));
@@ -64,12 +64,12 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic implements Authenticat
 
             HttpAction action;
             try {
-                if (startAuthentication(context, currentClients)) {
+                if (startAuthentication(context, bestSessionStore, currentClients)) {
                     LOGGER.debug("Redirecting to identity provider for login");
-                        saveRequestedUrl(context, currentClients, config.getClients().getAjaxRequestResolver());
-                        action = redirectToIdentityProvider(context, currentClients);
+                        saveRequestedUrl(context, bestSessionStore, currentClients, config.getClients().getAjaxRequestResolver());
+                        action = redirectToIdentityProvider(context, bestSessionStore, currentClients);
                 } else {
-                    action = unauthorized(context, currentClients);
+                    action = unauthorized(context, bestSessionStore, currentClients);
                 }
             } catch (final HttpAction e) {
                 LOGGER.debug("extra HTTP action required in Pac4jEntryPoint: {}", e.getCode());

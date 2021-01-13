@@ -56,9 +56,9 @@ public final class SpringSecurityHelper {
         if (profiles != null && profiles.size() > 0) {
             final List<UserProfile> listProfiles = ProfileHelper.flatIntoAProfileList(profiles);
             try {
-                if (IS_FULLY_AUTHENTICATED_AUTHORIZER.isAuthorized(null, listProfiles)) {
+                if (IS_FULLY_AUTHENTICATED_AUTHORIZER.isAuthorized(null, null, listProfiles)) {
                     SecurityContextHolder.getContext().setAuthentication(new Pac4jAuthenticationToken(listProfiles));
-                } else if (IS_REMEMBERED_AUTHORIZER.isAuthorized(null, listProfiles)) {
+                } else if (IS_REMEMBERED_AUTHORIZER.isAuthorized(null, null, listProfiles)) {
                     SecurityContextHolder.getContext().setAuthentication(new Pac4jRememberMeAuthenticationToken(listProfiles));
                 }
             } catch (final HttpAction e) {

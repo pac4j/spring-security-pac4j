@@ -26,7 +26,7 @@ import java.io.IOException;
 public class SecurityFilter implements Filter {
 
     static {
-        Config.setProfileManagerFactory("SpringSecurityProfileManager", ctx -> new SpringSecurityProfileManager(ctx));
+        Config.setProfileManagerFactory("SpringSecurityProfileManager", (ctx, session) -> new SpringSecurityProfileManager(ctx, session));
     }
 
     private SecurityLogic securityLogic;
@@ -67,8 +67,8 @@ public class SecurityFilter implements Filter {
 
         final HttpServletRequest request = (HttpServletRequest) req;
         final HttpServletResponse response = (HttpServletResponse) resp;
-        final WebContext context = FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(req, resp, bestSessionStore);
-        bestLogic.perform(context, this.config, (ctx, profiles, parameters) -> {
+        final WebContext context = FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(req, resp);
+        bestLogic.perform(context, bestSessionStore, this.config, (ctx, session, profiles, parameters) -> {
 
             filterChain.doFilter(request, response);
             return null;

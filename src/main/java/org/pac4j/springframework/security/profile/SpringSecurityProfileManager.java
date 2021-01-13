@@ -1,6 +1,7 @@
 package org.pac4j.springframework.security.profile;
 
 import org.pac4j.core.context.WebContext;
+import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.springframework.security.util.SpringSecurityHelper;
@@ -16,8 +17,8 @@ import java.util.LinkedHashMap;
  */
 public class SpringSecurityProfileManager extends ProfileManager {
 
-    public SpringSecurityProfileManager(final WebContext context) {
-        super(context);
+    public SpringSecurityProfileManager(final WebContext context, final SessionStore sessionStore) {
+        super(context, sessionStore);
     }
 
     @Override

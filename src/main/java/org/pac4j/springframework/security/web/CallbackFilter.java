@@ -77,10 +77,10 @@ public class CallbackFilter extends AbstractPathFilter {
         final KeepActionHttpActionAdapter keepActionHttpActionAdapter = new KeepActionHttpActionAdapter();
         final CallbackLogic bestLogic = FindBest.callbackLogic(callbackLogic, config, DefaultCallbackLogic.INSTANCE);
 
-        final WebContext context = FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response, bestSessionStore);
+        final WebContext context = FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response);
         final boolean mustApply = mustApply(context);
         if (mustApply) {
-            bestLogic.perform(context, this.config, keepActionHttpActionAdapter, this.defaultUrl, this.renewSession, this.defaultClient);
+            bestLogic.perform(context, bestSessionStore, this.config, keepActionHttpActionAdapter, this.defaultUrl, this.renewSession, this.defaultClient);
 
             HttpServletRequest newRequest = request;
             HttpServletResponse newResponse = response;
@@ -95,7 +95,7 @@ public class CallbackFilter extends AbstractPathFilter {
                 }
             }
 
-            final WebContext newContext = new JEEContext(newRequest, newResponse, bestSessionStore);
+            final WebContext newContext = new JEEContext(newRequest, newResponse);
             final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
             bestAdapter.adapt(keepActionHttpActionAdapter.getAction(), newContext);
         } else {
