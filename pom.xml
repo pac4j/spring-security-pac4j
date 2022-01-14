@@ -56,7 +56,7 @@
         <spring.security.version>5.6.1</spring.security.version>
         <spring.version>5.3.15</spring.version>
         <servlet.version>4.0.1</servlet.version>
-        <pac4j.version>5.2.1</pac4j.version>
+        <pac4j.version>5.3.0</pac4j.version>
         <java.version>11</java.version>
         <pmdVersion>6.41.0</pmdVersion>
     </properties>
