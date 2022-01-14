@@ -69,7 +69,7 @@ public class LogoutFilter extends AbstractPathFilter {
     public void destroy() { }
 
     @Override
-    protected void internalInit() { }
+    protected void internalInit(final boolean forceReinit) { }
 
     public LogoutLogic getLogoutLogic() {
         return logoutLogic;

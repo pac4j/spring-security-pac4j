@@ -107,7 +107,7 @@ public class CallbackFilter extends AbstractPathFilter {
     public void destroy() { }
 
     @Override
-    protected void internalInit() {
+    protected void internalInit(final boolean forceReinit) {
         if (applicationContext != null) {
             final FilterChainProxy springSecurityFilterChain = (FilterChainProxy) applicationContext.getBean("springSecurityFilterChain");
             if (springSecurityFilterChain != null) {
