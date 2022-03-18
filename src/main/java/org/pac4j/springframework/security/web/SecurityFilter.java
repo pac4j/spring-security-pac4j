@@ -1,15 +1,15 @@
 package org.pac4j.springframework.security.web;
 
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.JEEContextFactory;
 import org.pac4j.core.context.WebContext;
-import org.pac4j.core.context.session.JEESessionStore;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
 import org.pac4j.core.http.adapter.HttpActionAdapter;
-import org.pac4j.core.http.adapter.JEEHttpActionAdapter;
 import org.pac4j.core.util.FindBest;
+import org.pac4j.jee.context.JEEContextFactory;
+import org.pac4j.jee.context.session.JEESessionStore;
+import org.pac4j.jee.http.adapter.JEEHttpActionAdapter;
 import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
 
 import javax.servlet.*;

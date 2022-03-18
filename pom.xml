@@ -12,7 +12,7 @@
     <artifactId>spring-security-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>pac4j implementation for Spring Security</name>
-    <version>6.2.1-SNAPSHOT</version>
+    <version>7.0.0-SNAPSHOT</version>
     <description>Security library for Spring Security based on pac4j</description>
     <url>https://github.com/pac4j/spring-security-pac4j</url>
 
@@ -56,7 +56,7 @@
         <spring.security.version>5.6.2</spring.security.version>
         <spring.version>5.3.16</spring.version>
         <servlet.version>4.0.1</servlet.version>
-        <pac4j.version>5.3.1</pac4j.version>
+        <pac4j.version>5.4.0-SNAPSHOT</pac4j.version>
         <java.version>11</java.version>
         <pmdVersion>6.43.0</pmdVersion>
     </properties>
@@ -85,7 +85,7 @@
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-jee</artifactId>
+            <artifactId>pac4j-javaee</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
     </dependencies>
