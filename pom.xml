@@ -58,7 +58,7 @@
         <servlet.version>4.0.1</servlet.version>
         <pac4j.version>5.4.0-SNAPSHOT</pac4j.version>
         <java.version>11</java.version>
-        <pmdVersion>6.43.0</pmdVersion>
+        <pmdVersion>6.44.0</pmdVersion>
     </properties>
 
     <dependencies>
