@@ -12,7 +12,7 @@
     <artifactId>spring-security-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>pac4j implementation for Spring Security</name>
-    <version>7.0.2</version>
+    <version>7.0.3-SNAPSHOT</version>
     <description>Security library for Spring Security based on pac4j</description>
     <url>https://github.com/pac4j/spring-security-pac4j</url>
 
