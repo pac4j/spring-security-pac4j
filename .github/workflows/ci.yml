@@ -7,10 +7,13 @@ env:
 on:
   push:
     branches:
-      - master
+      - 6.1.x
   pull_request:
     branches:
-      - master
+      - 6.1.x
+
+permissions:
+  contents: read
 
 jobs:
   build:
