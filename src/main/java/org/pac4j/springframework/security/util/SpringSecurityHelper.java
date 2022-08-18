@@ -9,14 +9,12 @@ import org.pac4j.core.profile.ProfileHelper;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.springframework.security.authentication.Pac4jAuthenticationToken;
 import org.pac4j.springframework.security.authentication.Pac4jRememberMeAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Helper for Spring Security.
@@ -48,19 +46,33 @@ public final class SpringSecurityHelper {
     }
 
     /**
+     * Compute the Spring Security authentication from the pac4j profiles.
+     *
+     * @param profiles the linked hashmap of profiles
+     * @return the optional Spring Security authentication
+     */
+    public static Optional<Authentication> computeAuthentication(final LinkedHashMap<String, UserProfile> profiles) {
+        if (profiles != null && profiles.size() > 0) {
+            final List<UserProfile> listProfiles = ProfileHelper.flatIntoAProfileList(profiles);
+            if (IS_FULLY_AUTHENTICATED_AUTHORIZER.isAuthorized(null, null, listProfiles)) {
+                return Optional.of(new Pac4jAuthenticationToken(listProfiles));
+            } else if (IS_REMEMBERED_AUTHORIZER.isAuthorized(null, null, listProfiles)) {
+                return Optional.of(new Pac4jRememberMeAuthenticationToken(listProfiles));
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
      * Populate the authenticated user profiles in the Spring Security context.
      *
      * @param profiles the linked hashmap of profiles
      */
     public static void populateAuthentication(final LinkedHashMap<String, UserProfile> profiles) {
-        if (profiles != null && profiles.size() > 0) {
-            final List<UserProfile> listProfiles = ProfileHelper.flatIntoAProfileList(profiles);
+        final Optional<Authentication> authentication = computeAuthentication(profiles);
+        if (authentication.isPresent()) {
             try {
-                if (IS_FULLY_AUTHENTICATED_AUTHORIZER.isAuthorized(null, null, listProfiles)) {
-                    SecurityContextHolder.getContext().setAuthentication(new Pac4jAuthenticationToken(listProfiles));
-                } else if (IS_REMEMBERED_AUTHORIZER.isAuthorized(null, null, listProfiles)) {
-                    SecurityContextHolder.getContext().setAuthentication(new Pac4jRememberMeAuthenticationToken(listProfiles));
-                }
+                SecurityContextHolder.getContext().setAuthentication(authentication.get());
             } catch (final HttpAction e) {
                 throw new TechnicalException(e);
             }
