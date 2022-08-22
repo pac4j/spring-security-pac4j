@@ -2,12 +2,16 @@ package org.pac4j.springframework.security.profile;
 
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.context.session.SessionStore;
+import org.pac4j.core.exception.TechnicalException;
+import org.pac4j.core.exception.http.HttpAction;
 import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.springframework.security.util.SpringSecurityHelper;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.LinkedHashMap;
+import java.util.Optional;
 
 /**
  * Specific profile manager for Spring Security.
@@ -25,7 +29,14 @@ public class SpringSecurityProfileManager extends ProfileManager {
     protected void saveAll(LinkedHashMap<String, UserProfile> profiles, final boolean saveInSession) {
         super.saveAll(profiles, saveInSession);
 
-        SpringSecurityHelper.populateAuthentication(retrieveAll(saveInSession));
+        final Optional<Authentication> authentication = SpringSecurityHelper.computeAuthentication(profiles);
+        if (authentication.isPresent()) {
+            try {
+                SecurityContextHolder.getContext().setAuthentication(authentication.get());
+            } catch (final HttpAction e) {
+                throw new TechnicalException(e);
+            }
+        }
     }
 
     @Override

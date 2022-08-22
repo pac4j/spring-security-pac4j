@@ -3,8 +3,6 @@ package org.pac4j.springframework.security.util;
 import org.pac4j.core.authorization.authorizer.Authorizer;
 import org.pac4j.core.authorization.authorizer.IsFullyAuthenticatedAuthorizer;
 import org.pac4j.core.authorization.authorizer.IsRememberedAuthorizer;
-import org.pac4j.core.exception.TechnicalException;
-import org.pac4j.core.exception.http.HttpAction;
 import org.pac4j.core.profile.ProfileHelper;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.springframework.security.authentication.Pac4jAuthenticationToken;
@@ -12,7 +10,6 @@ import org.pac4j.springframework.security.authentication.Pac4jRememberMeAuthenti
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.*;
 
@@ -61,21 +58,5 @@ public final class SpringSecurityHelper {
             }
         }
         return Optional.empty();
-    }
-
-    /**
-     * Populate the authenticated user profiles in the Spring Security context.
-     *
-     * @param profiles the linked hashmap of profiles
-     */
-    public static void populateAuthentication(final LinkedHashMap<String, UserProfile> profiles) {
-        final Optional<Authentication> authentication = computeAuthentication(profiles);
-        if (authentication.isPresent()) {
-            try {
-                SecurityContextHolder.getContext().setAuthentication(authentication.get());
-            } catch (final HttpAction e) {
-                throw new TechnicalException(e);
-            }
-        }
     }
 }
