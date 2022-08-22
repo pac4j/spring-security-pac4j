@@ -11,9 +11,9 @@
     <groupId>org.pac4j</groupId>
     <artifactId>spring-security-pac4j</artifactId>
     <packaging>jar</packaging>
-    <name>pac4j implementation for Spring Security</name>
-    <version>7.0.5-SNAPSHOT</version>
-    <description>Security library for Spring Security based on pac4j</description>
+    <name>pac4j bridge for Spring Security</name>
+    <version>8.0.0-SNAPSHOT</version>
+    <description>Bridge from the pac4j security library to Spring Security</description>
     <url>https://github.com/pac4j/spring-security-pac4j</url>
 
     <repositories>
@@ -54,9 +54,8 @@
 
     <properties>
         <spring.security.version>5.7.3</spring.security.version>
-        <spring.version>5.3.22</spring.version>
+        <pac4j.version>5.4.6-SNAPSHOT</pac4j.version>
         <servlet.version>4.0.1</servlet.version>
-        <pac4j.version>5.4.5</pac4j.version>
         <java.version>11</java.version>
         <pmdVersion>6.48.0</pmdVersion>
     </properties>
@@ -74,47 +73,22 @@
 		</dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-expression</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet.version}</version>
-            <scope>provided</scope>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-core</artifactId>
+            <version>${pac4j.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-javaee</artifactId>
             <version>${pac4j.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
