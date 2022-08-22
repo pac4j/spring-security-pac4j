@@ -58,6 +58,7 @@
         <servlet.version>4.0.1</servlet.version>
         <java.version>11</java.version>
         <pmdVersion>6.48.0</pmdVersion>
+        <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
     </properties>
 
     <dependencies>
@@ -71,6 +72,12 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
+
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>${javax.annotation-api.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.pac4j</groupId>
