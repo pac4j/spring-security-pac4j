@@ -7,8 +7,8 @@ It's based on Java 11, Spring Security 5 and on the **[pac4j security engine](ht
 
 **It must be used with a [pac4j security library](https://www.pac4j.org/implementations.html)**:
 - the [javaee-pac4j](https://github.com/pac4j/jee-pac4j) implementation (which has similar filters as `spring-security-pac4j` version <= 7.x)
-- or if you use Spring MVC, the [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) implementation
-- or if you use Spring Webflux, the [spring-webflux-pac4j](https://github.com/pac4j/spring-webflux-pac4j) implementation
+- if you use Spring MVC, the [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) implementation
+- if you use Spring Webflux, the [spring-webflux-pac4j](https://github.com/pac4j/spring-webflux-pac4j) implementation
 
 While **it is always better to directly use a pac4j security library alone**, this bridge can be used to keep legacy software and avoid full migration.
 
