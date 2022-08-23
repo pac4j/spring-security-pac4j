@@ -28,10 +28,12 @@ public class SpringSecurityReactiveProfileManager extends ProfileManager {
     protected void saveAll(LinkedHashMap<String, UserProfile> profiles, final boolean saveInSession) {
         super.saveAll(profiles, saveInSession);
 
-        final Optional<Authentication> authentication = SpringSecurityHelper.computeAuthentication(retrieveAll(saveInSession));
-        if (authentication.isPresent()) {
-            sessionStore.set(context, WebSessionServerSecurityContextRepository.DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME,
-                    new SecurityContextImpl(authentication.get()));
+        if (saveInSession) {
+            final Optional<Authentication> authentication = SpringSecurityHelper.computeAuthentication(retrieveAll(saveInSession));
+            if (authentication.isPresent()) {
+                sessionStore.set(context, WebSessionServerSecurityContextRepository.DEFAULT_SPRING_SECURITY_CONTEXT_ATTR_NAME,
+                        new SecurityContextImpl(authentication.get()));
+            }
         }
     }
 
