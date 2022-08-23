@@ -17,7 +17,7 @@ While **it is always better to directly use a pac4j security library alone**, th
 
 ### 1) [Add the required dependencies](https://github.com/pac4j/spring-security-pac4j/wiki/Dependencies)
 
-### 2) [Install the bridge](https://github.com/pac4j/spring-security-pac4j/wiki/Bridge)
+### 2) [Install the bridge for a Spring webapp without Spring Boot](https://github.com/pac4j/spring-security-pac4j/wiki/Bridge)
 
 ### 3) Install, configure and use the pac4j security library
 
