@@ -12,7 +12,7 @@
     <artifactId>spring-security-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>pac4j bridge for Spring Security</name>
-    <version>8.0.1-SNAPSHOT</version>
+    <version>9.0.0-SNAPSHOT</version>
     <description>Bridge from the pac4j security library to Spring Security</description>
     <url>https://github.com/pac4j/spring-security-pac4j</url>
 
@@ -27,6 +27,11 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestone</id>
+            <name>Spring Milestone Repository</name>
+            <url>https://repo.spring.io/milestone</url>
         </repository>
     </repositories>
 
@@ -53,10 +58,10 @@
     </developers>
 
     <properties>
-        <spring.security.version>5.7.3</spring.security.version>
+        <spring.security.version>6.0.0-M6</spring.security.version>
         <pac4j.version>5.5.0</pac4j.version>
-        <servlet.version>4.0.1</servlet.version>
-        <java.version>11</java.version>
+        <jakartaee-web-api.version>9.1.0</jakartaee-web-api.version>
+        <java.version>17</java.version>
         <pmdVersion>6.49.0</pmdVersion>
         <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
     </properties>
@@ -81,20 +86,14 @@
 
         <dependency>
             <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-core</artifactId>
-            <version>${pac4j.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-javaee</artifactId>
+            <artifactId>pac4j-jakartaee</artifactId>
             <version>${pac4j.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet.version}</version>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-web-api</artifactId>
+            <version>${jakartaee-web-api.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

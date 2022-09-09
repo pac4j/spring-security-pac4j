@@ -3,7 +3,7 @@
 </p>
 
 The `spring-security-pac4j` project is a **bridge from pac4j to Spring Security (reactive)** to push the pac4j security context into the Spring Security security (reactive) context.  
-It's based on Java 11, Spring Security 5 and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v5**. It's available under the Apache 2 license.
+It's based on Java 17 (or 11), Spring Security 6 (or 5) and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v5**. It's available under the Apache 2 license.
 
 **It must be used with a [pac4j security library](https://www.pac4j.org/implementations.html)**:
 - the [javaee-pac4j](https://github.com/pac4j/jee-pac4j) implementation (which has similar filters as `spring-security-pac4j` version <= 7.x)
