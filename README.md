@@ -6,9 +6,9 @@ The `spring-security-pac4j` project is a **bridge from pac4j to Spring Security 
 It's based on Java 17 (or 11), Spring Security 6 (or 5) and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v5**. It's available under the Apache 2 license.
 
 **It must be used with a [pac4j security library](https://www.pac4j.org/implementations.html)**:
-- the [javaee-pac4j](https://github.com/pac4j/jee-pac4j) implementation (which has similar filters as `spring-security-pac4j` version <= 7.x)
-- if you use Spring MVC, the [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) implementation
-- if you use Spring Webflux, the [spring-webflux-pac4j](https://github.com/pac4j/spring-webflux-pac4j) implementation
+- the [jakartaee-pac4j](https://github.com/pac4j/jee-pac4j) (Spring 6) or [javaee-pac4j](https://github.com/pac4j/jee-pac4j) (Spring 5) implementation (which has similar filters as `spring-security-pac4j` version <= 7.x)
+- if you use Spring MVC, the [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) implementation version >= 7 (Spring 6) or version < 7 (Spring 5)
+- if you use Spring Webflux, the [spring-webflux-pac4j](https://github.com/pac4j/spring-webflux-pac4j) implementation version >= 2 (Spring 6) or version < 2 (Spring 5)
 
 While **it is always better to directly use a pac4j security library alone**, this bridge can be used to keep legacy software and avoid full migration.
 
@@ -21,7 +21,7 @@ While **it is always better to directly use a pac4j security library alone**, th
 
 ### 3) Install, configure and use the pac4j security library
 
-You must refer to the documentation of the pac4j security library you use: [javaee-pac4j](https://github.com/pac4j/jee-pac4j) or [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) or [spring-webflux-pac4j](https://github.com/pac4j/spring-webflux-pac4j).
+You must refer to the documentation of the pac4j security library you use: [jakartaee-pac4j](https://github.com/pac4j/jee-pac4j) or [javaee-pac4j](https://github.com/pac4j/jee-pac4j) or [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) or [spring-webflux-pac4j](https://github.com/pac4j/spring-webflux-pac4j).
 
 
 ## Demos
