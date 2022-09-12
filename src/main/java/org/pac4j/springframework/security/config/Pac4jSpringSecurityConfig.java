@@ -2,7 +2,6 @@ package org.pac4j.springframework.security.config;
 
 import org.pac4j.core.config.Config;
 import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
-import org.pac4j.springframework.security.profile.SpringSecurityReactiveProfileManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +25,7 @@ public class Pac4jSpringSecurityConfig {
 
     @PostConstruct
     public void postConstruct() {
-
-        try {
-
-            Class.forName("org.springframework.web.reactive.DispatcherHandler");
-
-            LOGGER.info("Initializing pac4j to Spring Security reactive bridge...");
-            config.defaultProfileManagerFactory((ctx, session) -> new SpringSecurityReactiveProfileManager(ctx, session));
-
-        } catch (final ClassNotFoundException e) {
-
-            LOGGER.info("Initializing pac4j to Spring Security bridge...");
-            config.defaultProfileManagerFactory((ctx, session) -> new SpringSecurityProfileManager(ctx, session));
-
-        }
+        LOGGER.info("Initializing pac4j to Spring Security bridge...");
+        config.defaultProfileManagerFactory((ctx, session) -> new SpringSecurityProfileManager(ctx, session));
     }
 }
