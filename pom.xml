@@ -59,7 +59,7 @@
 
     <properties>
         <spring.security.version>6.0.0-M7</spring.security.version>
-        <pac4j.version>5.5.0</pac4j.version>
+        <pac4j.version>5.6.0</pac4j.version>
         <jakartaee-web-api.version>10.0.0</jakartaee-web-api.version>
         <java.version>17</java.version>
         <pmdVersion>6.49.0</pmdVersion>
