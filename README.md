@@ -3,9 +3,16 @@
 </p>
 
 The `spring-security-pac4j` project is a **bridge from pac4j to Spring Security (reactive)** to push the pac4j security context into the Spring Security security (reactive) context.  
-It's based on Java 17 (or 11), Spring Security 6 (or 5) and on the **[pac4j security engine](https://github.com/pac4j/pac4j) v5**. It's available under the Apache 2 license.
+It's based on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. It's available under the Apache 2 license.
 
-**It must be used with a [pac4j security library](https://www.pac4j.org/implementations.html)**:
+| spring-webflux-pac4j | JDK | pac4j | Spring security | Operating philosophy        |
+|----------------------|-----|-------|-----------------|-----------------------------|
+| version >= 9         | 17  | v5    | v6              | Bridge only                 |                 
+| version >= 8         | 11  | v5    | v5              | Standalone security library |
+| version >= 6         | 11  | v5    | v5              | Standalone security library |
+| version >= 5         | 8   | v4    | v5              | Standalone security library |
+
+**Since version 8 (working as a bridge only), it must be used with a [pac4j security library](https://www.pac4j.org/implementations.html)**:
 - the [jakartaee-pac4j](https://github.com/pac4j/jee-pac4j) (Spring 6) or [javaee-pac4j](https://github.com/pac4j/jee-pac4j) (Spring 5) implementation (which has similar filters as `spring-security-pac4j` version <= 7.x)
 - if you use Spring MVC, the [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) implementation version >= 7 (Spring 6) or version < 7 (Spring 5)
 - if you use Spring Webflux, the [spring-webflux-pac4j](https://github.com/pac4j/spring-webflux-pac4j) implementation version >= 2 (Spring 6) or version < 2 (Spring 5)
@@ -38,7 +45,7 @@ Spring Security reactive boot demo with pac4j Spring Webflux: `spring-security-p
 The latest released version is the [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.pac4j/spring-security-pac4j/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.pac4j/spring-security-pac4j), available in the [Maven central repository](https://repo.maven.apache.org/maven2).
 The [next version](https://github.com/pac4j/spring-security-pac4j/wiki/Next-version) is under development.
 
-See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [pac4j documentation](https://www.javadoc.io/doc/org.pac4j/pac4j-core/5.4.6/index.html) and the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/8.0.0).
+See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [pac4j documentation](https://www.javadoc.io/doc/org.pac4j/pac4j-core/5.7.0/index.html) and the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/9.0.0).
 
 See the [migration guide](https://github.com/pac4j/spring-security-pac4j/wiki/Migration-guide) as well.
 
