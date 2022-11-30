@@ -12,7 +12,7 @@
     <artifactId>spring-security-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>pac4j bridge for Spring Security</name>
-    <version>9.0.0</version>
+    <version>9.0.1-SNAPSHOT</version>
     <description>Bridge from the pac4j security library to Spring Security</description>
     <url>https://github.com/pac4j/spring-security-pac4j</url>
 
