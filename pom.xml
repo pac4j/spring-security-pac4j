@@ -12,7 +12,7 @@
     <artifactId>spring-security-pac4j</artifactId>
     <packaging>jar</packaging>
     <name>pac4j bridge for Spring Security</name>
-    <version>9.0.1-SNAPSHOT</version>
+    <version>10.0.0-SNAPSHOT</version>
     <description>Bridge from the pac4j security library to Spring Security</description>
     <url>https://github.com/pac4j/spring-security-pac4j</url>
 
@@ -59,7 +59,7 @@
 
     <properties>
         <spring.security.version>6.0.1</spring.security.version>
-        <pac4j.version>5.7.0</pac4j.version>
+        <pac4j.version>6.0.0-RC5-SNAPSHOT</pac4j.version>
         <jakartaee-web-api.version>10.0.0</jakartaee-web-api.version>
         <java.version>17</java.version>
         <pmdVersion>6.52.0</pmdVersion>
@@ -95,6 +95,12 @@
             <artifactId>jakarta.jakartaee-web-api</artifactId>
             <version>${jakartaee-web-api.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
         </dependency>
     </dependencies>
 

@@ -3,21 +3,19 @@ package org.pac4j.springframework.security.web;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import org.pac4j.core.adapter.FrameworkAdapter;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.WebContext;
-import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.exception.http.HttpAction;
-import org.pac4j.core.http.adapter.HttpActionAdapter;
 import org.pac4j.core.util.CommonHelper;
-import org.pac4j.core.util.FindBest;
-import org.pac4j.jee.context.JEEContextFactory;
-import org.pac4j.jee.context.session.JEESessionStore;
-import org.pac4j.jee.http.adapter.JEEHttpActionAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.pac4j.jee.context.JEEFrameworkParameters;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -33,9 +31,11 @@ import java.util.List;
  * @author Jerome Leleu
  * @since 1.0.0
  */
+@Getter
+@Setter
+@Slf4j
+@ToString
 public class Pac4jEntryPoint extends DefaultSecurityLogic implements AuthenticationEntryPoint {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Pac4jEntryPoint.class);
 
     private Config config;
 
@@ -53,9 +53,13 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic implements Authenticat
                          final AuthenticationException authException) throws IOException, ServletException {
 
         if (config != null && CommonHelper.isNotBlank(clientName)) {
-            final SessionStore bestSessionStore = FindBest.sessionStore(null, config, JEESessionStore.INSTANCE);
-            final HttpActionAdapter bestAdapter = FindBest.httpActionAdapter(null, config, JEEHttpActionAdapter.INSTANCE);
-            final WebContext context = FindBest.webContextFactory(null, config, JEEContextFactory.INSTANCE).newContext(request, response);
+
+            FrameworkAdapter.INSTANCE.applyDefaultSettingsIfUndefined(config);
+
+            val parameters = new JEEFrameworkParameters(request, response);
+            val context = config.getWebContextFactory().newContext(parameters);
+            val sessionStore = config.getSessionStoreFactory().newSessionStore(parameters);
+            val adapter = config.getHttpActionAdapter();
 
             final List<Client> currentClients = new ArrayList<>();
             final Client client = config.getClients().findClient(clientName).orElseThrow(() -> new TechnicalException("Cannot find clientName: " + clientName));
@@ -63,42 +67,21 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic implements Authenticat
 
             HttpAction action;
             try {
-                if (startAuthentication(context, bestSessionStore, currentClients)) {
+                if (startAuthentication(context, sessionStore, currentClients)) {
                     LOGGER.debug("Redirecting to identity provider for login");
-                        saveRequestedUrl(context, bestSessionStore, currentClients, config.getClients().getAjaxRequestResolver());
-                        action = redirectToIdentityProvider(context, bestSessionStore, currentClients);
+                        saveRequestedUrl(context, sessionStore, currentClients, config.getClients().getAjaxRequestResolver());
+                        action = redirectToIdentityProvider(context, sessionStore, currentClients);
                 } else {
-                    action = unauthorized(context, bestSessionStore, currentClients);
+                    action = unauthorized(context, sessionStore, currentClients);
                 }
             } catch (final HttpAction e) {
                 LOGGER.debug("extra HTTP action required in Pac4jEntryPoint: {}", e.getCode());
                 action = e;
             }
-            bestAdapter.adapt(action, context);
+            adapter.adapt(action, context);
 
         } else {
             throw new TechnicalException("The Pac4jEntryPoint has been defined without config, nor clientName: it must be defined in a <security:http> section with the pac4j SecurityFilter or CallbackFilter");
         }
-    }
-
-    public Config getConfig() {
-        return config;
-    }
-
-    public void setConfig(final Config config) {
-        this.config = config;
-    }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(final String clientName) {
-        this.clientName = clientName;
-    }
-
-    @Override
-    public String toString() {
-        return CommonHelper.toNiceString(this.getClass(), "config", config, "clientName", clientName);
     }
 }

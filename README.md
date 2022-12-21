@@ -5,12 +5,13 @@
 The `spring-security-pac4j` project is a **bridge from pac4j to Spring Security (reactive)** to push the pac4j security context into the Spring Security security (reactive) context.  
 It's based on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. It's available under the Apache 2 license.
 
-| spring-webflux-pac4j | JDK | pac4j | Spring security | Operating philosophy        |
-|----------------------|-----|-------|-----------------|-----------------------------|
-| version >= 9         | 17  | v5    | v6              | Bridge only                 |                 
-| version >= 8         | 11  | v5    | v5              | Standalone security library |
-| version >= 6         | 11  | v5    | v5              | Standalone security library |
-| version >= 5         | 8   | v4    | v5              | Standalone security library |
+| spring-webflux-pac4j | JDK | pac4j | Spring security | Operating philosophy        | Usage of Lombok | Status           |
+|----------------------|-----|-------|-----------------|-----------------------------|-----------------|------------------|
+| version >= 10        | 17  | v6    | v6              | Bridge only                 | Yes             | In development   |
+| version >= 9         | 17  | v5    | v6              | Bridge only                 | No              | Production ready |
+| version >= 8         | 11  | v5    | v5              | Standalone security library | No              | Production ready |
+| version >= 6         | 11  | v5    | v5              | Standalone security library | No              | Production ready |
+| version >= 5         | 8   | v4    | v5              | Standalone security library | No              | Production ready |
 
 **Since version 8 (working as a bridge only), it must be used with a [pac4j security library](https://www.pac4j.org/implementations.html)**:
 - the [jakartaee-pac4j](https://github.com/pac4j/jee-pac4j) (Spring 6) or [javaee-pac4j](https://github.com/pac4j/jee-pac4j) (Spring 5) implementation (which has similar filters as `spring-security-pac4j` version <= 7.x)
@@ -24,16 +25,14 @@ While **it is always better to directly use a pac4j security library alone**, th
 
 ### 1) [Add the required dependencies](https://github.com/pac4j/spring-security-pac4j/wiki/Dependencies)
 
-### 2) [Install the bridge for a Spring webapp without Spring Boot](https://github.com/pac4j/spring-security-pac4j/wiki/Bridge)
+### 2) Install, configure and use the pac4j security library
 
-### 3) Install, configure and use the pac4j security library
-
-You must refer to the documentation of the pac4j security library you use: [jakartaee-pac4j](https://github.com/pac4j/jee-pac4j) or [javaee-pac4j](https://github.com/pac4j/jee-pac4j) or [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) or [spring-webflux-pac4j](https://github.com/pac4j/spring-webflux-pac4j).
+You must refer to the documentation of the pac4j security library you use: [jakartaee-pac4j](https://github.com/pac4j/jee-pac4j) or [spring-webmvc-pac4j](https://github.com/pac4j/spring-webmvc-pac4j) or [spring-webflux-pac4j](https://github.com/pac4j/spring-webflux-pac4j).
 
 
 ## Demos
 
-Spring security boot demo with pac4j JEE filters: `spring-security-pac4j` + `javaee-pac4j`: [spring-security-jee-pac4j-boot-demo](https://github.com/pac4j/spring-security-jee-pac4j-boot-demo).
+Spring security boot demo with pac4j JEE filters: `spring-security-pac4j` + `jakartaee-pac4j`: [spring-security-jee-pac4j-boot-demo](https://github.com/pac4j/spring-security-jee-pac4j-boot-demo).
 
 Spring Security boot demo with pac4j SpringMVC: `spring-security-pac4j` + `spring-webmvc-pac4j`: [spring-security-webmvc-pac4j-boot-demo](https://github.com/pac4j/spring-security-webmvc-pac4j-boot-demo).
 
