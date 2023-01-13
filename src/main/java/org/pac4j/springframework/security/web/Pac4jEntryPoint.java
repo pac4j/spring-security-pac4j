@@ -70,7 +70,7 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic implements Authenticat
                 if (startAuthentication(context, sessionStore, currentClients)) {
                     LOGGER.debug("Redirecting to identity provider for login");
                         saveRequestedUrl(context, sessionStore, currentClients, config.getClients().getAjaxRequestResolver());
-                        action = redirectToIdentityProvider(context, sessionStore, currentClients);
+                        action = redirectToIdentityProvider(context, sessionStore, config.getProfileManagerFactory(), currentClients);
                 } else {
                     action = unauthorized(context, sessionStore, currentClients);
                 }
