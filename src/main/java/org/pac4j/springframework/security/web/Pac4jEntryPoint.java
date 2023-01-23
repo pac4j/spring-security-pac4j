@@ -57,8 +57,7 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic implements Authenticat
             FrameworkAdapter.INSTANCE.applyDefaultSettingsIfUndefined(config);
 
             val parameters = new JEEFrameworkParameters(request, response);
-            val context = config.getWebContextFactory().newContext(parameters);
-            val sessionStore = config.getSessionStoreFactory().newSessionStore(parameters);
+            val ctx = buildContext(config, parameters);
             val adapter = config.getHttpActionAdapter();
 
             final List<Client> currentClients = new ArrayList<>();
@@ -67,18 +66,18 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic implements Authenticat
 
             HttpAction action;
             try {
-                if (startAuthentication(context, sessionStore, currentClients)) {
+                if (startAuthentication(ctx, currentClients)) {
                     LOGGER.debug("Redirecting to identity provider for login");
-                        saveRequestedUrl(context, sessionStore, currentClients, config.getClients().getAjaxRequestResolver());
-                        action = redirectToIdentityProvider(context, sessionStore, config.getProfileManagerFactory(), currentClients);
+                        saveRequestedUrl(ctx, currentClients, config.getClients().getAjaxRequestResolver());
+                        action = redirectToIdentityProvider(ctx, currentClients);
                 } else {
-                    action = unauthorized(context, sessionStore, currentClients);
+                    action = unauthorized(ctx, currentClients);
                 }
             } catch (final HttpAction e) {
                 LOGGER.debug("extra HTTP action required in Pac4jEntryPoint: {}", e.getCode());
                 action = e;
             }
-            adapter.adapt(action, context);
+            adapter.adapt(action, ctx.webContext());
 
         } else {
             throw new TechnicalException("The Pac4jEntryPoint has been defined without config, nor clientName: it must be defined in a <security:http> section with the pac4j SecurityFilter or CallbackFilter");
