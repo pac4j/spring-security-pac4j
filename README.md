@@ -7,7 +7,7 @@ It's based on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. I
 
 | spring-security-pac4j | JDK | pac4j | Spring security | Operating philosophy        | Usage of Lombok | Status           |
 |-----------------------|-----|-------|-----------------|-----------------------------|-----------------|------------------|
-| version >= 10         | 17  | v6    | v6              | Bridge only                 | Yes             | In development   |
+| version >= 10         | 17  | v6    | v6              | Bridge only                 | Yes             | Production ready |
 | version >= 9          | 17  | v5    | v6              | Bridge only                 | No              | Production ready |
 | version >= 8          | 11  | v5    | v5              | Standalone security library | No              | Production ready |
 | version >= 6          | 11  | v5    | v5              | Standalone security library | No              | Production ready |
@@ -46,7 +46,7 @@ Spring Security reactive boot demo with pac4j Spring Webflux: `spring-security-p
 The latest released version is the [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.pac4j/spring-security-pac4j/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.pac4j/spring-security-pac4j), available in the [Maven central repository](https://repo.maven.apache.org/maven2).
 The [next version](https://github.com/pac4j/spring-security-pac4j/wiki/Next-version) is under development.
 
-See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [pac4j documentation](https://www.javadoc.io/doc/org.pac4j/pac4j-core/5.7.0/index.html) and the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/9.0.0).
+See the [release notes](https://github.com/pac4j/spring-security-pac4j/wiki/Release-Notes). Learn more by browsing the [pac4j documentation](https://www.javadoc.io/doc/org.pac4j/pac4j-core/6.0.1/index.html) and the [spring-security-pac4j Javadoc](http://www.javadoc.io/doc/org.pac4j/spring-security-pac4j/10.0.0).
 
 See the [migration guide](https://github.com/pac4j/spring-security-pac4j/wiki/Migration-guide) as well.
 
