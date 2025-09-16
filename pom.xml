@@ -67,7 +67,7 @@
 
     <properties>
         <spring.security.version>6.5.4</spring.security.version>
-        <pac4j.version>6.2.1</pac4j.version>
+        <pac4j.version>6.2.2</pac4j.version>
         <jakartaee-web-api.version>11.0.0</jakartaee-web-api.version>
         <java.version>17</java.version>
         <pmdVersion>6.55.0</pmdVersion>
