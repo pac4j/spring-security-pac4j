@@ -66,7 +66,7 @@
     </developers>
 
     <properties>
-        <spring.security.version>7.0.0</spring.security.version>
+        <spring.security.version>7.0.2</spring.security.version>
         <pac4j.version>6.3.1</pac4j.version>
         <jakartaee-web-api.version>11.0.0</jakartaee-web-api.version>
         <java.version>17</java.version>
