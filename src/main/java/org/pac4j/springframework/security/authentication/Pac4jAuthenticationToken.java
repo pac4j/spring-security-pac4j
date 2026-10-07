@@ -14,9 +14,17 @@ import java.util.List;
  */
 public class Pac4jAuthenticationToken extends AbstractAuthenticationToken implements Pac4jAuthentication {
 
+    /** The pac4j profiles represented by this authentication. */
     private final List<UserProfile> profiles;
+
+    /** The main profile used as the Spring Security principal. */
     private final UserProfile profile;
 
+    /**
+     * Create an authenticated token with the roles of the supplied profiles.
+     *
+     * @param profiles the non-empty list of authenticated profiles
+     */
     public Pac4jAuthenticationToken(final List<UserProfile> profiles) {
         super(SpringSecurityHelper.buildAuthorities(profiles));
         this.profiles = profiles;

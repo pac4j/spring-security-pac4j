@@ -73,7 +73,7 @@
         <lombok.version>1.18.48</lombok.version>
         <junit.version>5.14.0</junit.version>
         <spring.test.version>7.0.9</spring.test.version>
-        <pmdVersion>6.55.0</pmdVersion>
+        <pmdVersion>7.28.0</pmdVersion>
     </properties>
 
     <dependencies>
@@ -248,10 +248,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.21.2</version>
+                <version>3.28.0</version>
                 <configuration>
                     <includeTests>true</includeTests>
                     <printFailingErrors>true</printFailingErrors>
+                    <targetJdk>${java.version}</targetJdk>
+                    <!-- PMD uses Maven's runtime JDK for platform classes. The plugin has no
+                         platform-classpath option; .mvn/jvm.config filters that advisory only. -->
+                    <linkXRef>false</linkXRef>
+                    <skipEmptyReport>true</skipEmptyReport>
+                    <skipPmdError>false</skipPmdError>
+                    <rulesets>
+                        <ruleset>${project.basedir}/pmd-ruleset.xml</ruleset>
+                    </rulesets>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -278,7 +287,7 @@
                 <executions>
                     <execution>
                         <id>run-pmd</id>
-                        <phase>compile</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>

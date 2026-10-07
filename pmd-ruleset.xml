@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Spring Security pac4j"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+    <description>
+        Maven's default rules, with deprecated return-value checks replaced by their successor.
+    </description>
+    <rule ref="rulesets/java/maven-pmd-plugin-default.xml">
+        <exclude name="CheckSkipResult" />
+        <exclude name="UselessPureMethodCall" />
+    </rule>
+    <rule ref="category/java/errorprone.xml/UnusedReturnValue" />
+</ruleset>

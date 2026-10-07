@@ -23,6 +23,11 @@ import java.util.*;
  */
 public final class SpringSecurityHelper {
 
+    /**
+     * Create a Spring Security helper.
+     */
+    public SpringSecurityHelper() {}
+
     private final static Authorizer IS_REMEMBERED_AUTHORIZER = new IsRememberedAuthorizer();
 
     private final static Authorizer IS_FULLY_AUTHENTICATED_AUTHORIZER = new IsFullyAuthenticatedAuthorizer();

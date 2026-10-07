@@ -41,8 +41,17 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic implements Authenticat
 
     private String clientName;
 
+    /**
+     * Create an entry point whose configuration and client name must be set before use.
+     */
     public Pac4jEntryPoint() {}
 
+    /**
+     * Create an entry point for the selected pac4j client.
+     *
+     * @param config the pac4j configuration
+     * @param clientName the name of the client used to start authentication
+     */
     public Pac4jEntryPoint(final Config config, final String clientName) {
         this.config = config;
         this.clientName = clientName;

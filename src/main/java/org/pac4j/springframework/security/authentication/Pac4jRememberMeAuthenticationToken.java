@@ -16,8 +16,14 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Pac4jRememberMeAuthenticationToken extends RememberMeAuthenticationToken implements Pac4jAuthentication {
 
+    /** The pac4j profiles represented by this remembered authentication. */
     private final List<UserProfile> profiles;
 
+    /**
+     * Create a remember-me token with the roles of the supplied profiles.
+     *
+     * @param profiles the non-empty list of remembered profiles
+     */
     public Pac4jRememberMeAuthenticationToken(final List<UserProfile> profiles) {
         super("rme", SpringSecurityHelper.getMainProfile(profiles), SpringSecurityHelper.buildAuthorities(profiles));
         this.profiles = profiles;

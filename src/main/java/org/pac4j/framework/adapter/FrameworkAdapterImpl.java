@@ -13,6 +13,11 @@ import org.pac4j.springframework.security.profile.SpringSecurityProfileManager;
  */
 public class FrameworkAdapterImpl extends JEEFrameworkAdapter {
 
+    /**
+     * Create the Spring Security framework adapter.
+     */
+    public FrameworkAdapterImpl() {}
+
     @Override
     public void applyDefaultSettingsIfUndefined(final Config config) {
         CommonHelper.assertNotNull("config", config);
