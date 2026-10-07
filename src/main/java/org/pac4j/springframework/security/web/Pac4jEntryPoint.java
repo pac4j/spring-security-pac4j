@@ -60,16 +60,18 @@ public class Pac4jEntryPoint extends DefaultSecurityLogic implements Authenticat
             val ctx = buildContext(config, parameters);
             val adapter = config.getHttpActionAdapter();
 
+            val clients = config.getClients();
+            CommonHelper.assertNotNull("clients", clients);
             final List<Client> currentClients = new ArrayList<>();
-            final Client client = config.getClients().findClient(clientName).orElseThrow(() -> new TechnicalException("Cannot find clientName: " + clientName));
+            final Client client = clients.findClient(clientName).orElseThrow(() -> new TechnicalException("Cannot find clientName: " + clientName));
             currentClients.add(client);
 
             HttpAction action;
             try {
                 if (startAuthentication(ctx, currentClients)) {
                     LOGGER.debug("Redirecting to identity provider for login");
-                        saveRequestedUrl(ctx, currentClients, config.getClients().getAjaxRequestResolver());
-                        action = redirectToIdentityProvider(ctx, currentClients);
+                    saveRequestedUrl(ctx, currentClients, clients.getAjaxRequestResolver());
+                    action = redirectToIdentityProvider(ctx, currentClients);
                 } else {
                     action = unauthorized(ctx, currentClients);
                 }

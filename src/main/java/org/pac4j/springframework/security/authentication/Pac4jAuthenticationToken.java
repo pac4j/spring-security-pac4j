@@ -1,6 +1,5 @@
 package org.pac4j.springframework.security.authentication;
 
-import org.pac4j.core.profile.ProfileHelper;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.springframework.security.util.SpringSecurityHelper;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -21,7 +20,7 @@ public class Pac4jAuthenticationToken extends AbstractAuthenticationToken implem
     public Pac4jAuthenticationToken(final List<UserProfile> profiles) {
         super(SpringSecurityHelper.buildAuthorities(profiles));
         this.profiles = profiles;
-        this.profile = ProfileHelper.flatIntoOneProfile(profiles).get();
+        this.profile = SpringSecurityHelper.getMainProfile(profiles);
         setAuthenticated(true);
     }
 
