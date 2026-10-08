@@ -18,7 +18,7 @@ It's based on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. I
 
 | spring-security-pac4j | JDK | pac4j | Spring security | Operating philosophy        | Usage of Lombok | Status           |
 |-----------------------|-----|-------|-----------------|-----------------------------|-----------------|------------------|
-| version >= 10.1       | 17  | v6    | v6 or v7        | Bridge only                 | Yes             | In development   |
+| version >= 10.1       | 17  | v6    | v6 or v7        | Bridge only                 | Yes             | Production ready |
 | version 10.0.x        | 17  | v6    | v6              | Bridge only                 | Yes             | Production ready |
 | version >= 9          | 17  | v5    | v6              | Bridge only                 | No              | Production ready |
 | version >= 8          | 11  | v5    | v5              | Standalone security library | No              | Production ready |
@@ -55,7 +55,7 @@ Spring Security reactive boot demo with pac4j Spring Webflux: `spring-security-p
 
 ## Versions
 
-The current development version is **10.1.0-SNAPSHOT**.
+The current development version is **10.1.1-SNAPSHOT**.
 
 The latest released version is the [![Maven Central](https://img.shields.io/maven-central/v/org.pac4j/spring-security-pac4j.svg)](https://repo1.maven.org/maven2/org/pac4j/spring-security-pac4j). The [next version](https://github.com/pac4j/spring-security-pac4j/wiki/Next-version) is under development.
 
