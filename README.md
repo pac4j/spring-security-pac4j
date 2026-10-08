@@ -6,7 +6,7 @@
   <a href="https://central.sonatype.com/artifact/org.pac4j/spring-security-pac4j"><img src="https://img.shields.io/maven-central/v/org.pac4j/spring-security-pac4j?label=Maven%20Central" alt="Maven Central" /></a>
   <a href="https://github.com/pac4j/spring-security-pac4j/actions/workflows/ci.yml"><img src="https://github.com/pac4j/spring-security-pac4j/actions/workflows/ci.yml/badge.svg" alt="Build status" /></a>
   <img src="https://img.shields.io/badge/Java-17%2B-blue" alt="Java 17+" />
-  <img src="https://img.shields.io/badge/Spring%20Security-7.x-blue" alt="Spring Security 7.x" />
+  <img src="https://img.shields.io/badge/Spring%20Security-6.x%20%7C%207.x-blue" alt="Spring Security 6.x | 7.x" />
   <a href="https://www.apache.org/licenses/LICENSE-2.0"><img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="Apache 2 license" /></a>
 </p>
 
@@ -18,8 +18,8 @@ It's based on the **[pac4j security engine](https://github.com/pac4j/pac4j)**. I
 
 | spring-security-pac4j | JDK | pac4j | Spring security | Operating philosophy        | Usage of Lombok | Status           |
 |-----------------------|-----|-------|-----------------|-----------------------------|-----------------|------------------|
-| version >= 11         | 17  | v6    | v7              | Bridge only                 | Yes             | In development   |
-| version 10.x          | 17  | v6    | v6              | Bridge only                 | Yes             | Production ready |
+| version >= 10.1       | 17  | v6    | v6 or v7        | Bridge only                 | Yes             | In development   |
+| version 10.0.x        | 17  | v6    | v6              | Bridge only                 | Yes             | Production ready |
 | version >= 9          | 17  | v5    | v6              | Bridge only                 | No              | Production ready |
 | version >= 8          | 11  | v5    | v5              | Standalone security library | No              | Production ready |
 | version >= 6          | 11  | v5    | v5              | Standalone security library | No              | Production ready |
@@ -55,7 +55,7 @@ Spring Security reactive boot demo with pac4j Spring Webflux: `spring-security-p
 
 ## Versions
 
-The current development version is **11.0.0-SNAPSHOT**.
+The current development version is **10.1.0-SNAPSHOT**.
 
 The latest released version is the [![Maven Central](https://img.shields.io/maven-central/v/org.pac4j/spring-security-pac4j.svg)](https://repo1.maven.org/maven2/org/pac4j/spring-security-pac4j). The [next version](https://github.com/pac4j/spring-security-pac4j/wiki/Next-version) is under development.
 
